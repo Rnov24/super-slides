@@ -1,0 +1,64 @@
+/*
+ * super-slides — Token Bundles
+ * Three theme presets. Copy one block into <style> in slides.html.
+ * Do NOT @import this file: generated decks must stay a single HTML file.
+ * Tokens: --bg, --surface, --surface-border, --text, --text-muted, --accent, --accent-alt
+ */
+
+/* ─────────────────────────────────────────────
+   THEME 1 — Dark Mode (Modern Terminal Dark)
+   Mood: high-velocity, developer-native, telemetry-rich
+   Typography: Modern Tech Grotesque or Engineering Terminal
+───────────────────────────────────────────── */
+:root[data-theme="dark"],
+.theme-dark {
+  --bg:             #0a0d12;
+  --surface:        #121820;
+  --surface-border: #222d3d;
+  --text:           #e6edf3;
+  --text-muted:     #8b949e;
+  --accent:         #38bdf8;
+  --accent-alt:     #34d399;
+
+  --font-primary: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-code:    "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+}
+
+/* ─────────────────────────────────────────────
+   THEME 2 — Light Editorial (Executive Editorial)
+   Mood: authoritative, literary, thoughtful
+   Typography: Charter serif (Executive Editorial stack)
+───────────────────────────────────────────── */
+:root[data-theme="light"],
+.theme-light {
+  --bg:             #f8f6f1;
+  --surface:        #ffffff;
+  --surface-border: #e6e2d9;
+  --text:           #1a1a1a;
+  --text-muted:     #5a554e;
+  --accent:         #a33b20;
+  --accent-alt:     #2b5c54;
+
+  --font-primary: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --font-code:    "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+}
+
+/* ─────────────────────────────────────────────
+   THEME 3 — High-Contrast Engineering Terminal
+   Mood: precision tooling, infrastructure, zero-noise
+   Typography: Engineering Terminal (monospace) exclusively
+   Contrast: all pairings verified >= 4.5:1 WCAG AA
+───────────────────────────────────────────── */
+:root[data-theme="hc-terminal"],
+.theme-hc-terminal {
+  --bg:             #000000;
+  --surface:        #0d1117;
+  --surface-border: #30363d;
+  --text:           #f0f6fc;
+  --text-muted:     #c9d1d9;
+  --accent:         #58a6ff;
+  --accent-alt:     #3fb950;
+
+  --font-primary: "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+  --font-code:    "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+}

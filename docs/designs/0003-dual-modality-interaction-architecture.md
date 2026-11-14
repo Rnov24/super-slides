@@ -49,6 +49,11 @@ Current presentation approaches fail to balance presenter navigation with rich i
 * **Question 1**: Should the on-demand shortcut HUD (`?` key) share styling with the presenter speaker notes HUD (`N` key) or remain a distinct, minimal keyboard badge overlay?
 * **Question 2**: For slides declaring `data-transition="cut"`, should incoming slides skip layer promotion (`will-change: transform`) entirely to minimize memory overhead on mobile browsers?
 
+### Resolutions (2026-11-15)
+
+* **Question 1**: Resolved as a distinct minimal shortcut HUD (`?`). The speaker-notes HUD it was originally contrasted with no longer exists: speaker notes were cancelled by author decision 2026-11-15.
+* **Question 2**: Resolved as yes, instant-cut slides skip `will-change` promotion.
+
 --------------------------------------------------------------------------------
 
 ## Critical User Journeys (CUJs)

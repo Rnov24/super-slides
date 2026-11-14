@@ -1,0 +1,9 @@
+{
+  "name": "super-slides",
+  "version": "1.0.0",
+  "description": "Zero-dependency, anti-slop HTML presentation authoring skill",
+  "skills": "./SKILL.md",
+  "scripts": {
+    "test": "node tests/verify-deck.mjs"
+  }
+}

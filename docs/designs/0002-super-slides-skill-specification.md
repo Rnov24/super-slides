@@ -163,6 +163,8 @@ The `super-slides` repository is divided into two operational domains:
 
 ### 3. Client-Side Runtime Engine Specifications
 
+*See [0003-dual-modality-interaction-architecture.md](./0003-dual-modality-interaction-architecture.md) for detailed transition mechanics, input isolation, and gesture handling.*
+
 ```javascript
 // Minimal Runtime Engine (<120 lines Vanilla JS)
 class DeckEngine {
