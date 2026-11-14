@@ -92,9 +92,14 @@ for (const { name, content } of allFiles) {
   const hasReducedMotion = /prefers-reduced-motion\s*:\s*reduce/.test(content);
   check('@media prefers-reduced-motion block present', hasReducedMotion);
 
-  // 9. @media print block present
-  const hasPrint = /@media\s+print\b/.test(content);
-  check('@media print block present', hasPrint);
+  // 9. @media print block present, and its .slide rule resets the
+  // off-canvas hiding (translate3d + visibility + content-visibility),
+  // otherwise only the current slide prints and the rest come out blank.
+  const printIdx = content.search(/@media\s+print\b/);
+  check('@media print block present', printIdx !== -1);
+  const printBlock = printIdx === -1 ? '' : content.slice(printIdx);
+  check('print .slide rule resets off-canvas hiding',
+    /\.slide\s*\{[^}]*page-break-after[^}]*transform:\s*none\s*!important[^}]*visibility:\s*visible\s*!important[^}]*content-visibility:\s*visible\s*!important[^}]*\}/.test(printBlock));
 }
 
 // ── Summary ──────────────────────────────────────────────────────────────────
