@@ -4,6 +4,8 @@
 * **Status:** Proposed
 * **Date:** 2026-11-14
 
+> **Amendment, 2026-11-15 (Ronald, implementing author feedback):** The push-transition model in this document is SUPERSEDED. The author reviewed the built decks and judged the horizontal slide-push "ugly, not seamless, just sliding". The implementation now uses a crossfade instead: outgoing slide fades opacity 1 to 0 over 180ms with scale 1.00 to 0.985, incoming fades 0 to 1 over ~280ms with scale 0.99 to 1.00, children stagger fade-up 10px at 40ms intervals over 240ms, total ~320ms. No `translate3d` or `translateX` anywhere in the transition path. The single-flight lock, target-index coalescing, safety timer, fragment stepping, hash sync, shortcut HUD, overview mode, and reduced-motion cut are unchanged and still follow this document. This note supersedes the push model; the rest of the document (macro/micro separation, hit-test suppression, race protection) still applies. Status is deliberately left as Proposed.
+
 --------------------------------------------------------------------------------
 
 ## Overview

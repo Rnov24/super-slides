@@ -1,0 +1,218 @@
+<!--
+  COMPONENT: flow-sequence.html
+  Research Pattern: L13-L17 Linear Flow / Process Sequence (FineSlides / aliang-shuzhi)
+  Slide Job: Illustrates an end-to-end sequential operational workflow across four discrete execution stages.
+  Slots:
+    - kicker: Pipeline context (e.g. "EXECUTION PIPELINE")
+    - headline: Workflow outcome headline (h2, 50px-56px)
+    - step-01: Ingestion phase with index number, title, and micro-copy
+    - step-02: Validation phase with index number, title, and micro-copy
+    - step-03: Correlation phase with index number, title, and micro-copy
+    - step-04: Dispatch phase with index number, title, and micro-copy
+    - pipeline-guarantee: Concluding SLA or latency guarantee banner
+  Variants documented in header:
+    - 3-step high-level architecture
+    - 5-phase deployment milestone roadmap
+  What to avoid:
+    - Never omit step numbers or directional flow indicators.
+    - Never write long paragraph blocks inside step cards.
+    - Never allow step cards to collapse into uneven heights.
+  Distribution constraints satisfied:
+    - Content span >= 65% of 1080px canvas height.
+    - Horizontal four-stage sequence with continuous progression.
+    - Zero ink overflow outside 1920x1080 stage boundaries.
+  Note: Replace illustrative sample copy per the narrative beat sheet.
+-->
+
+<section class="slide" data-layout="flow-sequence" tabindex="-1">
+  <div class="flow-sequence-layout">
+    <div class="flow-header">
+      <span class="kicker">EXECUTION PIPELINE</span>
+      <h2 class="flow-heading">End-to-End Orchestration from Signal Ingest to Autonomous Reroute</h2>
+    </div>
+    <div class="flow-track">
+      <!-- Step 01 -->
+      <div class="flow-step">
+        <div class="step-num-row">
+          <span class="step-num">01</span>
+          <span class="step-tag">INGEST</span>
+        </div>
+        <h3 class="step-title">Carrier Feeds</h3>
+        <p class="step-desc">Raw GPS telemetry streams directly from fleet telematics.</p>
+        <div class="step-connector">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <!-- Step 02 -->
+      <div class="flow-step">
+        <div class="step-num-row">
+          <span class="step-num">02</span>
+          <span class="step-tag">VALIDATE</span>
+        </div>
+        <h3 class="step-title">Schema Filter</h3>
+        <p class="step-desc">Zero-copy verification isolates corrupted transit records.</p>
+        <div class="step-connector">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <!-- Step 03 -->
+      <div class="flow-step highlight">
+        <div class="step-num-row">
+          <span class="step-num highlight">03</span>
+          <span class="step-tag highlight">CORRELATE</span>
+        </div>
+        <h3 class="step-title">Event Engine</h3>
+        <p class="step-desc">Continuous joins detect route deviations within milliseconds.</p>
+        <div class="step-connector">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <!-- Step 04 -->
+      <div class="flow-step">
+        <div class="step-num-row">
+          <span class="step-num">04</span>
+          <span class="step-tag">EXECUTE</span>
+        </div>
+        <h3 class="step-title">Auto Dispatch</h3>
+        <p class="step-desc">Corrective routing dispatches immediately to driver navigation.</p>
+      </div>
+    </div>
+    <div class="flow-guarantee-banner">
+      <span class="guarantee-tag">PIPELINE GUARANTEE</span>
+      <span class="guarantee-statement">End-to-end execution completes within thirty seconds.</span>
+    </div>
+  </div>
+  <div class="deck-footer">
+    <span>Execution Pipeline</span>
+    <span>Illustrative concept. All figures illustrative.</span>
+  </div>
+</section>
+
+<style>
+  .flow-sequence-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    color: var(--text);
+  }
+  .flow-header {
+    display: flex;
+    flex-direction: column;
+  }
+  .flow-heading {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-top: 14px;
+    max-width: 1550px;
+  }
+  .flow-track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .flow-step {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 12px);
+    padding: 64px 40px;
+    position: relative;
+  }
+  .flow-step.highlight {
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+  .step-num-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 40px;
+  }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 160px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text-muted);
+    opacity: 0.5;
+  }
+  .step-num.highlight {
+    color: var(--accent);
+    opacity: 1;
+  }
+  .step-tag {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+  .step-tag.highlight {
+    color: var(--accent);
+  }
+  .step-title {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .step-desc {
+    font-family: var(--font-primary);
+    font-size: 28px;
+    line-height: 1.5;
+    color: var(--text);
+    flex: 1;
+  }
+  .step-connector {
+    position: absolute;
+    top: 50%;
+    right: -17px;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    z-index: 2;
+  }
+  .flow-guarantee-banner {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 22px 28px;
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+  }
+  .guarantee-tag {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .guarantee-statement {
+    font-family: var(--font-primary);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+  }
+</style>

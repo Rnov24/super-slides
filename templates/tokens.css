@@ -1,52 +1,58 @@
 /*
- * super-slides — Token Bundles
+ * super-slides: Token Bundles
  * Three theme presets. Copy one block into <style> in slides.html.
  * Do NOT @import this file: generated decks must stay a single HTML file.
  * Tokens: --bg, --surface, --surface-border, --text, --text-muted, --accent, --accent-alt
  */
 
 /* ─────────────────────────────────────────────
-   THEME 1 — Dark Mode (Modern Terminal Dark)
-   Mood: high-velocity, developer-native, telemetry-rich
-   Typography: Modern Tech Grotesque or Engineering Terminal
+   THEME 1: Dark Mode (Bold Signal)
+   Mood: high-velocity, bold, modern, confident
+   Typography: Archivo Black display, Space Grotesk body
+   Focal accent: Orange (#FF5722)
 ───────────────────────────────────────────── */
 :root[data-theme="dark"],
 .theme-dark {
   --bg:             #0a0d12;
-  --surface:        #121820;
+  --bg-gradient:    radial-gradient(circle at 75% 25%, #2a2c35 0%, #13141a 50%, #0a0d12 100%);
+  --surface:        #121822;
   --surface-border: #222d3d;
-  --text:           #e6edf3;
+  --text:           #f0f6fc;
   --text-muted:     #8b949e;
-  --accent:         #38bdf8;
-  --accent-alt:     #34d399;
+  --accent:         #FF5722;
+  --accent-alt:     #38bdf8;
 
-  --font-primary: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-code:    "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+  --font-display:   'Archivo Black', sans-serif;
+  --font-primary:   'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-code:      "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
 }
 
 /* ─────────────────────────────────────────────
-   THEME 2 — Light Editorial (Executive Editorial)
-   Mood: authoritative, literary, thoughtful
-   Typography: Charter serif (Executive Editorial stack)
+   THEME 2: Light Editorial (Elevated Notebook / Editorial)
+   Mood: authoritative, literary, thoughtful, tactile
+   Typography: Sora 700 display, DM Sans body
+   Focal accent: Terracotta crimson (#b33927)
 ───────────────────────────────────────────── */
 :root[data-theme="light"],
 .theme-light {
   --bg:             #f8f6f1;
+  --bg-gradient:    radial-gradient(ellipse at 50% 0%, #faf8f3 0%, #f1eee4 100%);
   --surface:        #ffffff;
   --surface-border: #e6e2d9;
   --text:           #1a1a1a;
   --text-muted:     #5a554e;
-  --accent:         #a33b20;
+  --accent:         #b33927;
   --accent-alt:     #2b5c54;
 
-  --font-primary: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
-  --font-code:    "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+  --font-display:   'Sora', system-ui, -apple-system, sans-serif;
+  --font-primary:   'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-code:      "JetBrains Mono", "Cascadia Code", Consolas, monospace;
 }
 
 /* ─────────────────────────────────────────────
-   THEME 3 — High-Contrast Engineering Terminal
+   THEME 3: High-Contrast Engineering Terminal
    Mood: precision tooling, infrastructure, zero-noise
-   Typography: Engineering Terminal (monospace) exclusively
+   Typography: Monospace stack exclusively
    Contrast: all pairings verified >= 4.5:1 WCAG AA
 ───────────────────────────────────────────── */
 :root[data-theme="hc-terminal"],
@@ -59,6 +65,7 @@
   --accent:         #58a6ff;
   --accent-alt:     #3fb950;
 
-  --font-primary: "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
-  --font-code:    "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+  --font-display:   "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+  --font-primary:   "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+  --font-code:      "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
 }

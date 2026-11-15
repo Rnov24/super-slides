@@ -1,0 +1,159 @@
+/*
+ * Micro-Motion Patterns (Opt-In In-Slide Transitions)
+ * Adapted from html-deck-builder research catalog.
+ *
+ * Rules and Constraints:
+ * 1. Maximum ONE micro-motion pattern per slide.
+ * 2. Never use micro-motion on pole slides (hero-claim, quote, or major title slides).
+ * 3. All patterns must provide a strict @media (prefers-reduced-motion: reduce) fallback.
+ * 4. Zero translate3d and zero translateX. Use vertical translateY or opacity only.
+ */
+
+/* ── Pattern A: Staggered Fade-Up Entrance ──
+ * Usage: Multi-element cards, step tracks, and comparison columns.
+ * Forbidden: Hero pole slides or single-takeaway summary slides.
+ */
+:root {
+  --micro-rise-dist: 10px;
+  --micro-rise-duration: 350ms;
+  --micro-stagger-base: 40ms;
+}
+
+.micro-stagger-group > * {
+  opacity: 0;
+  transform: translateY(var(--micro-rise-dist));
+  transition: opacity var(--micro-rise-duration) ease-out,
+              transform var(--micro-rise-duration) cubic-bezier(0.22, 0.68, 0.18, 1);
+}
+
+.slide.slide-current .micro-stagger-group > *:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(1 * var(--micro-stagger-base));
+}
+
+.slide.slide-current .micro-stagger-group > *:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(2 * var(--micro-stagger-base));
+}
+
+.slide.slide-current .micro-stagger-group > *:nth-child(3) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(3 * var(--micro-stagger-base));
+}
+
+.slide.slide-current .micro-stagger-group > *:nth-child(4) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(4 * var(--micro-stagger-base));
+}
+
+/* ── Pattern B: Vertical Telemetry Ticker ──
+ * Usage: Live alert bars, SLA guarantees, or operational status feeds.
+ * Forbidden: Never place on narrative intro slides or strategic summary slides.
+ */
+.micro-ticker {
+  height: 32px;
+  overflow: hidden;
+  position: relative;
+}
+
+.micro-ticker-track {
+  display: flex;
+  flex-direction: column;
+  animation: ticker-slide-up 9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.micro-ticker-item {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+@keyframes ticker-slide-up {
+  0%, 28%   { transform: translateY(0px); }
+  33%, 61%  { transform: translateY(-32px); }
+  66%, 95%  { transform: translateY(-64px); }
+  100%      { transform: translateY(0px); }
+}
+
+/* ── Pattern C: Animated SVG Travelling Dots ──
+ * Usage: Architecture pipelines, ingestion workflows, data connectors.
+ * Forbidden: Static financial tables or headline claims.
+ */
+.micro-connector-flow {
+  stroke-dasharray: 6 6;
+  animation: connector-flow 1.5s linear infinite;
+}
+
+@keyframes connector-flow {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.micro-pulse-beacon {
+  transform-origin: center;
+  animation: beacon-pulse 2s ease-in-out infinite;
+}
+
+@keyframes beacon-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+/* ── Pattern D: Horizontal Marquee Ribbon ──
+ * Usage: Partner logos, client validation badges, continuous audit ticker.
+ * Forbidden: Never place on core thesis slides or high-density charts.
+ */
+.micro-marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.micro-marquee-inner {
+  display: inline-flex;
+  gap: 48px;
+  animation: marquee-scroll 24s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  from {
+    margin-left: 0%;
+  }
+  to {
+    margin-left: -50%;
+  }
+}
+
+/* ── Reduced Motion Accessibility Overrides ── */
+@media (prefers-reduced-motion: reduce) {
+  .micro-stagger-group > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .micro-ticker-track,
+  .micro-connector-flow,
+  .micro-pulse-beacon,
+  .micro-marquee-inner {
+    animation: none !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}

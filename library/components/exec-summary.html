@@ -1,0 +1,137 @@
+<!--
+  COMPONENT: exec-summary.html
+  Research Pattern: L06 Executive Summary (qiaomu-ppt / Sequoia Pitch)
+  Slide Job: Concise executive briefing across Situation, Finding, and Action.
+  Slots:
+    - kicker: Briefing context (e.g. "EXECUTIVE SUMMARY")
+    - headline: Decisive summary thesis (h2, 52px-58px)
+    - rows: 3 structured rows (Situation, Finding, Action) with category tags
+    - decision-footer: Explicit decision request or milestone outcome
+  Variants documented in header:
+    - Problem / Analysis / Recommendation
+    - Opportunity / Threat / Response
+  What to avoid:
+    - Never write paragraph blocks exceeding 3 lines.
+    - Never use bullet walls instead of categorized rows.
+    - Never omit the actionable decision outcome.
+  Distribution constraints satisfied:
+    - Content span >= 65% of 1080px canvas height.
+    - Continuous vertical flow with even spacing between rows.
+    - Zero ink overflow outside 1920x1080 stage boundaries.
+  Note: Replace illustrative sample copy per the narrative beat sheet.
+-->
+
+<section class="slide" data-layout="exec-summary" tabindex="-1">
+  <div class="exec-summary-layout">
+    <div class="exec-summary-header">
+      <span class="kicker">EXECUTIVE SUMMARY</span>
+      <h2 class="exec-summary-heading">Operational Latency Threatens Fleet Service Level Agreements</h2>
+    </div>
+    <div class="exec-summary-rows">
+      <div class="exec-row">
+        <div class="exec-row-tag">SITUATION</div>
+        <p class="exec-row-body">Spreadsheets delay routing adjustments four hours daily.</p>
+      </div>
+      <div class="exec-row highlight">
+        <div class="exec-row-tag highlight">FINDING</div>
+        <p class="exec-row-body">Stream detection flags carrier exceptions in thirty seconds.</p>
+      </div>
+      <div class="exec-row">
+        <div class="exec-row-tag">ACTION</div>
+        <p class="exec-row-body">Deploy pilot validation across five regional corridors.</p>
+      </div>
+    </div>
+    <div class="exec-summary-decision">
+      <span class="decision-label">RECOMMENDED DECISION</span>
+      <span class="decision-text">Approve thirty-day pilot deployment for transit corridors.</span>
+    </div>
+  </div>
+  <div class="deck-footer">
+    <span>Executive Briefing</span>
+    <span>Illustrative concept. All figures illustrative.</span>
+  </div>
+</section>
+
+<style>
+  .exec-summary-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    color: var(--text);
+  }
+  .exec-summary-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 36px;
+  }
+  .exec-summary-heading {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-top: 14px;
+    max-width: 1550px;
+  }
+  .exec-summary-rows {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--surface-border);
+  }
+  .exec-row {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 48px;
+    align-items: baseline;
+    padding: 44px 0;
+    border-bottom: 1px solid var(--surface-border);
+  }
+  .exec-row.highlight {
+    background: var(--accent-soft);
+    padding-left: 24px;
+    padding-right: 24px;
+    border-radius: var(--radius-md, 8px);
+  }
+  .exec-row-tag {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+  .exec-row-tag.highlight {
+    color: var(--accent);
+  }
+  .exec-row-body {
+    font-family: var(--font-primary);
+    font-size: 28px;
+    line-height: 1.45;
+    color: var(--text);
+  }
+  .exec-summary-decision {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 24px 28px;
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+  }
+  .decision-label {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .decision-text {
+    font-family: var(--font-primary);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text);
+  }
+</style>

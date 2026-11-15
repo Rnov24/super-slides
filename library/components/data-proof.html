@@ -1,0 +1,236 @@
+<!--
+  COMPONENT: data-proof.html
+  Research Pattern: L19/L20 Full Data Chart Proof (FineSlides / aliang-shuzhi / DocSend)
+  Slide Job: Delivers unassailable quantitative proof through a dominant SVG data visualization anchored by an executive metric.
+  Slots:
+    - kicker: Quantitative category (e.g. "PERFORMANCE BENCHMARK")
+    - headline: Empirical proof conclusion (h2, 50px-56px)
+    - metric-chip: Core quantitative claim (e.g. "99.4% Under 10ms")
+    - chart-canvas: Inline SVG chart with labeled axes, grid lines, and comparative curves
+    - methodology-banner: Data provenance and measurement methodology note
+  Variants documented in header:
+    - Cumulative Distribution Function (CDF) curve
+    - Multi-series throughput scaling bar chart
+  What to avoid:
+    - Never display decorative unlabelled curves without calibrated scales or units.
+    - Never omit the comparison baseline curve.
+    - Never use external chart libraries; use self-contained inline SVG.
+  Distribution constraints satisfied:
+    - Content span >= 65% of 1080px canvas height.
+    - Continuous vertical flow with expansive data visualization.
+    - Zero ink overflow outside 1920x1080 stage boundaries.
+  Note: Replace illustrative sample copy per the narrative beat sheet.
+-->
+
+<section class="slide" data-layout="data-proof" tabindex="-1">
+  <div class="data-proof-layout">
+    <div class="data-proof-header">
+      <div class="header-text-col">
+        <span class="kicker">PERFORMANCE BENCHMARK</span>
+        <h2 class="data-proof-heading">Sub-Ten-Millisecond Latency Maintained Across Peak Ingestion Loads</h2>
+      </div>
+      <div class="header-metric-badge">
+        <span class="metric-val">99.4%</span>
+        <span class="metric-lbl">Under 10ms</span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-legend">
+        <div class="legend-item">
+          <span class="legend-dot status-quo"></span>
+          <span class="legend-text">Status Quo Batch Pipeline</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot streaming"></span>
+          <span class="legend-text">Northwind Streaming Core</span>
+        </div>
+      </div>
+
+      <div class="svg-wrapper">
+        <svg viewBox="0 0 1520 340" class="benchmark-svg" fill="none" preserveAspectRatio="none">
+          <!-- Horizontal Grid Lines -->
+          <line x1="80" y1="40" x2="1480" y2="40" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="4 4" />
+          <line x1="80" y1="120" x2="1480" y2="120" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="4 4" />
+          <line x1="80" y1="200" x2="1480" y2="200" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="4 4" />
+          <line x1="80" y1="280" x2="1480" y2="280" stroke="currentColor" stroke-opacity="0.2" />
+
+          <!-- Y-Axis Labels -->
+          <text x="65" y="45" class="axis-label" text-anchor="end">300ms</text>
+          <text x="65" y="125" class="axis-label" text-anchor="end">200ms</text>
+          <text x="65" y="205" class="axis-label" text-anchor="end">100ms</text>
+          <text x="65" y="285" class="axis-label" text-anchor="end">0ms</text>
+
+          <!-- X-Axis Labels -->
+          <text x="120" y="315" class="axis-label" text-anchor="middle">10k msg/s</text>
+          <text x="450" y="315" class="axis-label" text-anchor="middle">25k msg/s</text>
+          <text x="780" y="315" class="axis-label" text-anchor="middle">50k msg/s</text>
+          <text x="1110" y="315" class="axis-label" text-anchor="middle">75k msg/s</text>
+          <text x="1440" y="315" class="axis-label" text-anchor="middle">100k msg/s</text>
+
+          <!-- Status Quo Curve (Degrades sharply under load) -->
+          <path d="M120 220 C350 215, 600 170, 780 130 C950 90, 1200 60, 1440 50" 
+                stroke="currentColor" stroke-opacity="0.35" stroke-width="3" stroke-dasharray="6 6" />
+
+          <!-- Northwind Streaming Core (Flat sub-10ms line) -->
+          <path d="M120 274 C350 273, 600 272, 780 271 C950 270, 1200 268, 1440 266" 
+                stroke="var(--accent)" stroke-width="4" />
+          <circle cx="1440" cy="266" r="6" fill="var(--accent)" />
+
+          <!-- Callout Marker on Northwind Line -->
+          <g transform="translate(1330, 215)">
+            <rect width="120" height="34" rx="4" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5" />
+            <text x="60" y="22" class="callout-text" text-anchor="middle">p99: 8.2ms</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="data-methodology-banner">
+      <span class="methodology-tag">BENCHMARK METHODOLOGY</span>
+      <span class="methodology-statement">Continuous benchmark measuring telemetry ingestion through route confirmation.</span>
+    </div>
+  </div>
+  <div class="deck-footer">
+    <span>Performance Benchmark</span>
+    <span>Illustrative concept. All figures illustrative.</span>
+  </div>
+</section>
+
+<style>
+  .data-proof-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    color: var(--text);
+  }
+  .data-proof-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 28px;
+  }
+  .header-text-col {
+    display: flex;
+    flex-direction: column;
+    max-width: 1250px;
+  }
+  .data-proof-heading {
+    font-family: var(--font-display);
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-top: 14px;
+  }
+  .header-metric-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-right: 4px solid var(--accent);
+    padding: 16px 24px;
+    border-radius: var(--radius-md, 8px) 0 0 var(--radius-md, 8px);
+    white-space: nowrap;
+  }
+  .metric-val {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .metric-lbl {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+  .chart-container {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 12px);
+    padding: 28px 36px;
+    flex: 1;
+  }
+  .chart-legend {
+    display: flex;
+    justify-content: flex-end;
+    gap: 32px;
+    margin-bottom: 12px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .legend-dot.status-quo {
+    background: var(--text-muted);
+    opacity: 0.5;
+  }
+  .legend-dot.streaming {
+    background: var(--accent);
+  }
+  .legend-text {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .svg-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  .benchmark-svg {
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+  }
+  .axis-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    fill: var(--text-muted);
+  }
+  .callout-text {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--accent);
+  }
+  .data-methodology-banner {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 20px 28px;
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+  }
+  .methodology-tag {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .methodology-statement {
+    font-family: var(--font-primary);
+    font-size: 21px;
+    font-weight: 500;
+    color: var(--text);
+  }
+</style>

@@ -1,0 +1,283 @@
+<!--
+  COMPONENT: sidebar-proof.html
+  Research Pattern: L07 Asymmetrical Sidebar + Main Proof (FineSlides / aliang-shuzhi)
+  Slide Job: Anchors narrative takeaway on a narrow sidebar paired with an expansive technical proof canvas.
+  Slots:
+    - sidebar-kicker: Context kicker (e.g. "ARCHITECTURE EXHIBIT")
+    - sidebar-headline: Core narrative conclusion (h2, 46px-52px)
+    - sidebar-metric: Anchoring quantitative proof chip or stat
+    - sidebar-note: High-density takeaway paragraph
+    - proof-frame: Dominant schematic container (diagram, flow, or system topology)
+    - proof-footer: Technical spec note or provenance verification
+  Variants documented in header:
+    - Metric Rail + Dense Data Table
+    - Thesis Rail + Interactive Interface Preview
+  What to avoid:
+    - Never divide canvas into equal 50/50 columns (must maintain asymmetrical 1:2 or 30/70 balance).
+    - Never fill the sidebar rail with multiple long paragraphs.
+    - Never omit the visual or topological proof from the main canvas.
+  Distribution constraints satisfied:
+    - Content span >= 65% of 1080px canvas height.
+    - Two-column asymmetrical layout with continuous vertical flow.
+    - Zero ink overflow outside 1920x1080 stage boundaries.
+  Note: Replace illustrative sample copy per the narrative beat sheet.
+-->
+
+<section class="slide" data-layout="sidebar-proof" tabindex="-1">
+  <div class="sidebar-proof-layout">
+    <div class="proof-sidebar">
+      <span class="kicker">ARCHITECTURE EXHIBIT</span>
+      <h2 class="sidebar-heading">Streaming Core Decouples Ingestion from Query Engines</h2>
+      <div class="sidebar-stat-card">
+        <div class="sidebar-stat-val">10x</div>
+        <div class="sidebar-stat-lbl">Throughput Multiplier</div>
+      </div>
+      <p class="sidebar-takeaway">Isolated consumer groups eliminate lock contention across operational databases during peak transit hours.</p>
+      <div class="sidebar-spec-chip">Partition Isolation: 100% Dedicated</div>
+    </div>
+    <div class="proof-main">
+      <div class="proof-canvas-card">
+        <div class="proof-canvas-header">
+          <span class="proof-tag">DISTRIBUTED PIPELINE TOPOLOGY</span>
+          <span class="proof-status">Deterministic Replay</span>
+        </div>
+        <div class="proof-schematic">
+          <div class="schematic-col">
+            <div class="schematic-node ingest">
+              <span class="node-title">Carrier Feeds</span>
+              <span class="node-sub">Telemetry &amp; GPS</span>
+              <span class="node-metric">50k msg/sec</span>
+            </div>
+            <div class="schematic-node ingest">
+              <span class="node-title">Warehouse Logs</span>
+              <span class="node-sub">Dock EDI Events</span>
+              <span class="node-metric">Zero-loss buffer</span>
+            </div>
+          </div>
+          <div class="schematic-arrow">
+            <svg width="40" height="24" viewBox="0 0 40 24" fill="none">
+              <path d="M0 12H36M36 12L26 2M36 12L26 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="schematic-col center">
+            <div class="schematic-node buffer">
+              <span class="node-badge">IMMUTABLE LOG</span>
+              <span class="node-title">Partitioned Journal</span>
+              <span class="node-sub">Zero-copy persistence</span>
+              <span class="node-metric accent">1.2M events/sec</span>
+            </div>
+          </div>
+          <div class="schematic-arrow">
+            <svg width="40" height="24" viewBox="0 0 40 24" fill="none">
+              <path d="M0 12H36M36 12L26 2M36 12L26 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="schematic-col">
+            <div class="schematic-node query">
+              <span class="node-title">Exception View</span>
+              <span class="node-sub">Sub-second digests</span>
+              <span class="node-metric">&lt; 10ms resolution</span>
+            </div>
+            <div class="schematic-node query">
+              <span class="node-title">Route Optimizer</span>
+              <span class="node-sub">Automated reroutes</span>
+              <span class="node-metric">Autonomous dispatch</span>
+            </div>
+          </div>
+        </div>
+        <div class="proof-canvas-footer">
+          <span class="canvas-rule-tag">OPERATIONAL GUARANTEE</span>
+          <span class="canvas-rule-text">Sub-millisecond write acknowledgment with deterministic replay guarantees.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer">
+    <span>Architecture Exhibit</span>
+    <span>Illustrative concept. All figures illustrative.</span>
+  </div>
+</section>
+
+<style>
+  .sidebar-proof-layout {
+    display: grid;
+    grid-template-columns: 460px 1fr;
+    gap: 56px;
+    height: 100%;
+    color: var(--text);
+  }
+  .proof-sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .sidebar-heading {
+    font-family: var(--font-display);
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-top: 14px;
+    margin-bottom: 36px;
+  }
+  .sidebar-stat-card {
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid var(--accent);
+    padding: 32px 28px;
+    border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+    margin-bottom: 36px;
+  }
+  .sidebar-stat-val {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .sidebar-stat-lbl {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+  .sidebar-takeaway {
+    font-family: var(--font-primary);
+    font-size: 24px;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 36px;
+  }
+  .sidebar-spec-chip {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    padding-top: 48px;
+    border-top: 1px solid var(--surface-border);
+  }
+  .proof-main {
+    display: flex;
+    flex-direction: column;
+  }
+  .proof-canvas-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 12px);
+    padding: 44px 44px;
+  }
+  .proof-canvas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--surface-border);
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+  }
+  .proof-tag {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .proof-status {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+  .proof-schematic {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 16px 0;
+  }
+  .schematic-col {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    flex: 1;
+  }
+  .schematic-col.center {
+    flex: 1.2;
+    justify-content: center;
+  }
+  .schematic-node {
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 8px);
+    padding: 36px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .schematic-node.buffer {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    padding: 48px 32px;
+    gap: 10px;
+  }
+  .node-badge {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .node-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .node-sub {
+    font-family: var(--font-primary);
+    font-size: 17px;
+    color: var(--text-muted);
+  }
+  .node-metric {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .node-metric.accent {
+    color: var(--accent);
+  }
+  .schematic-arrow {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .proof-canvas-footer {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    border-top: 1px solid var(--surface-border);
+    padding-top: 28px;
+    margin-top: 36px;
+  }
+  .canvas-rule-tag {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .canvas-rule-text {
+    font-family: var(--font-primary);
+    font-size: 20px;
+    color: var(--text-muted);
+  }
+</style>

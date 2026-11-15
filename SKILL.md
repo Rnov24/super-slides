@@ -40,18 +40,20 @@ Follow this strict 4-phase state machine. Do not skip phases or advance through 
 6. Assign layout blueprints (`Layout-Hero`, `Layout-Split`, `Layout-Bento`, `Layout-Diagram`, `Layout-Quote`, `Layout-Comparison`) to slides.
 7. **GATE 2 (Mandatory Human Sign-Off)**: Output the selected token block and layout plan. Stop and await approval before generating presentation code.
 
-### Phase 3: Component Assembly & Layout Construction
+### Phase 3: Modular Library Assembly & Layout Construction
 
-1. Read `references/03-components-and-layouts.md` and `references/04-svg-diagram-primitives.md`.
-2. Base the output on `templates/deck-skeleton.html` and theme values from `templates/tokens.css`.
-3. Assemble slides within `#deck-viewport` and `.deck-canvas` using 16:9 matrix scaling (1920x1080 base).
-4. Implement interactive components and layouts:
-   - Micro-interaction markup: bento card hover lift, accessible tabbed panels (`role="tab"`, `aria-selected`).
-   - Add `data-prevent-slide-swipe` to any horizontally scrollable container (code blocks, data tables).
-   - Add `data-transition="cut"` to slides requiring instant cuts without horizontal push animation.
-   - Embed vector diagrams using native inline SVGs on the standardized 1200x675 canvas with the 12-column grid (`padding = 56px`, `gap = 16px`, `columnWidth = 76px`, `x = 56 + col * 92`).
-   - Use stepped reveals via `.fragment` nodes where progressive build adds clarity.
-5. Do not introduce floating docks, control bars, or external script libraries.
+1. Read `library/README.md` and `references/06-modular-library.md`.
+2. Select one theme for the entire deck from `library/themes/` (`bold-signal`, `editorial-cream`, `ink-paper`, `apple-clean`).
+3. Select one motion timing preset for the deck from `library/animations/crossfade.css` (`calm` or `brisk`).
+4. For each narrative beat, select a locked component from `library/components/` matching the slide job in the selection matrix. Never invent unverified slide layouts.
+5. Base output on `templates/deck-skeleton.html`:
+   - Inject the selected theme token block into `:root`.
+   - Apply the motion preset to `#deck-viewport` (`data-motion="calm"` or `"brisk"`).
+   - Mount each selected component's `<section class="slide" data-layout="...">` and `<style>` block into `.deck-canvas`.
+6. Replace illustrative sample copy with narrative beat sheet text. Enforce text economy (<= 40 body words per slide).
+7. Opt-in micro-motion (`library/animations/micro-motion.css`): at most one pattern per slide; strictly forbidden on pole slides.
+8. Embed vector diagrams using native inline SVGs following editorial diagram discipline (1px hairlines, single accent, no shadows).
+9. Verify all assembled slides pass P0-P2 requirements (R-11 content span >= 65%, max internal gap <= 150px, zero ink overflow).
 
 ### Phase 4: Anti-Slop Deck Audit & Quality Filter
 

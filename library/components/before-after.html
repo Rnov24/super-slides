@@ -1,0 +1,186 @@
+<!--
+  COMPONENT: before-after.html
+  Research Pattern: L10 Before / Lever / After Transformation (qiaomu-ppt / Sequoia Pitch)
+  Slide Job: Demonstrates operational transformation from bottleneck through intervention lever to transformed state.
+  Slots:
+    - kicker: Transformation context (e.g. "OPERATIONAL TRANSFORMATION")
+    - headline: Strategic outcome headline (h2, 50px-56px)
+    - col-before: Baseline state with metric and failure symptom
+    - col-lever: Active intervention mechanism (accented catalyst)
+    - col-after: Transformed state with outcome metric
+    - delta-summary: Quantified delta and ROI statement at bottom
+  Variants documented in header:
+    - Manual vs Automated Cost Curve
+    - Customer Journey Friction Elimination
+  What to avoid:
+    - Never skip the middle "lever" column; transformation requires naming the causal mechanism.
+    - Never use vague metrics without units or comparative baseline.
+    - Never let the before and after states look visually identical.
+  Distribution constraints satisfied:
+    - Content span >= 65% of 1080px canvas height.
+    - Three-stage horizontal progression with clear causal continuity.
+    - Zero ink overflow outside 1920x1080 stage boundaries.
+  Note: Replace illustrative sample copy per the narrative beat sheet.
+-->
+
+<section class="slide" data-layout="before-after" tabindex="-1">
+  <div class="before-after-layout">
+    <div class="before-after-header">
+      <span class="kicker">OPERATIONAL TRANSFORMATION</span>
+      <h2 class="before-after-heading">Transitioning from Spreadsheet Lags to Autonomous Decision Loops</h2>
+    </div>
+    <div class="before-after-stages">
+      <div class="stage-card before">
+        <div class="stage-header">
+          <span class="stage-tag">BASELINE STATE</span>
+          <span class="stage-metric">4.2 hrs</span>
+        </div>
+        <h3 class="stage-title">Manual Lags</h3>
+        <p class="stage-desc">Daily spreadsheet reconciliation bottleneck across regional hubs.</p>
+      </div>
+      <div class="stage-card lever">
+        <div class="stage-header">
+          <span class="stage-tag highlight">INTERVENTION LEVER</span>
+          <span class="stage-badge">STREAM CORE</span>
+        </div>
+        <h3 class="stage-title highlight">Event Engine</h3>
+        <p class="stage-desc">Automated stream filtering correlates carrier feeds instantaneously.</p>
+      </div>
+      <div class="stage-card after">
+        <div class="stage-header">
+          <span class="stage-tag">TRANSFORMED STATE</span>
+          <span class="stage-metric accent">&lt; 30 sec</span>
+        </div>
+        <h3 class="stage-title">Instant Action</h3>
+        <p class="stage-desc">Real-time dispatch alerts confirm route adjustments automatically.</p>
+      </div>
+    </div>
+    <div class="transformation-delta-banner">
+      <span class="delta-tag">QUANTIFIED DELTA</span>
+      <span class="delta-statement">Eliminates ninety percent of operational latency across active networks.</span>
+    </div>
+  </div>
+  <div class="deck-footer">
+    <span>Operational Transformation</span>
+    <span>Illustrative concept. All figures illustrative.</span>
+  </div>
+</section>
+
+<style>
+  .before-after-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    color: var(--text);
+  }
+  .before-after-header {
+    display: flex;
+    flex-direction: column;
+  }
+  .before-after-heading {
+    font-family: var(--font-display);
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-top: 14px;
+    max-width: 1550px;
+  }
+  .before-after-stages {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 36px;
+  }
+  .stage-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 12px);
+    padding: 72px 44px;
+    position: relative;
+  }
+  .stage-card.lever {
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+  .stage-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    border-bottom: 1px solid var(--surface-border);
+    padding-bottom: 44px;
+    margin-bottom: 48px;
+  }
+  .stage-tag {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+  .stage-tag.highlight {
+    color: var(--accent);
+  }
+  .stage-metric {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+  .stage-metric.accent {
+    color: var(--accent);
+  }
+  .stage-badge {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 4px 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 4px;
+  }
+  .stage-title {
+    font-family: var(--font-display);
+    font-size: 54px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .stage-title.highlight {
+    color: var(--text);
+  }
+  .stage-desc {
+    font-family: var(--font-primary);
+    font-size: 34px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .transformation-delta-banner {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 22px 28px;
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+  }
+  .delta-tag {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .delta-statement {
+    font-family: var(--font-primary);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+  }
+</style>

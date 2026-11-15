@@ -100,12 +100,75 @@ for (const { name, content } of allFiles) {
   const printBlock = printIdx === -1 ? '' : content.slice(printIdx);
   check('print .slide rule resets off-canvas hiding',
     /\.slide\s*\{[^}]*page-break-after[^}]*transform:\s*none\s*!important[^}]*visibility:\s*visible\s*!important[^}]*content-visibility:\s*visible\s*!important[^}]*\}/.test(printBlock));
+
+  // 11. Embedded base64 @font-face present (zero external requests, distinctive typography)
+  const hasEmbeddedFont = /@font-face\b[\s\S]{0,500}?src:\s*url\(\s*["']?data:(font|application)\/(woff2|woff|x-font-woff|font-woff);base64,/i.test(content);
+  check('Embedded base64 @font-face present', hasEmbeddedFont);
+
+  // 12. No translate3d or translateX in crossfade transition code path.
+  // The crossfade engine uses opacity + scale only; no horizontal push.
+  // Comments referencing these values are allowed; actual CSS/JS usage is not.
+  const hasSlideTranslate = /translate3d\s*\(/.test(content) || /translateX\s*\(/.test(content);
+  check('No translate3d or translateX in crossfade transition code', !hasSlideTranslate);
+
+  // 13. Stage integrity (R-17): .deck-canvas must not shrink inside the flex
+  // #deck-viewport. Without flex-shrink: 0 the 1920px stage shrinks to the
+  // viewport width at any window narrower than 1920px and the deck renders
+  // squished with black bars on the sides.
+  const canvasBlock = content.match(/\.deck-canvas\s*\{[^}]*\}/);
+  check('.deck-canvas has flex-shrink: 0 (stage never shrinks)',
+    canvasBlock ? /flex-shrink\s*:\s*0/.test(canvasBlock[0]) : false);
+}
+
+// ── Library Scan ─────────────────────────────────────────────────────────────
+
+const libraryDir = join(root, 'library');
+let libFileCount = 0;
+if (existsSync(libraryDir)) {
+  function walkFiles(dir) {
+    let results = [];
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        results.push(...walkFiles(full));
+      } else if (entry.name.endsWith('.html') || entry.name.endsWith('.css')) {
+        results.push({ name: full.slice(root.length + 1), content: readFileSync(full, 'utf8') });
+      }
+    }
+    return results;
+  }
+
+  const libFiles = walkFiles(libraryDir);
+  libFileCount = libFiles.length;
+  for (const { name, content } of libFiles) {
+    console.log(`\nChecking: ${name}`);
+
+    // L-1: Zero external http(s) URLs
+    const hasExternalUrl = /https?:\/\//i.test(content);
+    check('Zero external http(s) URLs', !hasExternalUrl);
+
+    // L-2: Zero em-dashes
+    const hasEmDash = /[\u2014—]/.test(content);
+    check('Zero em-dashes', !hasEmDash);
+
+    // L-3: Zero translate3d or translateX
+    const hasTranslate = /translate(?:3d|X)\s*\(/i.test(content);
+    check('Zero translate3d or translateX', !hasTranslate);
+
+    // L-4: Zero data-notes or speaker-hud
+    const hasNotesOrHud = /data-notes/i.test(content) || /speaker-hud/i.test(content);
+    check('Zero data-notes or speaker-hud', !hasNotesOrHud);
+
+    // L-5: Zero Bodoni Moda references
+    const hasBodoni = /Bodoni/i.test(content);
+    check('Zero Bodoni Moda references', !hasBodoni);
+  }
 }
 
 // ── Summary ──────────────────────────────────────────────────────────────────
 
 console.log(`\n──────────────────────────────`);
-console.log(`Results: ${passed} passed, ${failed} failed across ${allFiles.length} file(s).`);
+console.log(`Results: ${passed} passed, ${failed} failed across ${allFiles.length + libFileCount} file(s).`);
 
 if (failed > 0) {
   console.error(`\nFAIL — ${failed} check(s) did not pass.`);

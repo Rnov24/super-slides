@@ -1,0 +1,79 @@
+/*
+ * Motion Model: Crossfade (Zero-Network Offline Compatible)
+ * Research Basis: CSS View Transitions API evaluated and rejected for offline
+ * file protocol compatibility. The presentation engine uses an asynchronous crossfade
+ * with scale settle and opacity.
+ *
+ * Locked Motion Parameters:
+ * - Default: --fade-out-ms: 180ms, --fade-in-ms: 280ms, --stagger-ms: 40ms,
+ *   --settle-scale-start: 0.985, --settle-scale-end: 1.00
+ * - Timing Presets: "calm" (~450ms total for formal/projector) and "brisk" (~240ms total for fast demo)
+ * - Strict Invariant: No translate3d, no translateX, no horizontal push.
+ */
+
+:root {
+  /* Default Crossfade Timing */
+  --fade-out-ms: 180ms;
+  --fade-in-ms: 280ms;
+  --stagger-ms: 40ms;
+  --settle-scale-start: 0.985;
+  --settle-scale-end: 1.00;
+  --ease-slide: cubic-bezier(0.22, 0.68, 0.18, 1);
+}
+
+/* Timing Preset: Calm (~450ms total, formal reviews and executive projectors) */
+.motion-calm,
+[data-motion="calm"] {
+  --fade-out-ms: 200ms;
+  --fade-in-ms: 450ms;
+  --stagger-ms: 60ms;
+  --settle-scale-start: 0.99;
+  --settle-scale-end: 1.00;
+}
+
+/* Timing Preset: Brisk (~240ms total, rapid walkthroughs and interactive demos) */
+.motion-brisk,
+[data-motion="brisk"] {
+  --fade-out-ms: 100ms;
+  --fade-in-ms: 240ms;
+  --stagger-ms: 25ms;
+  --settle-scale-start: 0.992;
+  --settle-scale-end: 1.00;
+}
+
+/* Slide Transition Engine Integration */
+.slide {
+  transition: opacity var(--fade-in-ms) var(--ease-slide),
+              transform var(--fade-in-ms) var(--ease-slide);
+}
+
+.slide:not(.slide-current) {
+  opacity: 0;
+  transform: scale(var(--settle-scale-start));
+  pointer-events: none;
+}
+
+.slide.slide-current {
+  opacity: 1;
+  transform: scale(var(--settle-scale-end));
+  pointer-events: auto;
+}
+
+/* Full Accessibility Fallback */
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  .motion-calm,
+  .motion-brisk,
+  [data-motion="calm"],
+  [data-motion="brisk"] {
+    --fade-out-ms: 0ms !important;
+    --fade-in-ms: 0ms !important;
+    --stagger-ms: 0ms !important;
+    --settle-scale-start: 1.00 !important;
+    --settle-scale-end: 1.00 !important;
+  }
+  .slide {
+    transition: none !important;
+    transform: none !important;
+  }
+}

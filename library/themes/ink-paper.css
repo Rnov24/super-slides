@@ -1,0 +1,70 @@
+/*
+ * Theme: Ink Paper (Kami-Inspired Classical Parchment & Deep Ink)
+ * Source: Research catalog (kami design system / cabird sage)
+ *
+ * NOTE: Themes define tokens ONLY. They must NOT contain @font-face rules.
+ * For production decks with custom web fonts, embed base64 woff2 data URIs
+ * in the deck HTML (e.g. Newsreader 700 or Source Serif 4 700).
+ * Default fallback stack: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif.
+ *
+ * Accent Budget:
+ * - Neutral warm parchment and paper canvas: 85% to 92%
+ * - Ink-blue accent (#1b365d): <= 5% of canvas area
+ * - Monochromatic discipline: No second contrasting accent color.
+ * - Rule: Maximum 2 strong ink-blue focal points per content slide.
+ *
+ * Avoid-List (What this theme must NEVER do):
+ * - Never introduce a second contrasting accent hue; maintain strict monochrome discipline.
+ * - Never use digital neon highlights or tech-gradient fills.
+ * - Never replace authoritative serif headlines with casual or geometric display fonts.
+ * - Never use pitch black #000000; deep ink-950 provides optimal paper contrast.
+ * - Never use rounded pill cards or modern bubbly border radii; use crisp 4px-8px corners.
+ */
+
+:root,
+.theme-ink-paper {
+  /* ── Tier 1: Primitives (Raw values, rarely edited) ── */
+  --primitive-parchment-50:  #faf9f5;
+  --primitive-parchment-100: #f5f4ed;
+  --primitive-parchment-200: #eae8dc;
+  --primitive-parchment-300: #dedad0;
+  --primitive-parchment-400: #cac4b5;
+  --primitive-white:         #ffffff;
+  --primitive-ink-950:       #121820;
+  --primitive-ink-900:       #1a202c;
+  --primitive-ink-700:       #4a5568;
+  --primitive-ink-blue-600:  #1b365d;
+  --primitive-ink-blue-soft: rgba(27, 54, 93, 0.10);
+
+  /* ── Tier 2: Semantic Tokens (Consumed by components) ── */
+  --bg:                      var(--primitive-parchment-100);
+  --bg-gradient:             radial-gradient(ellipse at 50% 10%, #faf9f5 0%, #f0ede1 100%);
+  --surface:                 var(--primitive-white);
+  --surface-border:          var(--primitive-parchment-300);
+  --surface-border-subtle:   var(--primitive-parchment-400);
+  --text:                    var(--primitive-ink-950);
+  --text-muted:              var(--primitive-ink-700);
+  --accent:                  var(--primitive-ink-blue-600);
+  --accent-soft:             var(--primitive-ink-blue-soft);
+  --accent-alt:              var(--primitive-ink-blue-600);
+  --accent-alt-soft:         var(--primitive-ink-blue-soft);
+
+  /* Typography tokens (Serif-led authoritative hierarchy) */
+  --font-display:            Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --font-primary:            system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono:               "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+  --font-code:               var(--font-mono);
+
+  /* Spacing and radius primitives */
+  --radius-sm:               2px;
+  --radius-md:               6px;
+  --radius-lg:               10px;
+}
+
+/* ── Tier 3: Component Token Derivations ──
+ * Components derive values from semantic tokens:
+ * - Structural hairlines: border-color: var(--surface-border);
+ * - Proof chips: border: 1px solid var(--accent); color: var(--accent);
+ * - Giant numerals: color: var(--accent); font-family: var(--font-display);
+ * - Accent usage: Strict ink-blue <= 5% coverage floor.
+ */

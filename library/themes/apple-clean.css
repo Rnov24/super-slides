@@ -1,0 +1,68 @@
+/*
+ * Theme: Apple Clean (Minimalist Technical Precision & Generous Space)
+ * Source: Research catalog (aliang-shuzhi-html-ppt / Apple keynote patterns)
+ *
+ * NOTE: Themes define tokens ONLY. They must NOT contain @font-face rules.
+ * Uses the system font stack (-apple-system, SF Pro Display / Text) exclusively,
+ * making this theme 100% zero-network by construction without embedding font files.
+ *
+ * Accent Budget:
+ * - Neutral white and soft gray surface: 85% to 92%
+ * - Apple system blue accent (#0A84FF): 5% to 8%
+ * - Near-black ink typography: High contrast, uncluttered
+ * - Rule: Maximum 2 strong blue accent focal points per content slide.
+ *
+ * Avoid-List (What this theme must NEVER do):
+ * - Never switch to dark background modes or saturated colored canvases.
+ * - Never use heavy borders (> 1px) or solid dark divider lines.
+ * - Never import external custom font files; strictly adhere to native system stacks.
+ * - Never use multi-colored badge tags or loud competing colored chips.
+ * - Never center body text or create decorative badge walls.
+ */
+
+:root,
+.theme-apple-clean {
+  /* ── Tier 1: Primitives (Raw values, rarely edited) ── */
+  --primitive-white:         #ffffff;
+  --primitive-gray-50:       #fbfbfd;
+  --primitive-gray-100:      #f5f5f7;
+  --primitive-gray-200:      #e5e5ea;
+  --primitive-gray-300:      #d2d2d7;
+  --primitive-gray-500:      #86868b;
+  --primitive-gray-900:      #1d1d1f;
+  --primitive-blue-500:      #0A84FF;
+  --primitive-blue-soft:     rgba(10, 132, 255, 0.10);
+  --primitive-blue-deep:     #0071e3;
+
+  /* ── Tier 2: Semantic Tokens (Consumed by components) ── */
+  --bg:                      var(--primitive-gray-50);
+  --bg-gradient:             linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+  --surface:                 var(--primitive-white);
+  --surface-border:          var(--primitive-gray-200);
+  --surface-border-subtle:   var(--primitive-gray-300);
+  --text:                    var(--primitive-gray-900);
+  --text-muted:              var(--primitive-gray-500);
+  --accent:                  var(--primitive-blue-500);
+  --accent-soft:             var(--primitive-blue-soft);
+  --accent-alt:              var(--primitive-blue-deep);
+  --accent-alt-soft:         rgba(0, 113, 227, 0.10);
+
+  /* Typography tokens (System typography stack, zero network requests) */
+  --font-display:            -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-primary:            -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:               "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-code:               var(--font-mono);
+
+  /* Spacing and radius primitives */
+  --radius-sm:               6px;
+  --radius-md:               12px;
+  --radius-lg:               20px;
+}
+
+/* ── Tier 3: Component Token Derivations ──
+ * Components derive values from semantic tokens:
+ * - Rounded cards / tags: border-radius: var(--radius-md);
+ * - Subtle glass borders: border: 1px solid var(--surface-border);
+ * - Highlight numerals: color: var(--accent); font-weight: 700;
+ * - Primary CTAs / Chips: background: var(--accent); color: #ffffff;
+ */
