@@ -141,6 +141,103 @@
   }
 }
 
+/* ── Pattern E: Diagram and Graph State Primitives ──
+ * Usage: Algorithm traces, state machine walkthroughs, node graph transitions.
+ */
+
+/* 1. Idle State: inactive or background node */
+.state-idle {
+  opacity: 0.35;
+  stroke: var(--surface-border);
+  transition: opacity 180ms ease, stroke 180ms ease;
+}
+
+/* 2. Candidate State: under evaluation, dashed stroke and breathing opacity */
+.state-candidate {
+  stroke-dasharray: 4 4;
+  animation: candidate-breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes candidate-breathe {
+  0%, 100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+/* 3. Selected / Active State: current focal node or edge */
+.state-selected,
+.state-active {
+  stroke: var(--accent);
+  stroke-dasharray: 200;
+  animation: stroke-draw 400ms ease-out forwards;
+}
+
+.state-selected .node-ripple,
+.state-active .node-ripple {
+  transform-origin: center;
+  animation: ripple-ring 1.8s ease-out infinite;
+}
+
+.state-selected .callout-pill,
+.state-active .callout-pill {
+  animation: pill-pop-in 240ms cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes stroke-draw {
+  from {
+    stroke-dashoffset: 200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ripple-ring {
+  0% {
+    r: 18px;
+    opacity: 0.8;
+  }
+  100% {
+    r: 36px;
+    opacity: 0;
+  }
+}
+
+@keyframes pill-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 4. Committed State: confirmed or finalized decision */
+.state-committed {
+  stroke: var(--accent-alt);
+  fill: var(--surface);
+  stroke-dasharray: none;
+  opacity: 1;
+}
+
+/* 5. Rejected State: dismissed option with strikethrough badge and muted dashed line */
+.state-rejected {
+  stroke: var(--text-muted);
+  stroke-dasharray: 3 3;
+  opacity: 0.45;
+}
+
+.state-rejected .strikethrough-badge,
+.strikethrough-badge {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
 /* ── Reduced Motion Accessibility Overrides ── */
 @media (prefers-reduced-motion: reduce) {
   .micro-stagger-group > * {
@@ -151,7 +248,14 @@
   .micro-ticker-track,
   .micro-connector-flow,
   .micro-pulse-beacon,
-  .micro-marquee-inner {
+  .micro-marquee-inner,
+  .state-candidate,
+  .state-selected,
+  .state-active,
+  .state-selected .node-ripple,
+  .state-active .node-ripple,
+  .state-selected .callout-pill,
+  .state-active .callout-pill {
     animation: none !important;
     transform: none !important;
     stroke-dashoffset: 0 !important;

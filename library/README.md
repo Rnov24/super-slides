@@ -8,7 +8,7 @@ This document serves as the progressive loading index for the generative skill. 
 
 ## 1. Compact Component Index (Locked Layout Set)
 
-The library provides 12 locked layout components. Phase 3 selects strictly from this set; it never invents ad-hoc slide structures.
+The library provides 15 locked layout components. Phase 3 selects strictly from this set; it never invents ad-hoc slide structures.
 
 - `hero-claim.html` (L01): Single bold thesis statement anchored by a verified metric chip.
 - `big-number.html` (L02): Metric-dominant headline card with 96px tabular numeral and benchmark pill.
@@ -22,6 +22,9 @@ The library provides 12 locked layout components. Phase 3 selects strictly from 
 - `matrix-2x2.html` (L11): Four-quadrant strategic landscape positioning architectures on coordinate axes.
 - `flow-sequence.html` (L13-L17): Linear 4-stage pipeline showing progressive stages and status indicators.
 - `data-proof.html` (L19/L20): Empirical SVG line/bar visualization anchored by an executive KPI badge.
+- `state-walkthrough.html` (L21): Stage SVG locked on the right (.locked-stage, fixed coordinate frame) with candidate table and causal rationale on the left.
+- `open-metrics.html` (L22): Three giant figures (180px+) across an open, breathable canvas with crisp hairline dividers and zero box containers.
+- `concept-visual.html` (L23): Formal principle or mathematical invariant on the left paired with a dual Valid vs Invalid counter-example schematic on the right.
 
 ---
 
@@ -43,6 +46,9 @@ Adapted from the qiaomu-ppt selection matrix. Map the narrative beat to its opti
 | Market or architectural positioning | `matrix-2x2.html` | Never place targets off-quadrant or omit labeled axes. |
 | End-to-end execution pipeline or workflow | `flow-sequence.html` | Never exceed 4-5 stages in one slide; avoid text-heavy step cards. |
 | Benchmark telemetry or throughput curve | `data-proof.html` | Never show unlabelled curves without baseline comparisons. |
+| Multi-step algorithm trace or state machine walkthrough | `state-walkthrough.html` | Never animate or translate the locked stage; never let table rows mismatch stage state. |
+| Multi-metric performance or financial scorecard | `open-metrics.html` | Never wrap metrics in card boxes or drop shadows; preserve open breathable canvas. |
+| Core invariant or architectural rule with counter-example | `concept-visual.html` | Never omit the invalid counter-example; keep valid vs invalid contrast immediate. |
 
 ---
 

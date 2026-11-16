@@ -30,7 +30,22 @@
       --font-display:   'Archivo Black', sans-serif;
       --font-primary:   'Space Grotesk', system-ui, sans-serif;
       --font-code:      "Cascadia Code", "Fira Code", Consolas, monospace;
-      --deck-scale:     1;
+            --deck-scale:     1;
+      --fade-out-ms:    180ms;
+      --fade-in-ms:     280ms;
+      --stagger-ms:     40ms;
+    }
+
+    /* Motion timing presets */
+    [data-motion="calm"] {
+      --fade-out-ms: 200ms;
+      --fade-in-ms: 450ms;
+      --stagger-ms: 60ms;
+    }
+    [data-motion="brisk"] {
+      --fade-out-ms: 100ms;
+      --fade-in-ms: 240ms;
+      --stagger-ms: 25ms;
     }
 
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: var(--font-primary); }
@@ -59,7 +74,14 @@
     }
     .slide.slide-current { opacity: 1; pointer-events: auto; visibility: visible; content-visibility: visible; z-index: 2; }
 
-    @media (prefers-reduced-motion: reduce) { .slide, .slide * { transition-duration: 0.001ms !important; } }
+    @media (prefers-reduced-motion: reduce) {
+      :root, [data-motion] {
+        --fade-out-ms: 0ms !important;
+        --fade-in-ms: 0ms !important;
+        --stagger-ms: 0ms !important;
+      }
+      .slide, .slide * { transition-duration: 0.001ms !important; }
+    }
 
     .fragment:not(.revealed) { opacity: 0; transform: translateY(8px); transition: opacity 240ms ease, transform 240ms ease; }
     .fragment.revealed { opacity: 1; transform: none; }
@@ -565,10 +587,10 @@
   <script>
 
     'use strict';
-    // DeckEngine : crossfade model (Packet 5, 2026-11-15)
-    // Motion: outgoing fades 1 to 0, scales 1 to 0.985 over 180ms;
-    //         incoming fades 0 to 1, scales 0.99 to 1.00 over 280ms;
-    //         slide children stagger fade-up 10px, 40ms apart, 240ms ease-out.
+        // DeckEngine: crossfade model
+    // Motion: outgoing fades 1 to 0 and scales 1 to 0.985 over --fade-out-ms;
+    //         incoming fades 0 to 1 and scales 0.99 to 1.00 over --fade-in-ms;
+    //         slide items stagger fade-up 10px, --stagger-ms apart, ease-out.
     // No translate3d or translateX in transition path.
     class DeckEngine {
       constructor() {
@@ -581,7 +603,7 @@
         this.targetIndex    = 0;
         this.isTransitioning = false;
         this.safetyTimer    = null;
-        this.duration       = 280;
+        this.duration       = this._readMotion().fadeIn;
         this.touch = { startX: 0, startY: 0, startTime: 0 };
         try {
           this.syncChannel = new BroadcastChannel('super-slides-sync');
@@ -589,12 +611,35 @@
         } catch (_) { this.syncChannel = null; }
         this._init();
       }
+      _readMotion() {
+        const style = this.viewport ? getComputedStyle(this.viewport) : null;
+        const parseMs = (prop, fallback) => {
+          if (!style) return fallback;
+          const val = style.getPropertyValue(prop).trim();
+          if (!val) return fallback;
+          const parsed = parseFloat(val);
+          return isNaN(parsed) ? fallback : parsed;
+        };
+        return {
+          fadeOut: parseMs('--fade-out-ms', 180),
+          fadeIn:  parseMs('--fade-in-ms', 280),
+          stagger: parseMs('--stagger-ms', 40),
+        };
+      }
       _init() {
         this.updateScale();
         window.addEventListener('resize', () => this.updateScale());
         window.addEventListener('keydown', (e) => this._onKey(e), { capture: true });
         this.viewport.addEventListener('touchstart', (e) => this._onTouchStart(e), { passive: true });
         this.viewport.addEventListener('touchend',   (e) => this._onTouchEnd(e),   { passive: false });
+        this.slides.forEach((slide, idx) => {
+          slide.addEventListener('click', () => {
+            if (this.isOverview) {
+              this._toggleOverview();
+              this.goTo(idx);
+            }
+          });
+        });
         const hashIdx = parseInt(window.location.hash.replace('#slide-', ''), 10) - 1;
         const startIdx = isNaN(hashIdx) ? 0 : Math.max(0, Math.min(hashIdx, this.slides.length - 1));
         this.slides.forEach(s => { s.classList.remove('slide-current'); });
@@ -631,6 +676,8 @@
       _executeTransition(fromIdx, toIdx, broadcast) {
         const fromSlide = this.slides[fromIdx];
         const toSlide   = this.slides[toIdx];
+        const motion    = this._readMotion();
+        this.duration   = motion.fadeIn;
         const cut = window.matchMedia('(prefers-reduced-motion: reduce)').matches
           || fromSlide.dataset.transition === 'cut'
           || toSlide.dataset.transition   === 'cut';
@@ -639,13 +686,15 @@
         if (cut) {
           fromSlide.classList.remove('slide-current');
           toSlide.classList.add('slide-current');
-          this._staggerChildren(toSlide);
+          this._staggerChildren(toSlide, motion);
           this._finalize(toIdx, broadcast);
           return;
         }
-        fromSlide.style.transition = 'opacity 180ms ease-out, transform 180ms ease-out';
+        // Crossfade outgoing
+        fromSlide.style.transition = `opacity ${motion.fadeOut}ms ease-out, transform ${motion.fadeOut}ms ease-out`;
         fromSlide.style.opacity    = '0';
         fromSlide.style.transform  = 'scale(0.985)';
+        // Prepare incoming
         toSlide.style.opacity   = '0';
         toSlide.style.transform = 'scale(0.99)';
         toSlide.style.transition = 'none';
@@ -656,7 +705,7 @@
             toSlide.style.transition = `opacity ${this.duration}ms ease-out, transform ${this.duration}ms ease-out`;
             toSlide.style.opacity    = '1';
             toSlide.style.transform  = 'scale(1)';
-            this._staggerChildren(toSlide);
+            this._staggerChildren(toSlide, motion);
           });
         });
         let resolved = false;
@@ -671,24 +720,34 @@
         toSlide.addEventListener('transitionend', done, { once: true });
         this.safetyTimer = setTimeout(done, this.duration + 40); // safety timer
       }
-      _staggerChildren(slide) {
-        const children = Array.from(slide.children).filter(el => !el.classList.contains('fragment'));
-        children.forEach((el, i) => {
+      _staggerChildren(slide, motion = this._readMotion()) {
+        const items = Array.from(slide.querySelectorAll('.stagger-item')).filter(el =>
+          !el.closest('.deck-footer') &&
+          !el.classList.contains('deck-footer') &&
+          !el.closest('.locked-stage') &&
+          !el.classList.contains('locked-stage') &&
+          !el.classList.contains('fragment')
+        );
+        if (!items.length) return;
+        items.forEach((el, i) => {
           el.style.transition = 'none';
           el.style.opacity    = '0';
           el.style.transform  = 'translateY(10px)';
           el.getBoundingClientRect();
           setTimeout(() => {
-            el.style.transition = 'opacity 240ms ease-out, transform 240ms ease-out';
+            el.style.transition = `opacity ${motion.fadeIn}ms ease-out, transform ${motion.fadeIn}ms ease-out`;
             el.style.opacity    = '1';
             el.style.transform  = 'translateY(0)';
-          }, i * 40);
+          }, i * motion.stagger);
         });
       }
       _cleanupTransition(fromSlide, toSlide) {
         fromSlide.classList.remove('slide-current');
         fromSlide.style.opacity = ''; fromSlide.style.transform = ''; fromSlide.style.transition = '';
         toSlide.style.opacity   = ''; toSlide.style.transform   = ''; toSlide.style.transition   = '';
+        toSlide.querySelectorAll('.stagger-item').forEach(el => {
+          el.style.opacity = ''; el.style.transform = ''; el.style.transition = '';
+        });
         this.viewport.classList.remove('is-transitioning');
       }
       _finalize(finalIdx, broadcast) {

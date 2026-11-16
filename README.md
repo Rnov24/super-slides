@@ -49,6 +49,10 @@ Note that cross-window presenter synchronization works only over `http://localho
 
 The single 8-slide golden example `examples/technical-architecture.html` (Packet 2) covers both the 0002 and 0003 demo checklists, so no separate `technical-deep-dive.html` file will be created.
 
+## Repository and Package Boundary
+
+The distributed skill package includes `SKILL.md`, `README.md`, `references/`, `library/`, `templates/`, and `examples/` as specified in the `package.json` files allowlist. Development artifacts, test harnesses (`tests/`), documentation specifications (`docs/`), and scratch scripts remain strictly in the repository root for ongoing verification and testing without polluting the published skill distribution.
+
 ## Offline Verification
 
 Generated decks are verified against strict offline invariants:

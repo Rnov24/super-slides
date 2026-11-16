@@ -1,0 +1,157 @@
+<!--
+  COMPONENT: open-metrics.html
+  Research Pattern: L22 Open Metrics (FineSlides / executive-pitch slide 4)
+  Slide Job: Multi-metric financial or operational scorecard presenting 3 giant figures on an open, breathable canvas with crisp hairline dividers and zero box containers.
+  Slots:
+    - kicker: Section or audit topic (e.g. "QUANTIFIABLE PERFORMANCE GAINS")
+    - title: Strategic headline framing the metrics (h2, 56px-72px)
+    - metrics-row: Three open-field columns separated by hairlines:
+      - val: Giant number rendered at >= 180px (200px, font-family var(--font-display))
+      - rule: 1px horizontal hairline separator (var(--surface-border))
+      - label: Metric descriptor (32px-38px, font-weight 700)
+      - desc: Explanatory context sentence (22px-26px, var(--text-muted))
+    - context-strip: Bottom benchmark context row anchoring the baseline
+  What to avoid:
+    - Never wrap metrics in card boxes, containers, or background panels.
+    - Never use drop shadows or rounded pill boxes around numbers.
+    - Never shrink metric numerals below 180px font-size.
+  Distribution constraints satisfied:
+    - Content span >= 65% of 1080px canvas height.
+    - Max internal gap <= 150px between stacked tiers.
+    - Zero ink overflow outside 1920x1080 stage boundaries.
+  Note: Replace sample copy per the narrative beat sheet.
+-->
+
+<section class="slide" data-layout="open-metrics" tabindex="-1">
+  <div class="open-metrics-layout">
+    <div class="open-metrics-header">
+      <span class="kicker">QUANTIFIABLE PERFORMANCE GAINS</span>
+      <h2 class="open-metrics-title">Triple-Vector Acceleration Across Distributed Node Clusters</h2>
+    </div>
+
+    <div class="open-metrics-row">
+      <div class="open-metric-col">
+        <div class="open-metric-val">28s</div>
+        <div class="open-metric-rule"></div>
+        <div class="open-metric-label">Decision Latency</div>
+        <p class="open-metric-desc">Signal ingestion to operational consensus resolution across distributed partitions.</p>
+      </div>
+
+      <div class="open-metric-col">
+        <div class="open-metric-val">78%</div>
+        <div class="open-metric-rule"></div>
+        <div class="open-metric-label">Preparation Saved</div>
+        <p class="open-metric-desc">Reduction in manual analyst reconciliation through automated deterministic arbitration.</p>
+      </div>
+
+      <div class="open-metric-col">
+        <div class="open-metric-val">3.4x</div>
+        <div class="open-metric-rule"></div>
+        <div class="open-metric-label">Anomalies Caught</div>
+        <p class="open-metric-desc">Early divergence detection before downstream replication split-brain conditions emerge.</p>
+      </div>
+    </div>
+
+    <div class="open-metrics-context">
+      <span class="context-pill">Audited Benchmark</span>
+      <span class="context-text">Measured across thirty-day continuous production telemetry spanning 1.4B transaction events.</span>
+    </div>
+  </div>
+
+  <div class="deck-footer">
+    <span><!-- SLOT: DECK_TITLE --></span>
+    <span>Slide X / Y</span>
+  </div>
+</section>
+
+<style>
+  .open-metrics-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    color: var(--text);
+  }
+  .open-metrics-header {
+    display: flex;
+    flex-direction: column;
+  }
+  .open-metrics-title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-top: 16px;
+    max-width: 1500px;
+  }
+  .open-metrics-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 56px;
+    align-items: flex-start;
+    margin-top: 80px;
+  }
+  .open-metric-col {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+  .open-metric-val {
+    font-family: var(--font-display);
+    font-size: 200px;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    margin-bottom: 28px;
+    font-variant-numeric: tabular-nums;
+  }
+  .open-metric-rule {
+    width: 100%;
+    height: 2px;
+    background: var(--surface-border);
+    margin-bottom: 24px;
+  }
+  .open-metric-label {
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .open-metric-desc {
+    font-family: var(--font-primary);
+    font-size: 24px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    max-width: 500px;
+  }
+  .open-metrics-context {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 72px;
+    padding-top: 24px;
+    border-top: 1px solid var(--surface-border);
+  }
+  .context-pill {
+    font-family: var(--font-code);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    background: rgba(255, 87, 34, 0.12);
+    border: 1px solid var(--accent);
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-transform: uppercase;
+  }
+  .context-text {
+    font-family: var(--font-primary);
+    font-size: 20px;
+    color: var(--text-muted);
+  }
+</style>

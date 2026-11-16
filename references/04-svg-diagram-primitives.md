@@ -4,7 +4,12 @@ This playbook provides mathematical standards, markup skeletons, and micro-inter
 
 ## 1. Mathematical Canvas Standards
 
-All diagrams must use the standardized 16:9 vector canvas:
+### ViewBox Dimensions and Exceptions
+- **Canonical Component Diagram**: `viewBox="0 0 1200 675"` (strict 16:9 aspect ratio). Component SVGs and standalone architectural diagrams must adhere to this coordinate space.
+- **Full-Bleed Stage Diagrams**: Must strictly maintain 16:9 geometry (e.g. `1200x675` or `1920x1080` coordinate space) to prevent distortion across responsive letterboxing.
+- **Documented Wide Ribbon Exception**: Wide ribbon charts (such as `data-proof.html` with `viewBox="0 0 1520 340"`) are documented exceptions reserved strictly for horizontal metric ribbons, throughput curves, and gauge bars.
+
+Canonical diagram declaration:
 ```xml
 <svg viewBox="0 0 1200 675" class="diagram-svg" role="img" aria-label="System Architecture Diagram">
 ```
@@ -220,14 +225,16 @@ g.interactive-node {
 }
 
 g.interactive-node rect {
-  transition: stroke 180ms ease, fill 180ms ease, filter 180ms ease;
+  transition: stroke 180ms ease, fill 180ms ease;
 }
 
 g.interactive-node:hover rect {
   stroke: var(--accent) !important;
-  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.25));
 }
 ```
+
+#### Zero-Shadow Rule (Editorial Diagram Discipline)
+SVG diagram primitives strictly forbid elevation blur filters, glow halos, and faux depth shading. Contrast and visual hierarchy are established exclusively through stroke color transitions (`var(--surface-border)` to `var(--accent)`), calibrated stroke weights, and clean tonal fills, matching Reference 06.
 
 ### Connected Edge Illumination
 ```css

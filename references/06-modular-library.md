@@ -17,10 +17,46 @@ Therefore, `library/` is a modular template library inside the `super-slides` ge
 ## 2. Locked Layout Doctrine
 
 Adapted from op7418/guizang-ppt-skill (Swiss design system):
-- The 12 components in `library/components/` constitute a **LOCKED SET**.
-- Phase 3 selects strictly from these 12 locked layouts; it **never invents** an unverified layout or ad-hoc card cluster.
+- The 15 components in `library/components/` constitute a **LOCKED SET**.
+- Phase 3 selects strictly from these 15 locked layouts; it **never invents** an unverified layout or ad-hoc card cluster.
 - Every layout has been mathematically verified in headless Chromium at 1920x1080 against R-11 (content span >= 65%, internal gap <= 150px, zero stage clipping, zero text-ink overflow).
 - Body slides must adhere to the left-aligned title convention. Centered titles are reserved strictly for opening pole slides (`hero-claim.html`) or dedicated section dividers.
+
+### The 15 Locked Layout Components
+1. `hero-claim.html` (L01): Single bold thesis statement anchored by a verified metric chip.
+2. `big-number.html` (L02): Metric-dominant headline card with 96px tabular numeral and benchmark pill.
+3. `claim-proof.html` (L03): Asymmetric claim backed by a 3-tier empirical proof stack.
+4. `split-media.html` (L05): 50/50 dual column contrasting narrative takeaways with an SVG inspection schematic.
+5. `exec-summary.html` (L06): Strategic executive takeaway card with 3 categorized supporting points.
+6. `sidebar-proof.html` (L07): 65/35 widescreen division with deep-dive analysis and an empirical proof sidebar.
+7. `comparison.html` (L08): Two-column option evaluation with distinct visual weights and bottom decision tags.
+8. `pros-cons.html` (L09): Balanced trade-off analysis framing strategic advantages against operational trade-offs.
+9. `before-after.html` (L10): Baseline state vs modernized architecture comparison showing quantified deltas.
+10. `matrix-2x2.html` (L11): Four-quadrant strategic landscape positioning architectures on coordinate axes.
+11. `flow-sequence.html` (L13-L17): Linear 4-stage pipeline showing progressive stages and status indicators.
+12. `data-proof.html` (L19/L20): Empirical SVG line/bar visualization anchored by an executive KPI badge.
+13. `state-walkthrough.html` (L21): Stage SVG locked on the right (.locked-stage, fixed coordinate frame) with candidate table and causal rationale on the left.
+14. `open-metrics.html` (L22): Three giant figures (180px+) across an open, breathable canvas with crisp hairline dividers and zero box containers.
+15. `concept-visual.html` (L23): Formal principle or mathematical invariant on the left paired with a dual Valid vs Invalid counter-example schematic on the right.
+
+### Selection Matrix (Slide Job to Pattern)
+| Slide Job / Narrative Beat | Preferred Component | What to Avoid |
+| :--- | :--- | :--- |
+| Core thesis, deck opening, vision hook | `hero-claim.html` | Never use bullet lists, card grids, or split columns on opening poles. |
+| Single headline metric, scale validation | `big-number.html` | Never crowd with multiple competing numbers; one metric dominates. |
+| Strategic claim needing empirical backing | `claim-proof.html` | Never present assertions without tiered evidentiary proof points. |
+| Technical capability paired with schematic | `split-media.html` | Never let columns float at unequal heights; keep spans aligned. |
+| High-level executive synthesis | `exec-summary.html` | Never exceed 3 supporting points; maintain clean vertical flow. |
+| In-depth case study with side telemetry | `sidebar-proof.html` | Never invert column ratios; keep 65% primary, 35% telemetry. |
+| Deciding between two distinct paths | `comparison.html` | Never make both columns visually identical; emphasize the winner. |
+| Strategic trade-off and risk review | `pros-cons.html` | Never hide operational costs or downplay genuine trade-offs. |
+| Demonstrating transformation outcome | `before-after.html` | Never omit the middle intervention lever; show the causal link. |
+| Market or architectural positioning | `matrix-2x2.html` | Never place targets off-quadrant or omit labeled axes. |
+| End-to-end execution pipeline or workflow | `flow-sequence.html` | Never exceed 4-5 stages in one slide; avoid text-heavy step cards. |
+| Benchmark telemetry or throughput curve | `data-proof.html` | Never show unlabelled curves without baseline comparisons. |
+| Multi-step algorithm trace or state machine walkthrough | `state-walkthrough.html` | Never animate or translate the locked stage; never let table rows mismatch stage state. |
+| Multi-metric performance or financial scorecard | `open-metrics.html` | Never wrap metrics in card boxes or drop shadows; preserve open breathable canvas. |
+| Core invariant or architectural rule with counter-example | `concept-visual.html` | Never omit the invalid counter-example; keep valid vs invalid contrast immediate. |
 
 ### Graded Validation Checklist (P0 through P3)
 Mirroring the Guizang audit framework:
@@ -98,14 +134,31 @@ Adapted from lewislulu/html-ppt-skill:
 
 ## 7. The Phase 3 Assembly Workflow
 
-When executing Phase 3 in `SKILL.md`:
-1. **Read `library/README.md`**: Consult the compact index and selection matrix to map each beat to its locked component.
-2. **Select Theme**: Pick exactly ONE theme from `library/themes/` based on the audience and room environment.
-3. **Select Animation**: Pick ONE timing preset (`calm` or `brisk`) from `library/animations/crossfade.css`.
-4. **Assemble Skeleton**: Base the deck on `templates/deck-skeleton.html`. Inject the selected theme CSS into `:root` and motion preset into `#deck-viewport`.
-5. **Populate Component Markup**: For each slide, copy the component `<section class="slide" data-layout="...">` and its `<style>` block into `.deck-canvas`.
-6. **Insert Beat Content**: Replace illustrative sample copy with actual beat sheet text, keeping prose concise (<= 40 body words per slide).
-7. **Run P0-P2 Audit**: Verify text-ink span (>= 65%), internal gaps (<= 150px), and boundary containment.
+When executing Phase 3 in `SKILL.md`, do not select components at random from a flat list. Follow this systematic workflow rooted in the narrative arc and visual pacing:
+
+1. **Arc Stage Mapping & Content-Type Routing**:
+   - Identify the Narrative Arc selected in Phase 0 (Algorithm Trace, Architecture Deep-Dive, Concept Explainer, or Executive Pitch).
+   - Map each beat in the Beat Sheet to its preferred locked component as specified in `references/01-narrative-scripting.md` and the Selection Matrix.
+2. **Mandatory Visual Escalation Enforcement**:
+   - Check raw content against the four escalation triggers before placing markup:
+     - Chronology or progressive stages: strictly forbidden to use bullet lists; must use `flow-sequence.html` or `state-walkthrough.html`.
+     - Connected entities or network graphs: must use inline SVG topology with state color classes (`state-visited`, `state-candidate`, `state-active`).
+     - Two or more metrics: auto-calculate deltas and escalate to `open-metrics.html` (180px+ tabular numerals) or `data-proof.html` (calibrated chart). Never bury numbers in sentences.
+     - Formal concept definition: must pair the invariant with a dual Valid vs Invalid schematic in `concept-visual.html`.
+3. **Visual Rhythm & Pacing Arrangement**:
+   - Alternate pole/release slides (`hero-claim.html`, `open-metrics.html`) with dense analytical slides (`state-walkthrough.html`, `split-media.html`, `comparison.html`).
+   - Validate spatial anchoring on pole slides: top header at y=72px and bottom context/proof chips at y=800-880px ensure full R-11 compliance (vertical span >= 65%) without cluttering the center.
+4. **Zero-Jump Canvas Locking for Multi-Step Slides**:
+   - When sequencing multiple step slides (e.g., algorithm iterations with `state-walkthrough.html`):
+     - Lock the title card position, `.locked-stage` container, and SVG vertex coordinates to 100% pixel-identical positions across all step slides.
+     - Ensure `.locked-stage` is excluded from CSS transition stagger animations, eliminating position jumps between slides.
+     - Position Causal Decision Callout Badges directly on the SVG canvas adjacent to relevant edges and nodes (green/accent pill for chosen edge with selection rationale, small red cross badge for cycle-rejected edges).
+5. **Select Theme**: Pick exactly ONE theme from `library/themes/` based on audience persona and environment (`bold-signal`, `editorial-cream`, `ink-paper`, `apple-clean`).
+6. **Select Animation**: Pick ONE timing preset (`calm` or `brisk`) from `library/animations/crossfade.css`.
+7. **Assemble Skeleton**: Base the deck on `templates/deck-skeleton.html`. Inject the selected theme CSS into `:root` and motion preset into `#deck-viewport`.
+8. **Populate Component Markup**: For each slide, copy the component `<section class="slide" data-layout="...">` and its `<style>` block into `.deck-canvas`.
+9. **Insert Beat Content & Text Economy**: Replace illustrative sample copy with actual beat sheet text. Enforce R-15: narrative prose paragraphs must not exceed 40 words per slide. Data table cells and SVG labels are excluded from the 40-word limit and must respect the 18px font floor.
+10. **Run P0-P2 Audit**: Verify text-ink span (>= 65%), internal gaps (<= 150px), and boundary containment.
 
 ---
 

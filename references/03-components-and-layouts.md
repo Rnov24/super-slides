@@ -172,23 +172,25 @@ Used for Before vs After, Deprecated vs Proposed, or Trade-off analyses.
 Micro-interactions operate purely via pointer events without interfering with macro slide navigation.
 
 ### Bento Hover Lift
-Apply hardware-accelerated subtle elevation on interactive cards:
+Apply hardware-accelerated subtle elevation on interactive cards. Strict Zero-Shadow Rule: Contrast is achieved exclusively via border-color and subtle translateY; never use elevation shadows or blur layers.
 ```css
 .bento-card {
   background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: 12px;
   padding: 32px;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  transition: transform 180ms ease, border-color 180ms ease;
   will-change: transform;
 }
 
 .bento-card:hover {
   transform: translateY(-4px);
   border-color: var(--accent);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
 }
 ```
+
+#### Zero-Shadow Rule (Editorial Discipline)
+Presentations strictly prohibit elevation shadows, glow halos, and blurry elevation layers. Visual separation and interactive focus rely entirely on crisp 1px borders (`var(--surface-border)` transitioning to `var(--accent)`), surface fills, and spatial alignment, matching Reference 06.
 
 ### Interactive Tabbed Panels
 For in-slide content inspection (such as switching between TypeScript, Go, and Rust snippets):

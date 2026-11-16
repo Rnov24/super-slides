@@ -1,0 +1,319 @@
+<!--
+  COMPONENT: state-walkthrough.html
+  Research Pattern: L21 State Walkthrough (zarazhangrui/frontend-slides / huashu-design)
+  Slide Job: Step-by-step algorithm walkthrough, state machine execution trace, or multi-step transition where a visual stage stays locked while narrative reasons and candidate status evolve.
+  Slots:
+    - kicker: Step phase or algorithm name (e.g. "DISTRIBUTED CONSENSUS STEP 02/04")
+    - title: Action claim describing this step decision (h2, 48px-64px)
+    - lead: Causal reasoning explaining why this transition occurred (22px-26px)
+    - state-table: Structured candidate evaluation matrix (Candidate, Term, Leases, State, Causal Rationale)
+    - locked-stage: Pixel-locked SVG diagram on the right (.locked-stage, fixed coordinate frame, no layout drift)
+  What to avoid:
+    - Never add jump animations, translates, or scale changes to .locked-stage.
+    - Never allow the stage position or dimensions to drift across consecutive slides.
+    - Avoid cluttered multi-paragraph explanations; let the table and stage carry the detail.
+  Distribution constraints satisfied:
+    - Content span >= 65% of 1080px canvas height.
+    - Max internal gap <= 150px between stacked elements.
+    - Zero ink overflow outside 1920x1080 stage boundaries.
+  Note: Replace sample copy per the narrative beat sheet.
+-->
+
+<section class="slide" data-layout="state-walkthrough" tabindex="-1">
+  <div class="state-walkthrough-layout">
+    <div class="state-walkthrough-content">
+      <div class="state-walkthrough-header">
+        <span class="kicker">DISTRIBUTED CONSENSUS STEP 02/04</span>
+        <h2 class="state-walkthrough-title">Leader Election Resolves Quorum Partition</h2>
+        <p class="state-walkthrough-lead">Node B acquires three of five leases within the 50ms ballot window, promoting state from candidate to committed leader across active network partitions.</p>
+      </div>
+
+      <div class="state-table-wrapper">
+        <table class="state-table">
+          <thead>
+            <tr>
+              <th>Node</th>
+              <th>Term</th>
+              <th>Leases</th>
+              <th>Status</th>
+              <th>Causal Rationale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-rejected">
+              <td class="node-cell">Node A</td>
+              <td>14</td>
+              <td>1/5</td>
+              <td><span class="status-badge badge-rejected">Rejected</span></td>
+              <td>Heartbeat expired; election timeout before quorum reached.</td>
+            </tr>
+            <tr class="row-committed">
+              <td class="node-cell">Node B</td>
+              <td>14</td>
+              <td>3/5</td>
+              <td><span class="status-badge badge-committed">Committed</span></td>
+              <td>Acquired majority leases across nodes B, C, and D.</td>
+            </tr>
+            <tr class="row-follower">
+              <td class="node-cell">Node C</td>
+              <td>14</td>
+              <td>--</td>
+              <td><span class="status-badge badge-follower">Follower</span></td>
+              <td>Delegated vote lease to higher-term candidate Node B.</td>
+            </tr>
+            <tr class="row-follower">
+              <td class="node-cell">Node D</td>
+              <td>14</td>
+              <td>--</td>
+              <td><span class="status-badge badge-follower">Follower</span></td>
+              <td>Quorum peer acknowledged term 14 ballot proposal.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="state-summary-strip">
+        <div class="state-metric-item">
+          <span class="state-metric-label">Quorum Threshold</span>
+          <span class="state-metric-val">3 / 5 Nodes</span>
+        </div>
+        <div class="state-metric-sep"></div>
+        <div class="state-metric-item">
+          <span class="state-metric-label">Election Latency</span>
+          <span class="state-metric-val">34ms P99</span>
+        </div>
+        <div class="state-metric-sep"></div>
+        <div class="state-metric-item">
+          <span class="state-metric-label">Monotonic Term</span>
+          <span class="state-metric-val">Epoch 14</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="locked-stage">
+      <svg viewBox="0 0 760 640" class="stage-svg" role="img" aria-label="Consensus State Machine Topology">
+        <defs>
+          <marker id="stage-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="var(--surface-border)"/>
+          </marker>
+          <marker id="stage-arrow-active" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="var(--accent)"/>
+          </marker>
+        </defs>
+
+        <!-- Connecting Edges -->
+        <line x1="380" y1="220" x2="190" y2="160" stroke="var(--surface-border)" stroke-width="2" stroke-dasharray="4 4"/>
+        <line x1="380" y1="220" x2="220" y2="440" stroke="var(--accent)" stroke-width="3" marker-end="url(#stage-arrow-active)"/>
+        <line x1="380" y1="220" x2="540" y2="440" stroke="var(--accent)" stroke-width="3" marker-end="url(#stage-arrow-active)"/>
+        <line x1="380" y1="220" x2="570" y2="160" stroke="var(--surface-border)" stroke-width="2" stroke-dasharray="4 4"/>
+
+        <!-- Partition Boundary -->
+        <line x1="80" y1="290" x2="680" y2="290" stroke="var(--surface-border)" stroke-width="1" stroke-dasharray="6 6"/>
+        <rect x="88" y="258" width="184" height="26" rx="4" fill="var(--surface)"/>
+        <text x="96" y="276" fill="var(--text-muted)" font-family="var(--font-code)" font-size="14" letter-spacing="0.05em">PARTITION BOUNDARY</text>
+
+        <!-- Node A: Rejected Candidate -->
+        <g class="stage-node state-rejected" transform="translate(190, 160)">
+          <circle r="46" fill="var(--surface)" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="4 4"/>
+          <text text-anchor="middle" y="6" fill="var(--text-muted)" font-family="var(--font-display)" font-size="20">Node A</text>
+          <text text-anchor="middle" y="28" fill="var(--text-muted)" font-family="var(--font-code)" font-size="13">1/5 votes</text>
+          <g transform="translate(-32, -58)">
+            <rect width="64" height="22" rx="4" fill="var(--surface-border)"/>
+            <text x="32" y="15" text-anchor="middle" fill="var(--text-muted)" font-family="var(--font-code)" font-size="11" font-weight="600">TIMEOUT</text>
+          </g>
+        </g>
+
+        <!-- Node B: Committed Leader -->
+        <g class="stage-node state-committed" transform="translate(380, 220)">
+          <circle r="60" fill="var(--surface)" stroke="var(--accent)" stroke-width="4"/>
+          <circle r="72" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.6"/>
+          <text text-anchor="middle" y="4" fill="var(--text)" font-family="var(--font-display)" font-size="24" font-weight="700">Node B</text>
+          <text text-anchor="middle" y="28" fill="var(--accent)" font-family="var(--font-code)" font-size="14" font-weight="600">3/5 LEASES</text>
+          <g transform="translate(-46, -82)">
+            <rect width="92" height="26" rx="6" fill="var(--accent)"/>
+            <text x="46" y="18" text-anchor="middle" fill="var(--bg)" font-family="var(--font-display)" font-size="13" font-weight="700">ELECTED</text>
+          </g>
+        </g>
+
+        <!-- Node C: Quorum Follower -->
+        <g class="stage-node state-follower" transform="translate(220, 440)">
+          <circle r="46" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="2"/>
+          <text text-anchor="middle" y="6" fill="var(--text)" font-family="var(--font-display)" font-size="20">Node C</text>
+          <text text-anchor="middle" y="28" fill="var(--accent-alt)" font-family="var(--font-code)" font-size="13">Voted B</text>
+          <g transform="translate(-36, 60)">
+            <rect width="72" height="22" rx="4" fill="var(--surface)" stroke="var(--surface-border)"/>
+            <text x="36" y="15" text-anchor="middle" fill="var(--accent-alt)" font-family="var(--font-code)" font-size="11" font-weight="600">LEASE OK</text>
+          </g>
+        </g>
+
+        <!-- Node D: Quorum Follower -->
+        <g class="stage-node state-follower" transform="translate(540, 440)">
+          <circle r="46" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="2"/>
+          <text text-anchor="middle" y="6" fill="var(--text)" font-family="var(--font-display)" font-size="20">Node D</text>
+          <text text-anchor="middle" y="28" fill="var(--accent-alt)" font-family="var(--font-code)" font-size="13">Voted B</text>
+          <g transform="translate(-36, 60)">
+            <rect width="72" height="22" rx="4" fill="var(--surface)" stroke="var(--surface-border)"/>
+            <text x="36" y="15" text-anchor="middle" fill="var(--accent-alt)" font-family="var(--font-code)" font-size="11" font-weight="600">LEASE OK</text>
+          </g>
+        </g>
+
+        <!-- Node E: Inactive Follower -->
+        <g class="stage-node state-idle" transform="translate(570, 160)">
+          <circle r="46" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="2"/>
+          <text text-anchor="middle" y="6" fill="var(--text-muted)" font-family="var(--font-display)" font-size="20">Node E</text>
+          <text text-anchor="middle" y="28" fill="var(--text-muted)" font-family="var(--font-code)" font-size="13">Standby</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="deck-footer">
+    <span><!-- SLOT: DECK_TITLE --></span>
+    <span>Slide X / Y</span>
+  </div>
+</section>
+
+<style>
+  .state-walkthrough-layout {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 48px;
+    height: 100%;
+    align-items: stretch;
+    color: var(--text);
+  }
+  .state-walkthrough-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .state-walkthrough-title {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-top: 14px;
+    margin-bottom: 20px;
+  }
+  .state-walkthrough-lead {
+    font-family: var(--font-primary);
+    font-size: 24px;
+    line-height: 1.45;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    max-width: 900px;
+  }
+  .state-table-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .state-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-primary);
+    font-size: 19px;
+  }
+  .state-table th {
+    text-align: left;
+    padding: 16px 20px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-family: var(--font-code);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--surface-border);
+  }
+  .state-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--surface-border);
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .state-table tr:last-child td {
+    border-bottom: none;
+  }
+  .state-table .node-cell {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 19px;
+    white-space: nowrap;
+  }
+  .status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-family: var(--font-code);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .badge-rejected {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+  .badge-committed {
+    background: rgba(255, 87, 34, 0.15);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  .badge-follower {
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--accent-alt);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+  .state-summary-strip {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 18px 24px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 10px;
+  }
+  .state-metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .state-metric-label {
+    font-family: var(--font-code);
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+  .state-metric-val {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .state-metric-sep {
+    width: 1px;
+    height: 36px;
+    background: var(--surface-border);
+  }
+  .locked-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .stage-svg {
+    width: 100%;
+    height: 100%;
+    max-height: 640px;
+  }
+</style>

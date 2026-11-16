@@ -118,6 +118,37 @@ for (const { name, content } of allFiles) {
   const canvasBlock = content.match(/\.deck-canvas\s*\{[^}]*\}/);
   check('.deck-canvas has flex-shrink: 0 (stage never shrinks)',
     canvasBlock ? /flex-shrink\s*:\s*0/.test(canvasBlock[0]) : false);
+
+  // 14. Zero hardcoded duration literals in transition functions (280, 180ms, 240ms, i * 40)
+  const scriptContent = content.slice(content.lastIndexOf('<script'));
+  const transitionMatch = scriptContent.match(/_executeTransition\b[\s\S]*?_staggerChildren\b[\s\S]*?\n\s{4,6}\}/);
+  if (transitionMatch) {
+    const fnBody = transitionMatch[0];
+    const hasLiteral180ms   = /180ms/i.test(fnBody);
+    const hasLiteral240ms   = /240ms/i.test(fnBody);
+    const hasLiteral280     = /\b280\b/.test(fnBody);
+    const hasLiteralStagger = /i\s*\*\s*40\b/.test(fnBody);
+    check('Zero hardcoded duration literals in transition functions',
+      !hasLiteral180ms && !hasLiteral240ms && !hasLiteral280 && !hasLiteralStagger);
+  } else {
+    check('Zero hardcoded duration literals in transition functions', false);
+  }
+
+  // 15. Click listener calling goTo during overview
+  const hasOverviewClick =
+    /addEventListener\s*\(\s*['"]click['"][\s\S]*?isOverview[\s\S]*?goTo\b/.test(content);
+  check('Click listener calling goTo during overview', hasOverviewClick);
+
+  // 16. deck-skeleton.html contains 4 @font-face rules (Archivo Black, Space Grotesk, Sora, DM Sans)
+  if (name.endsWith('deck-skeleton.html')) {
+    const hasArchivoBlack = /@font-face\b[^}]*font-family:\s*['"]Archivo Black['"]/i.test(content);
+    const hasSpaceGrotesk = /@font-face\b[^}]*font-family:\s*['"]Space Grotesk['"]/i.test(content);
+    const hasSora         = /@font-face\b[^}]*font-family:\s*['"]Sora['"]/i.test(content);
+    const hasDMSans       = /@font-face\b[^}]*font-family:\s*['"]DM Sans['"]/i.test(content);
+    const fontFaces       = [...content.matchAll(/@font-face\s*\{/gi)];
+    check('deck-skeleton.html contains 4 @font-face rules (Archivo Black, Space Grotesk, Sora, DM Sans)',
+      fontFaces.length >= 4 && hasArchivoBlack && hasSpaceGrotesk && hasSora && hasDMSans);
+  }
 }
 
 // ── Library Scan ─────────────────────────────────────────────────────────────
@@ -162,7 +193,33 @@ if (existsSync(libraryDir)) {
     // L-5: Zero Bodoni Moda references
     const hasBodoni = /Bodoni/i.test(content);
     check('Zero Bodoni Moda references', !hasBodoni);
+
+    // L-6: Zero literal "Illustrative concept" in library components
+    if (name.startsWith('library/components/')) {
+      const hasIllustrativeConcept = /Illustrative concept/i.test(content);
+      check('Zero literal "Illustrative concept"', !hasIllustrativeConcept);
+    }
+
+    // L-7: Zero box-shadow or drop-shadow in library files
+    const hasShadow = /box-shadow|drop-shadow/i.test(content);
+    check('Zero box-shadow or drop-shadow', !hasShadow);
   }
+
+  // ── References and New Component Verification ─────────────────────────────
+  console.log('\nChecking references and component catalog:');
+
+  const ref03Path = join(root, 'references/03-components-and-layouts.md');
+  const ref04Path = join(root, 'references/04-svg-diagram-primitives.md');
+  const ref03Content = existsSync(ref03Path) ? readFileSync(ref03Path, 'utf8') : '';
+  const ref04Content = existsSync(ref04Path) ? readFileSync(ref04Path, 'utf8') : '';
+  check('references/03 has zero box-shadow or drop-shadow', !/box-shadow|drop-shadow/i.test(ref03Content));
+  check('references/04 has zero box-shadow or drop-shadow', !/box-shadow|drop-shadow/i.test(ref04Content));
+
+  const hasStateWalkthrough = existsSync(join(root, 'library/components/state-walkthrough.html'));
+  const hasOpenMetrics      = existsSync(join(root, 'library/components/open-metrics.html'));
+  const hasConceptVisual    = existsSync(join(root, 'library/components/concept-visual.html'));
+  check('3 new components exist (state-walkthrough, open-metrics, concept-visual)',
+    hasStateWalkthrough && hasOpenMetrics && hasConceptVisual);
 }
 
 // ── Summary ──────────────────────────────────────────────────────────────────

@@ -162,9 +162,11 @@ Also verify that none of these bindings fire when the focus is inside `input`, `
 
 ## R-14: Layout Variety Check
 
-**Trigger:** More than one card grid in a presentation deck, or any two consecutive slides sharing the same structural layout.
+**Trigger:** More than one card grid in a presentation deck, or any two consecutive slides sharing the same structural layout without an algorithm walkthrough exception.
 
-**Check:** Enumerate the structural layout type of each slide in the deck (`data-layout` attributes). Count how many slides use a card grid (max 1 allowed). Verify that no two consecutive slides share the same layout pattern.
+**Check:** Enumerate the structural layout type of each slide in the deck (`data-layout` attributes). Count how many slides use a card grid (max 1 allowed). Verify that no two consecutive slides share the same layout pattern, except when sequential slides illustrate multi-step state transitions.
+
+**Exception:** Consecutive slides MAY use the same `data-layout="state-walkthrough"` when describing sequential steps of a single algorithm or state machine (e.g. Step 01 through Step 04 of a consensus round). This preserves pixel-locked stage continuity while table evaluations and state transitions progress without visual jumps.
 
 **Correction:** Rebuild repetitive slides using alternative structural frames: Hero statements with proof phrase rows, full-width numbered feature rows, two-column split comparisons with center rules, horizontal step sequences (01→04) joined by rules, full-bleed diagrams without container cards, full-bleed code terminals, or standalone three-column metric rows on open field.
 
@@ -172,11 +174,13 @@ Also verify that none of these bindings fire when the focus is inside `input`, `
 
 ## R-15: Copy Budget Check
 
-**Trigger:** Any slide containing more than 40 words of body copy (titles, kickers, and slide numbers excluded), or any body copy paragraph exceeding two lines at 1920x1080.
+**Scope:** The 40-word budget applies strictly to prose narrative paragraphs (support sentences, lead explanations, and body copy blocks). Structured data table cells, tabular metrics, and inline SVG diagram labels are excluded from the prose word count; they are evaluated separately under projector legibility standards (minimum 18px font size for all data cells and diagram labels).
 
-**Check:** Measure body copy words per slide. Measure line count of all paragraph blocks. Confirm that illustrative disclaimers collapse to a single footer line per deck ("All figures illustrative").
+**Trigger:** Any slide containing more than 40 words of prose narrative body copy (titles, kickers, slide numbers, data table cells, and diagram labels excluded), or any body copy paragraph exceeding two lines at 1920x1080.
 
-**Correction:** Cut copy ruthlessly. Distill sentences into high-impact clauses. If a concept cannot fit within 40 body words, split the slide or let the spoken presenter voice carry the nuance.
+**Check:** Measure prose narrative body copy words per slide. Measure line count of all paragraph blocks. Verify that data table cells and diagram labels maintain the 18px minimum font size for low-contrast projector legibility.
+
+**Correction:** Cut prose copy ruthlessly. Distill sentences into high-impact clauses. If narrative explanation exceeds 40 prose words, move structured values into data tables, split the slide, or let the spoken presenter voice carry the nuance.
 
 ---
 
