@@ -1,0 +1,196 @@
+<!--
+  Layout: Pole Stat (Massive Quantitative Proof Anchor)
+  Slide Job: Frame one indisputable empirical metric (220px+) paired with a sharp, unambiguous causal thesis.
+  Slots:
+    - {{ kicker }}: Topic or telemetry stream identifier
+    - {{ title }}: Action conclusion headline
+    - {{ stat_number }}: Giant 220px+ tabular figure in accent hue
+    - {{ stat_unit }}: Metric unit or delta suffix
+    - {{ stat_thesis }}: Two-line causal takeaway explaining why the number matters
+    - {{ proof_benchmark }}: Baseline comparison pill showing quantified shift
+  Avoid-List:
+    - Never wrap the giant metric in a card box or solid background container.
+    - Never place competing numbers of similar size on this slide; one figure commands the stage.
+    - Never shrink the stat below 200px.
+-->
+
+<section class="slide" data-layout="pole-stat" tabindex="-1">
+  <div class="pole-stat-stage">
+    <div class="pole-stat-header">
+      <span class="pole-stat-kicker">INGESTION BENCHMARK RESULTS</span>
+      <h2 class="pole-stat-title">Sub-Millisecond Pipeline Throughput Verified at Scale</h2>
+    </div>
+
+    <div class="pole-stat-center">
+      <div class="stat-figure-wrap">
+        <span class="stat-giant-num">240</span>
+        <span class="stat-unit">GB/s</span>
+      </div>
+      <div class="stat-narrative">
+        <div class="stat-delta-chip">
+          <span class="delta-arrow">+184%</span>
+          <span class="delta-context">VS LEGACY EVENT BUS (84 GB/s)</span>
+        </div>
+        <p class="stat-thesis-body">
+          Zero-copy ring buffers and off-heap memory arena allocations eliminate GC pauses completely, sustaining peak ingress without socket buffer packet loss.
+        </p>
+      </div>
+    </div>
+
+    <div class="pole-stat-footer-wrap">
+      <div class="stat-hairline"></div>
+      <div class="stat-meta-row">
+        <span>TEST BED: 32 NODE CLUSTER (AMD EPYC 9654)</span>
+        <span>ZERO PACKET DROPS ACROSS 48H BURN-IN</span>
+        <span>VERIFIED RESULT</span>
+      </div>
+      <div class="deck-footer">
+        <span>DATA PIPELINE BENCHMARKS</span>
+        <span>04 / 08</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-layout="pole-stat"] {
+    padding: 72px 100px 56px 100px;
+    background: var(--bg);
+    background-image: var(--bg-gradient);
+  }
+
+  .pole-stat-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+  }
+
+  .pole-stat-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pole-stat-kicker {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .pole-stat-title {
+    font-family: var(--font-display);
+    font-size: 52px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    max-width: 1400px;
+  }
+
+  .pole-stat-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+    padding: 20px 0;
+  }
+
+  .stat-figure-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .stat-giant-num {
+    font-family: var(--font-mono);
+    font-size: 230px;
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+  }
+
+  .stat-unit {
+    font-family: var(--font-mono);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .stat-narrative {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 640px;
+  }
+
+  .stat-delta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-sm, 4px);
+    width: fit-content;
+  }
+
+  .stat-delta-chip .delta-arrow {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--state-committed, #34d399);
+  }
+
+  .stat-delta-chip .delta-context {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .stat-thesis-body {
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--text);
+  }
+
+  .pole-stat-footer-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .stat-hairline {
+    width: 100%;
+    height: 1px;
+    background: var(--surface-border);
+  }
+
+  .stat-meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .deck-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding-top: 14px;
+    border-top: 1px solid var(--surface-border-subtle, var(--surface-border));
+  }
+</style>

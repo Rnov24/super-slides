@@ -1,10 +1,9 @@
 /*
  * Theme: Apple Clean (Minimalist Technical Precision & Generous Space)
- * Source: Research catalog (aliang-shuzhi-html-ppt / Apple keynote patterns)
+ * Required Fonts: none
  *
- * NOTE: Themes define tokens ONLY. They must NOT contain @font-face rules.
- * Uses the system font stack (-apple-system, SF Pro Display / Text) exclusively,
- * making this theme 100% zero-network by construction without embedding font files.
+ * NOTE: Uses the native system font stack (-apple-system, SF Pro) exclusively.
+ * 100% zero-network by construction without external or embedded font files.
  *
  * Accent Budget:
  * - Neutral white and soft gray surface: 85% to 92%
@@ -22,7 +21,7 @@
 
 :root,
 .theme-apple-clean {
-  /* ── Tier 1: Primitives (Raw values, rarely edited) ── */
+  /* -- Tier 1: Primitives (Raw values, rarely edited) -- */
   --primitive-white:         #ffffff;
   --primitive-gray-50:       #fbfbfd;
   --primitive-gray-100:      #f5f5f7;
@@ -31,10 +30,13 @@
   --primitive-gray-500:      #86868b;
   --primitive-gray-900:      #1d1d1f;
   --primitive-blue-500:      #0A84FF;
+  --primitive-blue-600:      #0062cc;
   --primitive-blue-soft:     rgba(10, 132, 255, 0.10);
   --primitive-blue-deep:     #0071e3;
+  --primitive-green-500:     #34c759;
+  --primitive-red-500:       #ff3b30;
 
-  /* ── Tier 2: Semantic Tokens (Consumed by components) ── */
+  /* -- Tier 2: Semantic Tokens (Consumed by components) -- */
   --bg:                      var(--primitive-gray-50);
   --bg-gradient:             linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
   --surface:                 var(--primitive-white);
@@ -44,8 +46,17 @@
   --text-muted:              var(--primitive-gray-500);
   --accent:                  var(--primitive-blue-500);
   --accent-soft:             var(--primitive-blue-soft);
+  --accent-ink:              var(--primitive-blue-600);
+  --accent-on:               #ffffff;
   --accent-alt:              var(--primitive-blue-deep);
   --accent-alt-soft:         rgba(0, 113, 227, 0.10);
+
+  /* Algorithmic & State tokens */
+  --state-idle:              var(--primitive-gray-300);
+  --state-candidate:         #5856d6;
+  --state-active:            var(--primitive-blue-500);
+  --state-committed:         var(--primitive-green-500);
+  --state-rejected:          var(--primitive-red-500);
 
   /* Typography tokens (System typography stack, zero network requests) */
   --font-display:            -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -59,7 +70,7 @@
   --radius-lg:               20px;
 }
 
-/* ── Tier 3: Component Token Derivations ──
+/* -- Tier 3: Component Token Derivations --
  * Components derive values from semantic tokens:
  * - Rounded cards / tags: border-radius: var(--radius-md);
  * - Subtle glass borders: border: 1px solid var(--surface-border);

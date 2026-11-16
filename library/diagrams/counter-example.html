@@ -1,0 +1,127 @@
+<!--
+  Diagram Archetype: Counter-Example (Dual-Panel Valid Invariant vs Invalid Counter-Case)
+  Budget Adherence: 2 comparative visual zones, 1 positive invariant rule, 1 concrete counter-example failure mode.
+  Discipline: 4px grid snap, viewBox 1200x675, zero elevation shadows, opaque halo pills on decision markers.
+-->
+
+<section class="diagram-spec" data-diagram="counter-example">
+  <div class="diagram-frame">
+    <svg class="diagram-svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <pattern id="ce-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--surface-border)" stroke-width="1" stroke-opacity="0.25"/>
+        </pattern>
+      </defs>
+
+      <rect width="1200" height="675" fill="url(#ce-grid)" rx="8" />
+
+      <!-- Center Vertical Divider -->
+      <line x1="600" y1="40" x2="600" y2="635" stroke="var(--surface-border)" stroke-width="2" />
+
+      <!-- LEFT PANEL: VALID INVARIANT (0 to 600) -->
+      <g transform="translate(60, 50)">
+        <!-- Header Badge -->
+        <rect x="0" y="0" width="160" height="32" rx="4" fill="var(--surface)" stroke="var(--state-committed, #34d399)" stroke-width="1.5" />
+        <text x="80" y="21" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--state-committed, #34d399)">VALID INVARIANT</text>
+
+        <text x="0" y="68" font-family="var(--font-primary)" font-size="22" font-weight="700" fill="var(--text)">Cut Property Upheld</text>
+        <text x="0" y="94" font-family="var(--font-primary)" font-size="15" fill="var(--text-muted)">Minimum crossing edge connects disjoint cut partitions without cycles.</text>
+
+        <!-- Sub-graph Schematic -->
+        <g transform="translate(0, 130)">
+          <!-- Cut Boundary Dash Line -->
+          <line x1="240" y1="20" x2="240" y2="340" stroke="var(--surface-border)" stroke-width="2" stroke-dasharray="6 6" />
+          <text x="240" y="370" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="var(--text-muted)">CUT FRONTIER (S vs V \ S)</text>
+
+          <!-- Cut S Partition Background -->
+          <rect x="10" y="30" width="200" height="300" rx="12" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1" stroke-opacity="0.5" />
+          <text x="30" y="60" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--text-muted)">PARTITION S</text>
+
+          <!-- Cut V \ S Partition Background -->
+          <rect x="270" y="30" width="200" height="300" rx="12" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1" stroke-opacity="0.5" />
+          <text x="290" y="60" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--text-muted)">PARTITION V \ S</text>
+
+          <!-- Nodes S -->
+          <circle cx="110" cy="120" r="24" fill="var(--surface)" stroke="var(--state-committed, #34d399)" stroke-width="3" />
+          <text x="110" y="126" text-anchor="middle" font-family="var(--font-mono)" font-size="14" font-weight="700" fill="var(--text)">A</text>
+
+          <circle cx="110" cy="240" r="24" fill="var(--surface)" stroke="var(--state-committed, #34d399)" stroke-width="3" />
+          <text x="110" y="246" text-anchor="middle" font-family="var(--font-mono)" font-size="14" font-weight="700" fill="var(--text)">B</text>
+
+          <!-- Nodes V \ S -->
+          <circle cx="370" cy="120" r="24" fill="var(--surface)" stroke="var(--state-committed, #34d399)" stroke-width="3" />
+          <text x="370" y="126" text-anchor="middle" font-family="var(--font-mono)" font-size="14" font-weight="700" fill="var(--text)">D</text>
+
+          <!-- Crossing Link (Selected Min Edge) -->
+          <line x1="134" y1="120" x2="346" y2="120" stroke="var(--state-committed, #34d399)" stroke-width="4" />
+          <rect x="200" y="104" width="80" height="28" rx="14" fill="var(--surface)" stroke="var(--state-committed, #34d399)" stroke-width="1.5" />
+          <text x="240" y="123" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--state-committed, #34d399)">e* (MIN)</text>
+        </g>
+      </g>
+
+      <!-- RIGHT PANEL: INVALID COUNTER-EXAMPLE (660 to 1200) -->
+      <g transform="translate(660, 50)">
+        <!-- Header Badge -->
+        <rect x="0" y="0" width="160" height="32" rx="4" fill="var(--surface)" stroke="var(--state-rejected, #f43f5e)" stroke-width="1.5" />
+        <text x="80" y="21" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--state-rejected, #f43f5e)">INVALID COUNTER</text>
+
+        <text x="0" y="68" font-family="var(--font-primary)" font-size="22" font-weight="700" fill="var(--text)">Redundant Cyclic Edge</text>
+        <text x="0" y="94" font-family="var(--font-primary)" font-size="15" fill="var(--text-muted)">Connecting two vertices already in S forms a cycle, wasting capital expenditure.</text>
+
+        <!-- Sub-graph Schematic -->
+        <g transform="translate(0, 130)">
+          <!-- Partition S -->
+          <rect x="10" y="30" width="460" height="300" rx="12" fill="var(--surface)" stroke="var(--state-rejected, #f43f5e)" stroke-width="1" stroke-dasharray="4 4" stroke-opacity="0.4" />
+          <text x="30" y="60" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--state-rejected, #f43f5e)">SUBGRAPH CONTAINS A CYCLE</text>
+
+          <!-- Nodes A, B, C inside S -->
+          <circle cx="120" cy="150" r="24" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="2" />
+          <text x="120" y="156" text-anchor="middle" font-family="var(--font-mono)" font-size="14" font-weight="700" fill="var(--text)">A</text>
+
+          <circle cx="340" cy="150" r="24" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="2" />
+          <text x="340" y="156" text-anchor="middle" font-family="var(--font-mono)" font-size="14" font-weight="700" fill="var(--text)">B</text>
+
+          <circle cx="230" cy="270" r="24" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="2" />
+          <text x="230" y="276" text-anchor="middle" font-family="var(--font-mono)" font-size="14" font-weight="700" fill="var(--text)">C</text>
+
+          <!-- Valid Links -->
+          <line x1="144" y1="150" x2="316" y2="150" stroke="var(--surface-border)" stroke-width="3" />
+          <line x1="135" y1="168" x2="215" y2="252" stroke="var(--surface-border)" stroke-width="3" />
+
+          <!-- Cyclic Rejected Edge -->
+          <line x1="325" y1="168" x2="245" y2="252" stroke="var(--state-rejected, #f43f5e)" stroke-width="3" stroke-dasharray="4 4" />
+
+          <!-- Reject Strikethrough Badge -->
+          <rect x="250" y="200" width="140" height="28" rx="14" fill="var(--surface)" stroke="var(--state-rejected, #f43f5e)" stroke-width="1.5" />
+          <text x="320" y="219" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--state-rejected, #f43f5e)">REJECT: CYCLE</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .diagram-spec {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .diagram-frame {
+    width: 100%;
+    max-height: 720px;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+    background: var(--surface);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .diagram-svg {
+    display: block;
+    max-width: 100%;
+    max-height: 720px;
+    width: auto;
+    height: 100%;
+  }
+</style>

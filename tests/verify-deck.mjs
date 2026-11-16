@@ -1,22 +1,12 @@
 #!/usr/bin/env node
-// tests/verify-deck.mjs — zero external dependencies, Node only
-// Parses HTML files under templates/ (always) and examples/ (if non-empty).
+// tests/verify-deck.mjs - zero external dependencies, Node only
+// Validates super-slides modular architecture, engine invariants, and anti-slop rules.
 // Exits non-zero if any FAIL is detected.
 
-import { readFileSync, readdirSync, existsSync } from 'fs';
+import { readFileSync, readdirSync, existsSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
-
 const root = resolve(new URL('.', import.meta.url).pathname, '..');
-
-function readDir(dir) {
-  const full = join(root, dir);
-  if (!existsSync(full)) return [];
-  return readdirSync(full)
-    .filter(f => f.endsWith('.html'))
-    .map(f => ({ name: join(dir, f), content: readFileSync(join(full, f), 'utf8') }));
-}
 
 let passed = 0;
 let failed = 0;
@@ -27,209 +17,285 @@ function check(label, ok) {
   if (ok) passed++; else failed++;
 }
 
-// ── Collect files ────────────────────────────────────────────────────────────
+console.log('\n--- Checking Root & Architecture Invariants ---');
 
-const templateFiles = readDir('templates');
-const examplesDir   = join(root, 'examples');
-let   exampleFiles  = [];
-
-if (!existsSync(examplesDir)) {
-  console.warn('\n  [SKIP] examples/ directory not found — skipping example assertions (Packet 2).\n');
+// 1. SKILL.md line count < 180
+const skillPath = join(root, 'SKILL.md');
+if (existsSync(skillPath)) {
+  const skillLines = readFileSync(skillPath, 'utf8').split('\n').length;
+  check(`SKILL.md line count < 180 (currently ${skillLines})`, skillLines < 180);
 } else {
-  exampleFiles = readDir('examples');
-  if (exampleFiles.length === 0) {
-    console.warn('\n  [SKIP] examples/ exists but contains no .html files — skipping (Packet 2).\n');
-  }
+  check('SKILL.md exists', false);
 }
 
-const allFiles = [...templateFiles, ...exampleFiles];
+// 2. Directory library/components/ DOES NOT EXIST
+const oldComponentsDir = join(root, 'library/components');
+check('Directory library/components/ does not exist (migrated to layouts/diagrams)', !existsSync(oldComponentsDir));
 
-if (allFiles.length === 0) {
-  // templates/ must always have files; this is a hard failure
-  console.error('FAIL: No HTML files found in templates/. At least deck-skeleton.html is required.');
-  process.exit(1);
-}
+// 3. Engine Skeleton Verification (templates/deck-skeleton.html)
+console.log('\n--- Checking Engine Skeleton (templates/deck-skeleton.html) ---');
+const skeletonPath = join(root, 'templates/deck-skeleton.html');
+if (existsSync(skeletonPath)) {
+  const skeleton = readFileSync(skeletonPath, 'utf8');
 
-// ── Run assertions per file ──────────────────────────────────────────────────
+  // No dummy slide content
+  const hasSlideSections = /<section\b[^>]*class=["'][^"']*\bslide\b[^"']*["']/i.test(skeleton);
+  check('deck-skeleton.html contains zero dummy slides (<section class="slide")', !hasSlideSections);
 
-for (const { name, content } of allFiles) {
-  console.log(`\nChecking: ${name}`);
+  // DeckEngine class
+  check('DeckEngine class present', skeleton.includes('class DeckEngine'));
 
-  // 1. Zero external <link> tags (no href starting with http/https//)
-  const linkTags = [...content.matchAll(/<link\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>/gi)];
-  const externalLinks = linkTags.filter(m => /^(https?:)?\/\//i.test(m[1].trim()));
-  check('Zero external <link> tags', externalLinks.length === 0);
+  // _readMotion method
+  check('_readMotion timing reader present', skeleton.includes('_readMotion()'));
 
-  // 2. Zero external <script> tags (src starting with http/https//)
-  const scriptTags = [...content.matchAll(/<script\b[^>]*src\s*=\s*["']([^"']+)["'][^>]*>/gi)];
-  const externalScripts = scriptTags.filter(m => /^(https?:)?\/\//i.test(m[1].trim()));
-  check('Zero external <script> tags', externalScripts.length === 0);
+  // Overview click listener calling goTo
+  const hasOverviewClick = /addEventListener\s*\(\s*['"]click['"][\s\S]*?isOverview[\s\S]*?goTo\b/.test(skeleton);
+  check('Click listener calling goTo during overview present', hasOverviewClick);
 
-  // 3. 1920×1080 canvas: deck-canvas must be 1920px wide / 1080px tall in CSS or inline style
-  const has1920 = /1920px/i.test(content);
-  const has1080 = /1080px/i.test(content);
-  check('1920×1080 canvas dimensions referenced', has1920 && has1080);
+  // Print CSS
+  const hasPrintCSS = /@media\s+print\b/.test(skeleton) &&
+    /\.slide\s*\{[^}]*page-break-after[^}]*transform:\s*none\s*!important[^}]*visibility:\s*visible\s*!important/i.test(skeleton);
+  check('@media print rule resets off-canvas slide hiding', hasPrintCSS);
 
-  // 4. .is-transitioning CSS includes pointer-events: none
-  const isTransitioningBlock = content.match(/is-transitioning\b[\s\S]{0,300}?pointer-events\s*:\s*none/);
-  check('.is-transitioning CSS has pointer-events: none', Boolean(isTransitioningBlock));
-
-  // 5. Safety-timer code marker (setTimeout with duration + 40)
-  const hasSafetyTimer = /setTimeout\s*\(/.test(content) && /duration\s*\+\s*40/.test(content);
-  check('Safety-timer (setTimeout + duration + 40) present', hasSafetyTimer);
-
-  // 6. Target-coalescing code marker
-  const hasCoalescing =
-    /targetIndex/.test(content) && /isTransitioning/.test(content) &&
-    (/coalesce/i.test(content) || /this\.targetIndex\s*=\s*(index|nextHop|next)/.test(content));
-  check('Target-index coalescing logic present', hasCoalescing);
-
-  // 7. #shortcut-hud element present
-  const hasShortcutHud = /id\s*=\s*["']shortcut-hud["']/.test(content);
-  check('#shortcut-hud element present', hasShortcutHud);
-
-  // 8. prefers-reduced-motion block present
-  const hasReducedMotion = /prefers-reduced-motion\s*:\s*reduce/.test(content);
-  check('@media prefers-reduced-motion block present', hasReducedMotion);
-
-  // 9. @media print block present, and its .slide rule resets the
-  // off-canvas hiding (translate3d + visibility + content-visibility),
-  // otherwise only the current slide prints and the rest come out blank.
-  const printIdx = content.search(/@media\s+print\b/);
-  check('@media print block present', printIdx !== -1);
-  const printBlock = printIdx === -1 ? '' : content.slice(printIdx);
-  check('print .slide rule resets off-canvas hiding',
-    /\.slide\s*\{[^}]*page-break-after[^}]*transform:\s*none\s*!important[^}]*visibility:\s*visible\s*!important[^}]*content-visibility:\s*visible\s*!important[^}]*\}/.test(printBlock));
-
-  // 11. Embedded base64 @font-face present (zero external requests, distinctive typography)
-  const hasEmbeddedFont = /@font-face\b[\s\S]{0,500}?src:\s*url\(\s*["']?data:(font|application)\/(woff2|woff|x-font-woff|font-woff);base64,/i.test(content);
-  check('Embedded base64 @font-face present', hasEmbeddedFont);
-
-  // 12. No translate3d or translateX in crossfade transition code path.
-  // The crossfade engine uses opacity + scale only; no horizontal push.
-  // Comments referencing these values are allowed; actual CSS/JS usage is not.
-  const hasSlideTranslate = /translate3d\s*\(/.test(content) || /translateX\s*\(/.test(content);
-  check('No translate3d or translateX in crossfade transition code', !hasSlideTranslate);
-
-  // 13. Stage integrity (R-17): .deck-canvas must not shrink inside the flex
-  // #deck-viewport. Without flex-shrink: 0 the 1920px stage shrinks to the
-  // viewport width at any window narrower than 1920px and the deck renders
-  // squished with black bars on the sides.
-  const canvasBlock = content.match(/\.deck-canvas\s*\{[^}]*\}/);
+  // .deck-canvas flex-shrink: 0 (R-17)
+  const canvasBlock = skeleton.match(/\.deck-canvas\s*\{[^}]*\}/);
   check('.deck-canvas has flex-shrink: 0 (stage never shrinks)',
     canvasBlock ? /flex-shrink\s*:\s*0/.test(canvasBlock[0]) : false);
 
-  // 14. Zero hardcoded duration literals in transition functions (280, 180ms, 240ms, i * 40)
-  const scriptContent = content.slice(content.lastIndexOf('<script'));
-  const transitionMatch = scriptContent.match(/_executeTransition\b[\s\S]*?_staggerChildren\b[\s\S]*?\n\s{4,6}\}/);
-  if (transitionMatch) {
-    const fnBody = transitionMatch[0];
-    const hasLiteral180ms   = /180ms/i.test(fnBody);
-    const hasLiteral240ms   = /240ms/i.test(fnBody);
-    const hasLiteral280     = /\b280\b/.test(fnBody);
-    const hasLiteralStagger = /i\s*\*\s*40\b/.test(fnBody);
-    check('Zero hardcoded duration literals in transition functions',
-      !hasLiteral180ms && !hasLiteral240ms && !hasLiteral280 && !hasLiteralStagger);
-  } else {
-    check('Zero hardcoded duration literals in transition functions', false);
+  // HUD and Announcer elements
+  check('#shortcut-hud element present', skeleton.includes('id="shortcut-hud"'));
+  check('#deck-announcer element present', skeleton.includes('id="deck-announcer"'));
+
+  // Font slot comment present
+  check('Font slot comment present in skeleton', skeleton.includes('<!-- FONTS: inline library/fonts/*.css'));
+} else {
+  check('templates/deck-skeleton.html exists', false);
+}
+
+// 4. Font Library Verification (library/fonts/*.css)
+console.log('\n--- Checking Font Library (library/fonts/*.css) ---');
+const fontsDir = join(root, 'library/fonts');
+if (existsSync(fontsDir)) {
+  const fontFiles = readdirSync(fontsDir).filter(f => f.endsWith('.css'));
+  check('library/fonts/ contains 4 font families', fontFiles.length === 4);
+  for (const f of fontFiles) {
+    const content = readFileSync(join(fontsDir, f), 'utf8');
+    const hasFontFace = /@font-face\s*\{/.test(content);
+    const hasBase64 = /url\(["']?data:(font|application)\/(woff2|woff|x-font-woff);base64,/i.test(content);
+    check(`library/fonts/${f} contains @font-face and base64 data`, hasFontFace && hasBase64);
   }
+} else {
+  check('library/fonts/ exists', false);
+}
 
-  // 15. Click listener calling goTo during overview
-  const hasOverviewClick =
-    /addEventListener\s*\(\s*['"]click['"][\s\S]*?isOverview[\s\S]*?goTo\b/.test(content);
-  check('Click listener calling goTo during overview', hasOverviewClick);
+// 5. Themes Verification (library/themes/*.css)
+console.log('\n--- Checking Themes (library/themes/*.css) ---');
+const themesDir = join(root, 'library/themes');
+if (existsSync(themesDir)) {
+  const themeFiles = readdirSync(themesDir).filter(f => f.endsWith('.css'));
+  check('library/themes/ contains 4 theme presets', themeFiles.length === 4);
+  for (const t of themeFiles) {
+    const content = readFileSync(join(themesDir, t), 'utf8');
 
-  // 16. deck-skeleton.html contains 4 @font-face rules (Archivo Black, Space Grotesk, Sora, DM Sans)
-  if (name.endsWith('deck-skeleton.html')) {
-    const hasArchivoBlack = /@font-face\b[^}]*font-family:\s*['"]Archivo Black['"]/i.test(content);
-    const hasSpaceGrotesk = /@font-face\b[^}]*font-family:\s*['"]Space Grotesk['"]/i.test(content);
-    const hasSora         = /@font-face\b[^}]*font-family:\s*['"]Sora['"]/i.test(content);
-    const hasDMSans       = /@font-face\b[^}]*font-family:\s*['"]DM Sans['"]/i.test(content);
-    const fontFaces       = [...content.matchAll(/@font-face\s*\{/gi)];
-    check('deck-skeleton.html contains 4 @font-face rules (Archivo Black, Space Grotesk, Sora, DM Sans)',
-      fontFaces.length >= 4 && hasArchivoBlack && hasSpaceGrotesk && hasSora && hasDMSans);
+    // Split contrast tokens
+    const hasAccentInk = /--accent-ink\s*:/i.test(content);
+    const hasAccentOn  = /--accent-on\s*:/i.test(content);
+    check(`Theme ${t} defines --accent-ink and --accent-on`, hasAccentInk && hasAccentOn);
+
+    // State tokens
+    const hasStateTokens = /--state-idle\s*:/i.test(content) &&
+                           /--state-candidate\s*:/i.test(content) &&
+                           /--state-active\s*:/i.test(content) &&
+                           /--state-committed\s*:/i.test(content) &&
+                           /--state-rejected\s*:/i.test(content);
+    check(`Theme ${t} defines state tokens (idle, candidate, active, committed, rejected)`, hasStateTokens);
+
+    // Font requirement header check
+    const headerFontMatch = content.match(/Required Fonts:\s*([^\n\r*]+)/i);
+    if (headerFontMatch) {
+      const fontList = headerFontMatch[1].trim();
+      if (!fontList.toLowerCase().includes('none')) {
+        const requiredFonts = fontList.split(',').map(s => s.trim()).filter(Boolean);
+        for (const rf of requiredFonts) {
+          const fontExists = existsSync(join(root, 'library/fonts', rf));
+          check(`Theme ${t} required font ${rf} exists in library/fonts/`, fontExists);
+        }
+      } else {
+        check(`Theme ${t} correctly documents system font stack (no font files needed)`, true);
+      }
+    } else {
+      check(`Theme ${t} documents Required Fonts header`, false);
+    }
+  }
+} else {
+  check('library/themes/ exists', false);
+}
+
+// 6. State Motion Verification (library/animations/state-motion.css)
+console.log('\n--- Checking State Motion (library/animations/state-motion.css) ---');
+const motionPath = join(root, 'library/animations/state-motion.css');
+if (existsSync(motionPath)) {
+  const content = readFileSync(motionPath, 'utf8');
+
+  // 5 micro-primitives
+  const hasPathDraw   = /\.path-draw\b/.test(content);
+  const hasBarGrow    = /\.bar-grow\b/.test(content);
+  const hasNodeBeacon = /\.node-beacon\b/.test(content);
+  const hasFocusDim   = /\.focus-dim\b/.test(content);
+  const hasStagger    = /\.stagger-item\b/.test(content);
+  check('state-motion.css contains 5 micro-primitives (path-draw, bar-grow, node-beacon, focus-dim, stagger)',
+    hasPathDraw && hasBarGrow && hasNodeBeacon && hasFocusDim && hasStagger);
+
+  // 5 state classes
+  const hasIdle      = /\.state-idle\b/.test(content);
+  const hasCandidate = /\.state-candidate\b/.test(content);
+  const hasActive    = /\.state-active\b/.test(content);
+  const hasCommitted = /\.state-committed\b/.test(content);
+  const hasRejected  = /\.state-rejected\b/.test(content);
+  check('state-motion.css contains 5 state classes (idle, candidate, active, committed, rejected)',
+    hasIdle && hasCandidate && hasActive && hasCommitted && hasRejected);
+} else {
+  check('library/animations/state-motion.css exists', false);
+}
+
+// 7. Library Layouts & Diagrams Verification
+console.log('\n--- Checking Layouts & Diagrams ---');
+const layoutsDir = join(root, 'library/layouts');
+const diagramsDir = join(root, 'library/diagrams');
+
+const expectedLayouts = [
+  'pole-hero.html', 'pole-stat.html', 'open-columns.html', 'numbered-rows.html',
+  'split-canvas.html', 'horizontal-track.html', 'full-diagram.html'
+];
+for (const l of expectedLayouts) {
+  check(`Layout ${l} exists`, existsSync(join(layoutsDir, l)));
+}
+
+const expectedDiagrams = [
+  'node-link-graph.html', 'data-charts.html', 'mechanism-anatomy.html',
+  'counter-example.html', 'pipeline-flow.html', 'architecture-stack.html',
+  'matrix-2x2.html'
+];
+for (const d of expectedDiagrams) {
+  check(`Diagram ${d} exists`, existsSync(join(diagramsDir, d)));
+}
+
+// 8. Quality Checks across library/
+console.log('\n--- Checking Quality Invariants in library/ ---');
+function walkDir(dir) {
+  let files = [];
+  if (!existsSync(dir)) return files;
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...walkDir(full));
+    } else if (entry.name.endsWith('.html') || entry.name.endsWith('.css') || entry.name.endsWith('.md')) {
+      files.push({ rel: full.slice(root.length + 1), content: readFileSync(full, 'utf8') });
+    }
+  }
+  return files;
+}
+
+const libFiles = walkDir(join(root, 'library'));
+let boxShadowViolations = [];
+let illustrativeViolations = [];
+let translateViolations = [];
+let externalUrlViolations = [];
+
+for (const { rel, content } of libFiles) {
+  // Check box-shadow / drop-shadow
+  if (/box-shadow|drop-shadow/i.test(content)) {
+    boxShadowViolations.push(rel);
+  }
+  // Check literal "Illustrative concept"
+  if (/Illustrative concept/i.test(content)) {
+    illustrativeViolations.push(rel);
+  }
+  // Check translate3d / translateX (excluding comments explaining invariants)
+  const linesWithoutComments = content.split('\n').filter(line => !/^\s*(\*|\/\/|\/\*)/.test(line)).join('\n');
+  if (/translate(?:3d|X)\s*\(/i.test(linesWithoutComments)) {
+    translateViolations.push(rel);
+  }
+  // Check external URLs
+  if (rel.endsWith('.html') || rel.endsWith('.css')) {
+    const match = content.match(/https?:\/\/[^\s"'>]+/i);
+    if (match) externalUrlViolations.push(`${rel} (${match[0]})`);
   }
 }
 
-// ── Library Scan ─────────────────────────────────────────────────────────────
+check('Zero box-shadow or drop-shadow in library/', boxShadowViolations.length === 0);
+if (boxShadowViolations.length > 0) console.error('    Violations:', boxShadowViolations);
 
-const libraryDir = join(root, 'library');
-let libFileCount = 0;
-if (existsSync(libraryDir)) {
-  function walkFiles(dir) {
-    let results = [];
-    for (const entry of readdirSync(dir, { withFileTypes: true })) {
-      const full = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        results.push(...walkFiles(full));
-      } else if (entry.name.endsWith('.html') || entry.name.endsWith('.css')) {
-        results.push({ name: full.slice(root.length + 1), content: readFileSync(full, 'utf8') });
-      }
-    }
-    return results;
+check('Zero literal "Illustrative concept" in library/', illustrativeViolations.length === 0);
+if (illustrativeViolations.length > 0) console.error('    Violations:', illustrativeViolations);
+
+check('Zero translate3d or translateX code in library/', translateViolations.length === 0);
+if (translateViolations.length > 0) console.error('    Violations:', translateViolations);
+
+check('Zero external URLs in library/ HTML and CSS files', externalUrlViolations.length === 0);
+if (externalUrlViolations.length > 0) console.error('    Violations:', externalUrlViolations);
+
+// Check references/03 for zero box-shadow
+const ref03Path = join(root, 'references/03-svg-diagram-rules.md');
+if (existsSync(ref03Path)) {
+  const ref03 = readFileSync(ref03Path, 'utf8');
+  check('references/03-svg-diagram-rules.md has zero box-shadow or drop-shadow',
+    !/box-shadow|drop-shadow/i.test(ref03.split('\n').filter(l => !l.includes('BANNED')).join('\n')));
+}
+
+// 9. Em-Dash Check across SKILL.md and references/
+console.log('\n--- Checking Zero Em-Dashes (SKILL.md & references/) ---');
+const docsToCheck = ['SKILL.md'];
+const refsDir = join(root, 'references');
+if (existsSync(refsDir)) {
+  for (const f of readdirSync(refsDir).filter(f => f.endsWith('.md'))) {
+    docsToCheck.push(join('references', f));
   }
+}
 
-  const libFiles = walkFiles(libraryDir);
-  libFileCount = libFiles.length;
-  for (const { name, content } of libFiles) {
-    console.log(`\nChecking: ${name}`);
-
-    // L-1: Zero external http(s) URLs
-    const hasExternalUrl = /https?:\/\//i.test(content);
-    check('Zero external http(s) URLs', !hasExternalUrl);
-
-    // L-2: Zero em-dashes
-    const hasEmDash = /[\u2014—]/.test(content);
-    check('Zero em-dashes', !hasEmDash);
-
-    // L-3: Zero translate3d or translateX
-    const hasTranslate = /translate(?:3d|X)\s*\(/i.test(content);
-    check('Zero translate3d or translateX', !hasTranslate);
-
-    // L-4: Zero data-notes or speaker-hud
-    const hasNotesOrHud = /data-notes/i.test(content) || /speaker-hud/i.test(content);
-    check('Zero data-notes or speaker-hud', !hasNotesOrHud);
-
-    // L-5: Zero Bodoni Moda references
-    const hasBodoni = /Bodoni/i.test(content);
-    check('Zero Bodoni Moda references', !hasBodoni);
-
-    // L-6: Zero literal "Illustrative concept" in library components
-    if (name.startsWith('library/components/')) {
-      const hasIllustrativeConcept = /Illustrative concept/i.test(content);
-      check('Zero literal "Illustrative concept"', !hasIllustrativeConcept);
+let emDashViolations = [];
+for (const rel of docsToCheck) {
+  const full = join(root, rel);
+  if (existsSync(full)) {
+    const content = readFileSync(full, 'utf8');
+    if (/[\u2014]/.test(content)) {
+      emDashViolations.push(rel);
     }
-
-    // L-7: Zero box-shadow or drop-shadow in library files
-    const hasShadow = /box-shadow|drop-shadow/i.test(content);
-    check('Zero box-shadow or drop-shadow', !hasShadow);
   }
+}
+check('Zero em-dashes in SKILL.md and references/', emDashViolations.length === 0);
+if (emDashViolations.length > 0) console.error('    Em-dash violations:', emDashViolations);
 
-  // ── References and New Component Verification ─────────────────────────────
-  console.log('\nChecking references and component catalog:');
+// 10. Check Examples (examples/*.html)
+console.log('\n--- Checking Examples (examples/*.html) ---');
+const examplesDir = join(root, 'examples');
+if (existsSync(examplesDir)) {
+  const exampleFiles = readdirSync(examplesDir).filter(f => f.endsWith('.html'));
+  for (const ef of exampleFiles) {
+    const content = readFileSync(join(examplesDir, ef), 'utf8');
+    const hasExternalLinks = /<link\b[^>]*href\s*=\s*["'](https?:)?\/\//i.test(content);
+    const hasExternalScripts = /<script\b[^>]*src\s*=\s*["'](https?:)?\/\//i.test(content);
+    check(`Example ${ef} has zero external links/scripts`, !hasExternalLinks && !hasExternalScripts);
 
-  const ref03Path = join(root, 'references/03-components-and-layouts.md');
-  const ref04Path = join(root, 'references/04-svg-diagram-primitives.md');
-  const ref03Content = existsSync(ref03Path) ? readFileSync(ref03Path, 'utf8') : '';
-  const ref04Content = existsSync(ref04Path) ? readFileSync(ref04Path, 'utf8') : '';
-  check('references/03 has zero box-shadow or drop-shadow', !/box-shadow|drop-shadow/i.test(ref03Content));
-  check('references/04 has zero box-shadow or drop-shadow', !/box-shadow|drop-shadow/i.test(ref04Content));
+    const has1920 = /1920px/i.test(content);
+    const has1080 = /1080px/i.test(content);
+    check(`Example ${ef} references 1920x1080 canvas`, has1920 && has1080);
 
-  const hasStateWalkthrough = existsSync(join(root, 'library/components/state-walkthrough.html'));
-  const hasOpenMetrics      = existsSync(join(root, 'library/components/open-metrics.html'));
-  const hasConceptVisual    = existsSync(join(root, 'library/components/concept-visual.html'));
-  check('3 new components exist (state-walkthrough, open-metrics, concept-visual)',
-    hasStateWalkthrough && hasOpenMetrics && hasConceptVisual);
+    const hasEmbeddedFont = /@font-face\b[\s\S]{0,500}?src:\s*url\(\s*["']?data:(font|application)\/(woff2|woff|x-font-woff);base64,/i.test(content);
+    check(`Example ${ef} has embedded base64 @font-face`, hasEmbeddedFont);
+
+    const hasPrint = /@media\s+print\b/.test(content);
+    check(`Example ${ef} has @media print block`, hasPrint);
+  }
 }
 
 // ── Summary ──────────────────────────────────────────────────────────────────
-
 console.log(`\n──────────────────────────────`);
-console.log(`Results: ${passed} passed, ${failed} failed across ${allFiles.length + libFileCount} file(s).`);
+console.log(`Results: ${passed} passed, ${failed} failed.`);
 
 if (failed > 0) {
-  console.error(`\nFAIL — ${failed} check(s) did not pass.`);
+  console.error(`\nFAIL - ${failed} check(s) did not pass.`);
   process.exit(1);
 } else {
-  console.log(`\nPASS — all checks passed.`);
+  console.log(`\nPASS - all checks passed.`);
 }

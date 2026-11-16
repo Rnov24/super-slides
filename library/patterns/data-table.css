@@ -1,0 +1,79 @@
+/*
+ * Pattern: Projector Data Table
+ * Purpose: High-legibility tabular presentation for metrics, candidate evaluations, and performance SLAs.
+ * Specifications:
+ * - Font size floor >= 20px for clear readability from the back of the room.
+ * - font-variant-numeric: tabular-nums for vertical column alignment.
+ * - Hairline 1px borders, zero box shadows, accented total/delta summary rows.
+ */
+
+.data-table-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-primary);
+  font-size: 20px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.data-table th {
+  text-align: left;
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.data-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--surface-border);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table .row-total,
+.data-table tr.row-total td {
+  font-weight: 700;
+  border-top: 2px solid var(--surface-border);
+  border-bottom: none;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.data-table .cell-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table .cell-delta-pos {
+  color: var(--state-committed, #34d399);
+  font-weight: 700;
+}
+
+.data-table .cell-delta-neg {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.data-table .cell-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm, 4px);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+}

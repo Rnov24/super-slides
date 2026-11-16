@@ -1,0 +1,303 @@
+<!--
+  Layout: Split Canvas (Asymmetric 40/60 or 35/65 Split with Locked Stage Support)
+  Slide Job: Pair detailed analytical prose, decision tables, or proof stacks with a coordinate-locked SVG stage or schematic.
+  Slots:
+    - {{ kicker }}: Analysis or trace phase tag
+    - {{ title }}: Action conclusion headline
+    - {{ left_canvas }}: Causal rationale, candidate evaluation table, or transformation delta
+    - {{ right_canvas }}: Dedicated diagram stage with data-locked-stage for zero-jump state traces
+  Avoid-List:
+    - Never wrap either half in a heavy card container; separate with an open 1px hairline.
+    - Never let left and right sections float at mismatched baseline offsets.
+    - Never translate or re-mount the .locked-stage across consecutive walkthrough slides.
+-->
+
+<section class="slide" data-layout="split-canvas" tabindex="-1">
+  <div class="split-canvas-stage">
+    <div class="split-canvas-header">
+      <span class="split-kicker">DISTRIBUTED TOPOLOGY WALKTHROUGH</span>
+      <h2 class="split-title">Greedy Cut Expansion Guarantees Minimal Edge Weight</h2>
+    </div>
+
+    <div class="split-canvas-body">
+      <!-- Left Column: Causal Rationale & Decision Telemetry (40%) -->
+      <div class="split-left-pane">
+        <div class="pane-eyebrow">STEP 02 OF 06: CUT FRONTIER</div>
+        <h3 class="pane-headline">Crossing Edge B-D Selected</h3>
+        <p class="pane-description">
+          Evaluating all crossing links between visited partition {A, B} and unvisited hubs. Candidate link B-D (6 km) provides minimum crossing weight while candidate C-D is rejected to prevent cycle formation.
+        </p>
+
+        <div class="pane-table-slot">
+          <!-- Projector Data Table Pattern -->
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>CANDIDATE</th>
+                <th>WEIGHT</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Edge B-D</td>
+                <td class="cell-num">6 km</td>
+                <td><span class="cell-delta-pos">SELECTED</span></td>
+              </tr>
+              <tr>
+                <td>Edge B-C</td>
+                <td class="cell-num">8 km</td>
+                <td><span class="state-idle">PENDING</span></td>
+              </tr>
+              <tr>
+                <td>Edge C-D</td>
+                <td class="cell-num">9 km</td>
+                <td><span class="cell-delta-neg">REJECTED (CYCLE)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pane-callout-strip">
+          <span class="strip-label">CUT INVARIANT</span>
+          <span class="strip-value">Global MST distance remains optimal across every greedy step</span>
+        </div>
+      </div>
+
+      <!-- Right Column: Diagram Canvas Stage (60%) -->
+      <div class="split-right-pane locked-stage" data-locked-stage="true">
+        <div class="stage-frame">
+          <!-- SVG Diagram Primitive Slot (e.g. node-link-graph or mechanism-anatomy) -->
+          <svg class="stage-svg" viewBox="0 0 760 520" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <pattern id="split-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--surface-border)" stroke-width="1" stroke-opacity="0.3"/>
+              </pattern>
+            </defs>
+            <rect width="760" height="520" fill="url(#split-grid)" rx="8" />
+
+            <!-- Edge lines -->
+            <line x1="160" y1="260" x2="380" y2="160" stroke="var(--state-committed, #34d399)" stroke-width="3" />
+            <line x1="380" y1="160" x2="580" y2="220" stroke="var(--accent)" stroke-width="4" stroke-dasharray="100" class="path-draw" />
+            <line x1="380" y1="160" x2="380" y2="380" stroke="var(--surface-border)" stroke-width="2" stroke-dasharray="4 4" class="state-candidate" />
+            <line x1="160" y1="260" x2="380" y2="380" stroke="var(--state-rejected, #f43f5e)" stroke-width="2" stroke-dasharray="3 3" />
+
+            <!-- Node circles -->
+            <g transform="translate(160, 260)">
+              <circle r="24" fill="var(--surface)" stroke="var(--state-committed, #34d399)" stroke-width="3" />
+              <text text-anchor="middle" dy="6" fill="var(--text)" font-family="var(--font-mono)" font-size="14" font-weight="700">A</text>
+            </g>
+
+            <g transform="translate(380, 160)">
+              <circle r="24" fill="var(--surface)" stroke="var(--state-committed, #34d399)" stroke-width="3" />
+              <text text-anchor="middle" dy="6" fill="var(--text)" font-family="var(--font-mono)" font-size="14" font-weight="700">B</text>
+            </g>
+
+            <g transform="translate(580, 220)">
+              <circle class="node-beacon" r="16" fill="none" stroke="var(--accent)" stroke-width="2" opacity="0.8" />
+              <circle r="24" fill="var(--surface)" stroke="var(--accent)" stroke-width="3" />
+              <text text-anchor="middle" dy="6" fill="var(--text)" font-family="var(--font-mono)" font-size="14" font-weight="700">D</text>
+            </g>
+
+            <g transform="translate(380, 380)">
+              <circle r="24" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="2" />
+              <text text-anchor="middle" dy="6" fill="var(--text-muted)" font-family="var(--font-mono)" font-size="14" font-weight="700">C</text>
+            </g>
+
+            <!-- Causal Badges -->
+            <rect x="440" y="155" width="130" height="28" rx="14" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5" />
+            <text x="505" y="174" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--accent)">MIN WEIGHT (6km)</text>
+
+            <rect x="220" y="325" width="120" height="28" rx="14" fill="var(--surface)" stroke="var(--state-rejected, #f43f5e)" stroke-width="1" />
+            <text x="280" y="344" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--state-rejected, #f43f5e)">CYCLE REJECTED</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="deck-footer">
+      <span>TOPOLOGY STATE TRACE</span>
+      <span>05 / 08</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-layout="split-canvas"] {
+    padding: 72px 100px 56px 100px;
+    background: var(--bg);
+    background-image: var(--bg-gradient);
+  }
+
+  .split-canvas-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+  }
+
+  .split-canvas-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .split-kicker {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .split-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    max-width: 1400px;
+  }
+
+  .split-canvas-body {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    gap: 56px;
+    align-items: center;
+    margin: 24px 0;
+  }
+
+  .split-left-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pane-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .pane-headline {
+    font-family: var(--font-primary);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .pane-description {
+    font-size: 19px;
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+
+  .pane-table-slot {
+    margin: 8px 0;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-primary);
+    font-size: 18px;
+    color: var(--text);
+  }
+
+  .data-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--surface-border);
+  }
+
+  .data-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--surface-border);
+    vertical-align: middle;
+  }
+
+  .cell-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cell-delta-pos {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--state-committed, #34d399);
+  }
+
+  .cell-delta-neg {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--state-rejected, #f43f5e);
+  }
+
+  .pane-callout-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 20px;
+    border-left: 3px solid var(--accent);
+    background: transparent;
+  }
+
+  .strip-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .strip-value {
+    font-size: 16px;
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .split-right-pane {
+    position: relative;
+    width: 100%;
+  }
+
+  .stage-frame {
+    width: 100%;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .stage-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .deck-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding-top: 14px;
+    border-top: 1px solid var(--surface-border-subtle, var(--surface-border));
+  }
+</style>

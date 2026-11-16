@@ -1,0 +1,45 @@
+/*
+ * Pattern: Callout Strip
+ * Purpose: Strategic decision banner or architectural summary bar.
+ * Placement: Anchor band at bottom or mid-slide on pivotal turning-point slides.
+ * Discipline: Crisp 1px hairline border or 4px solid accent spine, zero elevation shadows.
+ */
+
+.callout-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 24px 32px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm, 4px);
+  box-sizing: border-box;
+}
+
+.callout-strip .strip-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.callout-strip .strip-text {
+  font-family: var(--font-primary);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text);
+  flex: 1;
+}
+
+.callout-strip .strip-meta {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}

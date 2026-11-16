@@ -1,0 +1,130 @@
+<!--
+  Diagram Archetype: Pipeline Flow (End-to-End Sequential Processing Stream)
+  Budget Adherence: 4 process stages, 3 connector spans with travelling flow dots, 1 focal active stage.
+  Discipline: 4px grid snap, viewBox 1200x675, zero elevation shadows, opaque halo pill markers.
+-->
+
+<section class="diagram-spec" data-diagram="pipeline-flow">
+  <div class="diagram-frame">
+    <svg class="diagram-svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <pattern id="pf-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--surface-border)" stroke-width="1" stroke-opacity="0.25"/>
+        </pattern>
+      </defs>
+
+      <rect width="1200" height="675" fill="url(#pf-grid)" rx="8" />
+
+      <!-- Connecting Flow Lines (Background Track + Animated Travelling Flow) -->
+      <line x1="260" y1="337" x2="360" y2="337" stroke="var(--surface-border)" stroke-width="3" />
+      <line x1="260" y1="337" x2="360" y2="337" stroke="var(--accent-alt)" stroke-width="3" class="micro-connector-flow" />
+
+      <line x1="560" y1="337" x2="660" y2="337" stroke="var(--surface-border)" stroke-width="3" />
+      <line x1="560" y1="337" x2="660" y2="337" stroke="var(--accent)" stroke-width="3" class="micro-connector-flow" />
+
+      <line x1="860" y1="337" x2="960" y2="337" stroke="var(--surface-border)" stroke-width="3" />
+      <line x1="860" y1="337" x2="960" y2="337" stroke="var(--accent-alt)" stroke-width="3" class="micro-connector-flow" />
+
+      <!-- STAGE 1: INGESTION (X: 60 to 260) -->
+      <g transform="translate(60, 207)">
+        <rect width="200" height="260" rx="8" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1.5" />
+        <rect x="16" y="16" width="70" height="24" rx="4" fill="var(--bg)" />
+        <text x="51" y="32" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--text-muted)">STAGE 01</text>
+
+        <text x="16" y="76" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">Wire Ingress</text>
+        <text x="16" y="104" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">Direct NIC DMA</text>
+
+        <line x1="16" y1="124" x2="184" y2="124" stroke="var(--surface-border)" stroke-width="1" />
+
+        <text x="16" y="152" font-family="var(--font-mono)" font-size="12" fill="var(--text-muted)">THROUGHPUT</text>
+        <text x="16" y="174" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="var(--text)">240 GB/s</text>
+
+        <rect x="16" y="210" width="168" height="28" rx="4" fill="var(--bg)" stroke="var(--surface-border)" stroke-width="1" />
+        <text x="100" y="228" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--text-muted)">HARDWARE BOUND</text>
+      </g>
+
+      <!-- STAGE 2: PARSING (X: 360 to 560) -->
+      <g transform="translate(360, 207)">
+        <rect width="200" height="260" rx="8" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1.5" />
+        <rect x="16" y="16" width="70" height="24" rx="4" fill="var(--bg)" />
+        <text x="51" y="32" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--text-muted)">STAGE 02</text>
+
+        <text x="16" y="76" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">Zero-Copy Parse</text>
+        <text x="16" y="104" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">Off-heap arena slabs</text>
+
+        <line x1="16" y1="124" x2="184" y2="124" stroke="var(--surface-border)" stroke-width="1" />
+
+        <text x="16" y="152" font-family="var(--font-mono)" font-size="12" fill="var(--text-muted)">HEAP CHURN</text>
+        <text x="16" y="174" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="var(--state-committed, #34d399)">0 MB / SEC</text>
+
+        <rect x="16" y="210" width="168" height="28" rx="4" fill="var(--bg)" stroke="var(--surface-border)" stroke-width="1" />
+        <text x="100" y="228" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--text-muted)">CPU BOUND</text>
+      </g>
+
+      <!-- STAGE 3: FOCAL ACCENT STAGE (X: 660 to 860) -->
+      <g transform="translate(660, 187)">
+        <rect width="200" height="300" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5" />
+        <rect x="16" y="16" width="80" height="24" rx="4" fill="var(--accent-soft, rgba(255, 87, 34, 0.14))" />
+        <text x="56" y="32" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--accent)">FOCAL 03</text>
+
+        <text x="16" y="76" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">Cut Evaluation</text>
+        <text x="16" y="104" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">16-core parallel greedy</text>
+
+        <line x1="16" y1="124" x2="184" y2="124" stroke="var(--accent)" stroke-width="1.5" />
+
+        <text x="16" y="152" font-family="var(--font-mono)" font-size="12" fill="var(--accent)">CYCLE CHECK</text>
+        <text x="16" y="174" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="var(--accent)">SUB-1.5MS</text>
+
+        <text x="16" y="206" font-family="var(--font-mono)" font-size="12" fill="var(--text-muted)">CONVERGENCE</text>
+        <text x="16" y="228" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="var(--text)">OPTIMAL TREE</text>
+
+        <rect x="16" y="250" width="168" height="28" rx="4" fill="var(--accent-soft, rgba(255, 87, 34, 0.14))" stroke="var(--accent)" stroke-width="1" />
+        <text x="100" y="268" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--accent)">CORE BOTTLENECK</text>
+      </g>
+
+      <!-- STAGE 4: COMMIT (X: 960 to 1160) -->
+      <g transform="translate(960, 207)">
+        <rect width="200" height="260" rx="8" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1.5" />
+        <rect x="16" y="16" width="70" height="24" rx="4" fill="var(--bg)" />
+        <text x="51" y="32" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--text-muted)">STAGE 04</text>
+
+        <text x="16" y="76" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">WAL Commit</text>
+        <text x="16" y="104" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">io_uring NVMe sync</text>
+
+        <line x1="16" y1="124" x2="184" y2="124" stroke="var(--surface-border)" stroke-width="1" />
+
+        <text x="16" y="152" font-family="var(--font-mono)" font-size="12" fill="var(--text-muted)">PERSISTENCE</text>
+        <text x="16" y="174" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="var(--state-committed, #34d399)">DURABLE</text>
+
+        <rect x="16" y="210" width="168" height="28" rx="4" fill="var(--bg)" stroke="var(--surface-border)" stroke-width="1" />
+        <text x="100" y="228" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--text-muted)">IO BOUND</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .diagram-spec {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .diagram-frame {
+    width: 100%;
+    max-height: 720px;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+    background: var(--surface);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .diagram-svg {
+    display: block;
+    max-width: 100%;
+    max-height: 720px;
+    width: auto;
+    height: 100%;
+  }
+</style>

@@ -1,11 +1,9 @@
 /*
  * Theme: Ink Paper (Kami-Inspired Classical Parchment & Deep Ink)
- * Source: Research catalog (kami design system / cabird sage)
+ * Required Fonts: none
  *
- * NOTE: Themes define tokens ONLY. They must NOT contain @font-face rules.
- * For production decks with custom web fonts, embed base64 woff2 data URIs
- * in the deck HTML (e.g. Newsreader 700 or Source Serif 4 700).
- * Default fallback stack: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif.
+ * NOTE: Uses the system serif stack (Charter, Georgia, serif) by default.
+ * Optional base64 web font: sora.css or dm-sans.css can be embedded if desired.
  *
  * Accent Budget:
  * - Neutral warm parchment and paper canvas: 85% to 92%
@@ -23,7 +21,7 @@
 
 :root,
 .theme-ink-paper {
-  /* ── Tier 1: Primitives (Raw values, rarely edited) ── */
+  /* -- Tier 1: Primitives (Raw values, rarely edited) -- */
   --primitive-parchment-50:  #faf9f5;
   --primitive-parchment-100: #f5f4ed;
   --primitive-parchment-200: #eae8dc;
@@ -34,9 +32,12 @@
   --primitive-ink-900:       #1a202c;
   --primitive-ink-700:       #4a5568;
   --primitive-ink-blue-600:  #1b365d;
+  --primitive-ink-blue-800:  #10223b;
   --primitive-ink-blue-soft: rgba(27, 54, 93, 0.10);
+  --primitive-sage-700:      #285e61;
+  --primitive-crimson-800:   #742a2a;
 
-  /* ── Tier 2: Semantic Tokens (Consumed by components) ── */
+  /* -- Tier 2: Semantic Tokens (Consumed by components) -- */
   --bg:                      var(--primitive-parchment-100);
   --bg-gradient:             radial-gradient(ellipse at 50% 10%, #faf9f5 0%, #f0ede1 100%);
   --surface:                 var(--primitive-white);
@@ -46,8 +47,17 @@
   --text-muted:              var(--primitive-ink-700);
   --accent:                  var(--primitive-ink-blue-600);
   --accent-soft:             var(--primitive-ink-blue-soft);
+  --accent-ink:              var(--primitive-ink-blue-800);
+  --accent-on:               #ffffff;
   --accent-alt:              var(--primitive-ink-blue-600);
   --accent-alt-soft:         var(--primitive-ink-blue-soft);
+
+  /* Algorithmic & State tokens */
+  --state-idle:              var(--primitive-parchment-400);
+  --state-candidate:         #2b6cb0;
+  --state-active:            var(--primitive-ink-blue-600);
+  --state-committed:         var(--primitive-sage-700);
+  --state-rejected:          var(--primitive-crimson-800);
 
   /* Typography tokens (Serif-led authoritative hierarchy) */
   --font-display:            Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
@@ -61,7 +71,7 @@
   --radius-lg:               10px;
 }
 
-/* ── Tier 3: Component Token Derivations ──
+/* -- Tier 3: Component Token Derivations --
  * Components derive values from semantic tokens:
  * - Structural hairlines: border-color: var(--surface-border);
  * - Proof chips: border: 1px solid var(--accent); color: var(--accent);

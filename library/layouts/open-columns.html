@@ -1,0 +1,286 @@
+<!--
+  Layout: Open Columns (2 or 3 Open Columns with 1px Hairline Dividers)
+  Slide Job: Side-by-side comparative analysis, multi-dimensional trade-offs, or open 3-pillar metric scorecards without card boxes.
+  Slots:
+    - {{ kicker }}: Analysis or domain scope tag
+    - {{ title }}: Action conclusion headline
+    - {{ column_1 }}: Primary option, trade-off, or headline metric
+    - {{ column_2 }}: Contender option, operational reality, or secondary metric
+    - {{ column_3 }}: (Optional 3rd column) Synthesis option, risk evaluation, or third metric
+  Avoid-List:
+    - Never enclose columns in separate surface card boxes; separate only via 1px vertical hairlines.
+    - Never make competing options look visually indistinct; use accent highlights on the winning column.
+    - Never shrink column body text below 18px.
+-->
+
+<section class="slide" data-layout="open-columns" tabindex="-1">
+  <div class="open-columns-stage">
+    <div class="open-columns-header">
+      <span class="open-kicker">ENGINEERING TRADE-OFF ANALYSIS</span>
+      <h2 class="open-title">State Synchronization Models Across Edge Clusters</h2>
+    </div>
+
+    <div class="open-columns-grid">
+      <div class="open-col">
+        <div class="col-head-block">
+          <div class="col-eyebrow">OPTION A</div>
+          <h3 class="col-heading">Optimistic Gossip Protocol</h3>
+          <p class="col-summary">
+            Peer nodes synchronize via periodic randomized state dissemination with eventual consistency guarantees.
+          </p>
+        </div>
+        <div class="col-metric-row">
+          <span class="col-metric-val">12 ms</span>
+          <span class="col-metric-lbl">DISSEMINATION LATENCY</span>
+        </div>
+        <ul class="col-bullet-list">
+          <li>Zero centralized coordination bottlenecks.</li>
+          <li>Resilient to transient network packet loss.</li>
+          <li>Temporary read inconsistency during partition events.</li>
+        </ul>
+        <div class="col-decision-tag tag-neutral">HIGH CONCURRENCY</div>
+      </div>
+
+      <div class="open-col col-highlighted">
+        <div class="col-head-block">
+          <div class="col-eyebrow eyebrow-accent">RECOMMENDED OPTION B</div>
+          <h3 class="col-heading">Raft Consensus Core</h3>
+          <p class="col-summary">
+            Strict linearizable replicated log with leader-elected heartbeats and deterministic commit quorums.
+          </p>
+        </div>
+        <div class="col-metric-row">
+          <span class="col-metric-val col-accent-val">38 ms</span>
+          <span class="col-metric-lbl">CONSENSUS LATENCY</span>
+        </div>
+        <ul class="col-bullet-list">
+          <li>Guaranteed serializable transaction order.</li>
+          <li>Immediate split-brain prevention via strict quorums.</li>
+          <li>Higher write latency on cross-region backbones.</li>
+        </ul>
+        <div class="col-decision-tag tag-accent">SYSTEM OF RECORD</div>
+      </div>
+
+      <div class="open-col">
+        <div class="col-head-block">
+          <div class="col-eyebrow">HYBRID PATTERN C</div>
+          <h3 class="col-heading">Tiered Epoch Consensus</h3>
+          <p class="col-summary">
+            Raft for metadata epochs paired with gossip streams for transient telemetry vectors.
+          </p>
+        </div>
+        <div class="col-metric-row">
+          <span class="col-metric-val">18 ms</span>
+          <span class="col-metric-lbl">HYBRID LATENCY</span>
+        </div>
+        <ul class="col-bullet-list">
+          <li>Combines absolute consistency with high read scale.</li>
+          <li>Limits consensus overhead to configuration changes.</li>
+          <li>Requires dual-protocol debugging telemetry.</li>
+        </ul>
+        <div class="col-decision-tag tag-neutral">BALANCED PRODUCTION</div>
+      </div>
+    </div>
+
+    <div class="deck-footer">
+      <span>CONSENSUS PROTOCOL ARCHITECTURE</span>
+      <span>03 / 08</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-layout="open-columns"] {
+    padding: 72px 100px 56px 100px;
+    background: var(--bg);
+    background-image: var(--bg-gradient);
+  }
+
+  .open-columns-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+  }
+
+  .open-columns-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .open-kicker {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .open-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    max-width: 1350px;
+  }
+
+  .open-columns-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin: 28px 0 20px 0;
+  }
+
+  .open-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 40px;
+    border-left: 1px solid var(--surface-border);
+  }
+
+  .open-col:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .open-col:last-child {
+    padding-right: 0;
+  }
+
+  .col-head-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .col-highlighted {
+    border-left-color: var(--accent);
+  }
+
+  .col-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .eyebrow-accent {
+    color: var(--accent);
+  }
+
+  .col-heading {
+    font-family: var(--font-primary);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.25;
+  }
+
+  .col-summary {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .col-metric-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 18px 0;
+    border-top: 1px solid var(--surface-border);
+    border-bottom: 1px solid var(--surface-border);
+  }
+
+  .col-metric-val {
+    font-family: var(--font-mono);
+    font-size: 38px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+
+  .col-accent-val {
+    color: var(--accent);
+  }
+
+  .col-metric-lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .col-bullet-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .col-bullet-list li {
+    font-size: 19px;
+    line-height: 1.45;
+    color: var(--text);
+    position: relative;
+    padding-left: 18px;
+  }
+
+  .col-bullet-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--surface-border-subtle, var(--text-muted));
+  }
+
+  .col-highlighted .col-bullet-list li::before {
+    background: var(--accent);
+  }
+
+  .col-decision-tag {
+    align-self: flex-start;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm, 4px);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .tag-neutral {
+    background: transparent;
+    border: 1px solid var(--surface-border);
+    color: var(--text-muted);
+  }
+
+  .tag-accent {
+    background: var(--accent-soft, rgba(255, 87, 34, 0.14));
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+
+  .deck-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding-top: 14px;
+    border-top: 1px solid var(--surface-border-subtle, var(--surface-border));
+  }
+</style>

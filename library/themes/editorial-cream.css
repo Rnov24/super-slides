@@ -1,10 +1,6 @@
 /*
  * Theme: Editorial Cream (Elevated Light Editorial / Notebook)
- * Source: super-slides executive-pitch deck
- *
- * NOTE: Themes define tokens ONLY. They must NOT contain @font-face rules.
- * Web fonts (Sora 700, DM Sans 400/500/700) must be embedded
- * as base64 woff2 data URIs in the presentation deck HTML per the zero-network rule.
+ * Required Fonts: sora.css, dm-sans.css
  *
  * Accent Budget:
  * - Neutral canvas and paper surfaces: 80% to 90%
@@ -22,7 +18,7 @@
 
 :root,
 .theme-editorial-cream {
-  /* ── Tier 1: Primitives (Raw values, rarely edited) ── */
+  /* -- Tier 1: Primitives (Raw values, rarely edited) -- */
   --primitive-cream-50:     #faf8f3;
   --primitive-cream-100:    #f8f6f1;
   --primitive-cream-200:    #f1eee4;
@@ -32,11 +28,14 @@
   --primitive-charcoal-900: #1a1a1a;
   --primitive-charcoal-600: #5a554e;
   --primitive-terracotta:   #b33927;
+  --primitive-terracotta-dark: #8e2819;
   --primitive-terracotta-soft: rgba(179, 57, 39, 0.12);
   --primitive-pine:         #2b5c54;
   --primitive-pine-soft:    rgba(43, 92, 84, 0.12);
+  --primitive-green-700:    #1e7e34;
+  --primitive-red-700:      #b71c1c;
 
-  /* ── Tier 2: Semantic Tokens (Consumed by components) ── */
+  /* -- Tier 2: Semantic Tokens (Consumed by components) -- */
   --bg:                     var(--primitive-cream-100);
   --bg-gradient:            radial-gradient(ellipse at 50% 0%, #faf8f3 0%, #f1eee4 100%);
   --surface:                var(--primitive-white);
@@ -46,8 +45,17 @@
   --text-muted:             var(--primitive-charcoal-600);
   --accent:                 var(--primitive-terracotta);
   --accent-soft:            var(--primitive-terracotta-soft);
+  --accent-ink:             var(--primitive-terracotta-dark);
+  --accent-on:              #ffffff;
   --accent-alt:             var(--primitive-pine);
   --accent-alt-soft:        var(--primitive-pine-soft);
+
+  /* Algorithmic & State tokens */
+  --state-idle:             var(--primitive-cream-400);
+  --state-candidate:        var(--primitive-pine);
+  --state-active:           var(--primitive-terracotta);
+  --state-committed:        var(--primitive-green-700);
+  --state-rejected:         var(--primitive-red-700);
 
   /* Typography tokens */
   --font-display:           'Sora', system-ui, -apple-system, sans-serif;
@@ -61,7 +69,7 @@
   --radius-lg:              12px;
 }
 
-/* ── Tier 3: Component Token Derivations ──
+/* -- Tier 3: Component Token Derivations --
  * Components derive values from semantic tokens:
  * - Proof chips / tags: background: var(--accent-soft); color: var(--accent);
  * - Structural dividers: border-color: var(--surface-border);

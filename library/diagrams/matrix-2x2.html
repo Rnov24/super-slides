@@ -1,0 +1,107 @@
+<!--
+  Diagram Archetype: Matrix 2x2 (Four-Quadrant Strategic Positioning Matrix)
+  Budget Adherence: 4 quadrants, 2 labeled axes with arrow markers, 1 highlighted target quadrant.
+  Discipline: 4px grid snap, viewBox 1200x675, zero elevation shadows, all colors via semantic var(--*).
+-->
+
+<section class="diagram-spec" data-diagram="matrix-2x2">
+  <div class="diagram-frame">
+    <svg class="diagram-svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <pattern id="m2-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--surface-border)" stroke-width="1" stroke-opacity="0.25"/>
+        </pattern>
+      </defs>
+
+      <rect width="1200" height="675" fill="url(#m2-grid)" rx="8" />
+
+      <!-- MATRIX BACKGROUND PLANES -->
+      <!-- Top Right Quadrant (Target Position - Subtle Accent Tint) -->
+      <rect x="600" y="75" width="480" height="240" fill="var(--accent-soft, rgba(255, 87, 34, 0.08))" rx="4" />
+      <rect x="600" y="75" width="480" height="240" fill="none" stroke="var(--accent)" stroke-width="1.5" rx="4" />
+
+      <!-- AXES LINES -->
+      <!-- Vertical Y Axis -->
+      <line x1="600" y1="50" x2="600" y2="575" stroke="var(--surface-border)" stroke-width="2" />
+      <!-- Horizontal X Axis -->
+      <line x1="100" y1="315" x2="1100" y2="315" stroke="var(--surface-border)" stroke-width="2" />
+
+      <!-- AXIS LABELS -->
+      <!-- Y-Axis High -->
+      <text x="600" y="35" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="700" letter-spacing="0.1em" fill="var(--text)" text-transform="uppercase">
+        HIGH THROUGHPUT &amp; SUB-MS LATENCY
+      </text>
+
+      <!-- Y-Axis Low -->
+      <text x="600" y="605" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="700" letter-spacing="0.1em" fill="var(--text-muted)" text-transform="uppercase">
+        LIMITED SCALE &amp; PACKET CHURN
+      </text>
+
+      <!-- X-Axis Low (Left) -->
+      <text x="100" y="340" text-anchor="start" font-family="var(--font-mono)" font-size="12" font-weight="700" letter-spacing="0.1em" fill="var(--text-muted)" text-transform="uppercase">
+        CONVENTIONAL THREADING
+      </text>
+
+      <!-- X-Axis High (Right) -->
+      <text x="1100" y="340" text-anchor="end" font-family="var(--font-mono)" font-size="12" font-weight="700" letter-spacing="0.1em" fill="var(--text)" text-transform="uppercase">
+        ZERO-COPY MEMORY ARENA
+      </text>
+
+      <!-- QUADRANT 1 (TOP LEFT): SPECIALIZED NICHE -->
+      <g transform="translate(140, 95)">
+        <text x="0" y="24" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--text-muted)">QUADRANT II</text>
+        <text x="0" y="52" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">In-Memory Cache Nodes</text>
+        <text x="0" y="78" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">High throughput but vulnerable to memory GC halts under burst writes</text>
+      </g>
+
+      <!-- QUADRANT 2 (TOP RIGHT): TARGET POSITION (FOCAL) -->
+      <g transform="translate(640, 95)">
+        <rect x="0" y="0" width="130" height="26" rx="4" fill="var(--accent)" />
+        <text x="65" y="17" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--accent-on)">TARGET POSITION</text>
+
+        <text x="0" y="52" font-family="var(--font-primary)" font-size="24" font-weight="700" fill="var(--text)">Super-Slides Engine</text>
+        <text x="0" y="80" font-family="var(--font-primary)" font-size="15" fill="var(--text)">Deterministic 60 FPS offline compositing with zero GC churn and zero external build tooling</text>
+      </g>
+
+      <!-- QUADRANT 3 (BOTTOM LEFT): LEGACY HERITAGE -->
+      <g transform="translate(140, 355)">
+        <text x="0" y="24" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--text-muted)">QUADRANT III</text>
+        <text x="0" y="52" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">Legacy Event Dispatchers</text>
+        <text x="0" y="78" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">Single-threaded loops, socket lock contention, and high context switches</text>
+      </g>
+
+      <!-- QUADRANT 4 (BOTTOM RIGHT): OVER-ENGINEERED -->
+      <g transform="translate(640, 355)">
+        <text x="0" y="24" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--text-muted)">QUADRANT IV</text>
+        <text x="0" y="52" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">Ad-Hoc Kernel Modules</text>
+        <text x="0" y="78" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">High maintenance complexity and hardware vendor lock-in without linear scaling</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .diagram-spec {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .diagram-frame {
+    width: 100%;
+    max-height: 720px;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+    background: var(--surface);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .diagram-svg {
+    display: block;
+    max-width: 100%;
+    max-height: 720px;
+    width: auto;
+    height: 100%;
+  }
+</style>

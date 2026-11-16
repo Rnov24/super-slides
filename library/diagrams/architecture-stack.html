@@ -1,0 +1,94 @@
+<!--
+  Diagram Archetype: Architecture Stack (Tiered Layering System with Boundary Contracts)
+  Budget Adherence: 4 system tiers, 1 focal architectural tier, clear interface boundaries, zero elevation shadows.
+  Discipline: 4px grid snap, viewBox 1200x675, all colors via semantic var(--*).
+-->
+
+<section class="diagram-spec" data-diagram="architecture-stack">
+  <div class="diagram-frame">
+    <svg class="diagram-svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <pattern id="as-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--surface-border)" stroke-width="1" stroke-opacity="0.25"/>
+        </pattern>
+      </defs>
+
+      <rect width="1200" height="675" fill="url(#as-grid)" rx="8" />
+
+      <!-- LAYER 1 (TOP): CLIENT & API LAYER -->
+      <g transform="translate(100, 60)">
+        <rect width="1000" height="96" rx="6" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1.5" />
+        <rect x="24" y="24" width="90" height="24" rx="4" fill="var(--bg)" />
+        <text x="69" y="40" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--text-muted)">TIER 01</text>
+        <text x="130" y="42" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">Consumer Interface &amp; Ingress Gateway</text>
+        <text x="130" y="68" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">HTTP/3, gRPC multiplexing, TLS 1.3 termination, rate limiting tokens</text>
+      </g>
+
+      <!-- Inter-Tier Connectors -->
+      <line x1="600" y1="156" x2="600" y2="196" stroke="var(--surface-border)" stroke-width="2" stroke-dasharray="4 4" />
+
+      <!-- LAYER 2: ROUTING & CONSENSUS -->
+      <g transform="translate(100, 196)">
+        <rect width="1000" height="96" rx="6" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1.5" />
+        <rect x="24" y="24" width="90" height="24" rx="4" fill="var(--bg)" />
+        <text x="69" y="40" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--text-muted)">TIER 02</text>
+        <text x="130" y="42" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">Consensus &amp; Partition Coordinator</text>
+        <text x="130" y="68" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">Raft metadata log, cluster topology lease manager, cut property solver</text>
+      </g>
+
+      <!-- Inter-Tier Connectors -->
+      <line x1="600" y1="292" x2="600" y2="332" stroke="var(--accent)" stroke-width="3" />
+
+      <!-- LAYER 3 (FOCAL CORE): EXECUTION RUNTIME -->
+      <g transform="translate(100, 332)">
+        <rect width="1000" height="116" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5" />
+        <rect x="24" y="24" width="100" height="24" rx="4" fill="var(--accent-soft, rgba(255, 87, 34, 0.14))" />
+        <text x="74" y="40" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--accent)">FOCAL TIER 03</text>
+        <text x="140" y="42" font-family="var(--font-primary)" font-size="22" font-weight="700" fill="var(--text)">Zero-Copy Memory Arena &amp; Execution Runtime</text>
+        <text x="140" y="70" font-family="var(--font-primary)" font-size="15" fill="var(--text-muted)">Off-heap slab buffers, SIMD predicate evaluation, lock-free ring channel queues</text>
+
+        <!-- Right-aligned Latency Badge -->
+        <rect x="800" y="38" width="160" height="36" rx="4" fill="var(--accent-soft, rgba(255, 87, 34, 0.14))" stroke="var(--accent)" stroke-width="1" />
+        <text x="880" y="61" text-anchor="middle" font-family="var(--font-mono)" font-size="13" font-weight="700" fill="var(--accent)">&lt; 400µs DISPATCH</text>
+      </g>
+
+      <!-- Inter-Tier Connectors -->
+      <line x1="600" y1="448" x2="600" y2="488" stroke="var(--surface-border)" stroke-width="2" stroke-dasharray="4 4" />
+
+      <!-- LAYER 4: STORAGE & HARDWARE ACCELERATION -->
+      <g transform="translate(100, 488)">
+        <rect width="1000" height="96" rx="6" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1.5" />
+        <rect x="24" y="24" width="90" height="24" rx="4" fill="var(--bg)" />
+        <text x="69" y="40" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--text-muted)">TIER 04</text>
+        <text x="130" y="42" font-family="var(--font-primary)" font-size="20" font-weight="700" fill="var(--text)">Persistence Engine &amp; Hardware Abstraction</text>
+        <text x="130" y="68" font-family="var(--font-primary)" font-size="14" fill="var(--text-muted)">io_uring direct NVMe write-ahead-log, Linux eBPF telemetry hooks</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .diagram-spec {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .diagram-frame {
+    width: 100%;
+    max-height: 720px;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+    background: var(--surface);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .diagram-svg {
+    display: block;
+    max-width: 100%;
+    max-height: 720px;
+    width: auto;
+    height: 100%;
+  }
+</style>

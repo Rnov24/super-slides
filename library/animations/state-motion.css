@@ -1,18 +1,85 @@
 /*
- * Micro-Motion Patterns (Opt-In In-Slide Transitions)
- * Adapted from html-deck-builder research catalog.
+ * State Motion & Micro-Primitives (Opt-In In-Slide Transitions)
  *
  * Rules and Constraints:
  * 1. Maximum ONE micro-motion pattern per slide.
- * 2. Never use micro-motion on pole slides (hero-claim, quote, or major title slides).
+ * 2. Never use micro-motion on pole slides (pole-hero, pole-stat, major title slides).
  * 3. All patterns must provide a strict @media (prefers-reduced-motion: reduce) fallback.
  * 4. Zero translate3d and zero translateX. Use vertical translateY or opacity only.
  */
 
-/* ── Pattern A: Staggered Fade-Up Entrance ──
- * Usage: Multi-element cards, step tracks, and comparison columns.
- * Forbidden: Hero pole slides or single-takeaway summary slides.
- */
+/* ==========================================================================
+   Section 1: Five Micro-Primitives
+   ========================================================================== */
+
+/* 1. path-draw: stroke animation with pathLength="100" */
+.path-draw {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: path-draw-anim 600ms cubic-bezier(0.22, 0.68, 0.18, 1) forwards;
+}
+
+@keyframes path-draw-anim {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 2. bar-grow: quantitative bar expansion */
+.bar-grow {
+  transform-origin: bottom center;
+  animation: bar-grow-anim 500ms cubic-bezier(0.22, 0.68, 0.18, 1) forwards;
+}
+
+@keyframes bar-grow-anim {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* 3. node-beacon: ripple ring radiating from active/focal node */
+.node-beacon {
+  transform-origin: center;
+  animation: node-beacon-pulse 1.8s ease-out infinite;
+}
+
+@keyframes node-beacon-pulse {
+  0% {
+    r: 16px;
+    opacity: 0.85;
+  }
+  100% {
+    r: 36px;
+    opacity: 0;
+  }
+}
+
+/* 4. focus-dim: dim non-focal elements to elevate active decisions */
+.focus-dim {
+  opacity: 0.25;
+  transition: opacity 240ms ease;
+}
+
+/* 5. stagger: fade-up 10px / 40ms */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 280ms ease-out, transform 280ms ease-out;
+}
+
+.slide.slide-current .stagger-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Section 2: Four Micro-Motion Patterns
+   ========================================================================== */
+
+/* Pattern A: Staggered Fade-Up Group */
 :root {
   --micro-rise-dist: 10px;
   --micro-rise-duration: 350ms;
@@ -50,10 +117,7 @@
   transition-delay: calc(4 * var(--micro-stagger-base));
 }
 
-/* ── Pattern B: Vertical Telemetry Ticker ──
- * Usage: Live alert bars, SLA guarantees, or operational status feeds.
- * Forbidden: Never place on narrative intro slides or strategic summary slides.
- */
+/* Pattern B: Vertical Telemetry Ticker */
 .micro-ticker {
   height: 32px;
   overflow: hidden;
@@ -82,10 +146,7 @@
   100%      { transform: translateY(0px); }
 }
 
-/* ── Pattern C: Animated SVG Travelling Dots ──
- * Usage: Architecture pipelines, ingestion workflows, data connectors.
- * Forbidden: Static financial tables or headline claims.
- */
+/* Pattern C: Animated SVG Travelling Dots */
 .micro-connector-flow {
   stroke-dasharray: 6 6;
   animation: connector-flow 1.5s linear infinite;
@@ -116,10 +177,7 @@
   }
 }
 
-/* ── Pattern D: Horizontal Marquee Ribbon ──
- * Usage: Partner logos, client validation badges, continuous audit ticker.
- * Forbidden: Never place on core thesis slides or high-density charts.
- */
+/* Pattern D: Horizontal Marquee Ribbon */
 .micro-marquee {
   overflow: hidden;
   white-space: nowrap;
@@ -141,19 +199,21 @@
   }
 }
 
-/* ── Pattern E: Diagram and Graph State Primitives ──
- * Usage: Algorithm traces, state machine walkthroughs, node graph transitions.
- */
+/* ==========================================================================
+   Section 3: Five Algorithmic State Classes
+   ========================================================================== */
 
-/* 1. Idle State: inactive or background node */
+/* 1. Idle State: background or inactive element */
 .state-idle {
   opacity: 0.35;
-  stroke: var(--surface-border);
+  stroke: var(--state-idle, var(--surface-border));
+  color: var(--text-muted);
   transition: opacity 180ms ease, stroke 180ms ease;
 }
 
-/* 2. Candidate State: under evaluation, dashed stroke and breathing opacity */
+/* 2. Candidate State: under evaluation with breathing pulse */
 .state-candidate {
+  stroke: var(--state-candidate, var(--accent-alt));
   stroke-dasharray: 4 4;
   animation: candidate-breathe 2.4s ease-in-out infinite;
 }
@@ -167,43 +227,24 @@
   }
 }
 
-/* 3. Selected / Active State: current focal node or edge */
-.state-selected,
+/* 3. Active State: focal processing node or traversing link */
 .state-active {
-  stroke: var(--accent);
-  stroke-dasharray: 200;
-  animation: stroke-draw 400ms ease-out forwards;
+  stroke: var(--state-active, var(--accent));
+  color: var(--state-active, var(--accent));
+  transition: stroke 200ms ease, color 200ms ease;
 }
 
-.state-selected .node-ripple,
+.state-active.path-draw {
+  animation: path-draw-anim 400ms ease-out forwards;
+}
+
 .state-active .node-ripple {
   transform-origin: center;
-  animation: ripple-ring 1.8s ease-out infinite;
+  animation: node-beacon-pulse 1.8s ease-out infinite;
 }
 
-.state-selected .callout-pill,
 .state-active .callout-pill {
   animation: pill-pop-in 240ms cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
-}
-
-@keyframes stroke-draw {
-  from {
-    stroke-dashoffset: 200;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes ripple-ring {
-  0% {
-    r: 18px;
-    opacity: 0.8;
-  }
-  100% {
-    r: 36px;
-    opacity: 0;
-  }
 }
 
 @keyframes pill-pop-in {
@@ -217,17 +258,18 @@
   }
 }
 
-/* 4. Committed State: confirmed or finalized decision */
+/* 4. Committed State: accepted decision, solid connection */
 .state-committed {
-  stroke: var(--accent-alt);
-  fill: var(--surface);
+  stroke: var(--state-committed, #34d399);
+  color: var(--state-committed, #34d399);
   stroke-dasharray: none;
   opacity: 1;
 }
 
-/* 5. Rejected State: dismissed option with strikethrough badge and muted dashed line */
+/* 5. Rejected State: rejected cycle edge or dismissed option */
 .state-rejected {
-  stroke: var(--text-muted);
+  stroke: var(--state-rejected, #f43f5e);
+  color: var(--state-rejected, #f43f5e);
   stroke-dasharray: 3 3;
   opacity: 0.45;
 }
@@ -238,26 +280,26 @@
   opacity: 0.6;
 }
 
-/* ── Reduced Motion Accessibility Overrides ── */
+/* ==========================================================================
+   Section 4: Reduced Motion Fallbacks
+   ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .micro-stagger-group > * {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
+  .path-draw,
+  .bar-grow,
+  .node-beacon,
+  .micro-stagger-group > *,
   .micro-ticker-track,
   .micro-connector-flow,
   .micro-pulse-beacon,
   .micro-marquee-inner,
   .state-candidate,
-  .state-selected,
   .state-active,
-  .state-selected .node-ripple,
   .state-active .node-ripple,
-  .state-selected .callout-pill,
   .state-active .callout-pill {
     animation: none !important;
     transform: none !important;
+    transition: none !important;
     stroke-dashoffset: 0 !important;
+    opacity: 1 !important;
   }
 }

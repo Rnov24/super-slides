@@ -1,0 +1,42 @@
+/*
+ * Pattern: Accent Focal Block
+ * Purpose: Full-color accent background block for singular transformative thesis or pivotal takeaway.
+ * Constraint: Maximum ONE accent-focal-block per entire presentation deck.
+ * Accessibility: Text MUST render in var(--accent-on) for guaranteed high contrast.
+ */
+
+.accent-focal-block {
+  background: var(--accent);
+  color: var(--accent-on);
+  border-radius: var(--radius-md, 8px);
+  padding: 48px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.accent-focal-block .focal-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+.accent-focal-block .focal-title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.accent-focal-block .focal-body {
+  font-size: 24px;
+  line-height: 1.4;
+  opacity: 0.92;
+  max-width: 900px;
+}

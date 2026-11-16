@@ -1,0 +1,192 @@
+<!--
+  Layout: Numbered Rows (Full-Width Tiered Milestone Stack)
+  Slide Job: Sequence core architectural tenets, sequential milestones, or priority tiers across full-width rows with bold index numerals.
+  Slots:
+    - {{ kicker }}: Track or architectural pillar identifier
+    - {{ title }}: Action conclusion headline
+    - {{ row_1..3 }}: Full-width numbered rows containing:
+        - Index numeral (01, 02, 03)
+        - Milestone or tenet title
+        - Concrete engineering description (>= 18px body font)
+        - Right-aligned telemetry chip or status pill
+  Avoid-List:
+    - Never place bullet points inside the rows; use direct, declarative sentences.
+    - Never wrap each row in a rounded card box; divide only via 1px horizontal hairlines.
+    - Never exceed 4 rows on a single slide to prevent vertical compression.
+-->
+
+<section class="slide" data-layout="numbered-rows" tabindex="-1">
+  <div class="numbered-rows-stage">
+    <div class="numbered-rows-header">
+      <span class="rows-kicker">EXECUTION ARCHITECTURE</span>
+      <h2 class="rows-title">Three Architectural Invariants for Zero-Reflow Rendering</h2>
+    </div>
+
+    <div class="rows-stack">
+      <div class="row-item">
+        <div class="row-num">01</div>
+        <div class="row-body">
+          <h3 class="row-heading">Sub-Layer GPU Compositing</h3>
+          <p class="row-text">
+            Isolates hit-testing and matrix transforms to dedicated GPU layers, bypassing DOM tree mutation observers and layout recalculations.
+          </p>
+        </div>
+        <div class="row-meta">
+          <span class="meta-pill">60 FPS LOCKED</span>
+        </div>
+      </div>
+
+      <div class="row-item">
+        <div class="row-num">02</div>
+        <div class="row-body">
+          <h3 class="row-heading">Off-Main-Thread Layout Solver</h3>
+          <p class="row-text">
+            Computes flex and grid geometric coordinates inside dedicated Web Workers, delivering immutable layout snapshots via SharedArrayBuffer.
+          </p>
+        </div>
+        <div class="row-meta">
+          <span class="meta-pill">&lt; 2ms BUDGET</span>
+        </div>
+      </div>
+
+      <div class="row-item">
+        <div class="row-num">03</div>
+        <div class="row-body">
+          <h3 class="row-heading">Deterministic Resource Virtualization</h3>
+          <p class="row-text">
+            Recycles offscreen canvas primitives through a pooled slab allocator, keeping heap churn under 12 MB across continuous 100-slide runs.
+          </p>
+        </div>
+        <div class="row-meta">
+          <span class="meta-pill">ZERO GC SPIKES</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="deck-footer">
+      <span>COMPOSITING RUNTIME SPECIFICATION</span>
+      <span>02 / 08</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-layout="numbered-rows"] {
+    padding: 72px 100px 56px 100px;
+    background: var(--bg);
+    background-image: var(--bg-gradient);
+  }
+
+  .numbered-rows-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+  }
+
+  .numbered-rows-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rows-kicker {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .rows-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    max-width: 1400px;
+  }
+
+  .rows-stack {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 28px 0 20px 0;
+  }
+
+  .row-item {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    padding: 44px 0;
+    border-bottom: 1px solid var(--surface-border);
+  }
+
+  .row-item:first-child {
+    border-top: 1px solid var(--surface-border);
+  }
+
+  .row-num {
+    font-family: var(--font-mono);
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+    min-width: 100px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .row-heading {
+    font-family: var(--font-primary);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .row-text {
+    font-size: 20px;
+    line-height: 1.45;
+    color: var(--text-muted);
+    max-width: 1100px;
+  }
+
+  .row-meta {
+    flex-shrink: 0;
+  }
+
+  .meta-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-sm, 4px);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .deck-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding-top: 14px;
+    border-top: 1px solid var(--surface-border-subtle, var(--surface-border));
+  }
+</style>

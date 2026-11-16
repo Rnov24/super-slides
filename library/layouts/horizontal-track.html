@@ -1,0 +1,266 @@
+<!--
+  Layout: Horizontal Track (End-to-End Pipeline Sequence)
+  Slide Job: Sequence a linear 3 or 4 stage pipeline, ingestion lifecycle, or deployment release phase across full width.
+  Slots:
+    - {{ kicker }}: Process or workflow identifier
+    - {{ title }}: Action conclusion headline
+    - {{ stage_1..4 }}: Ordered horizontal stages containing:
+        - Phase index pill
+        - Stage name and latency/time budget
+        - Concrete execution description (>= 18px body font)
+        - Bottom operational status tag
+  Avoid-List:
+    - Never exceed 4 stages on a single track; split into 2 slides if more stages exist.
+    - Never wrap each stage in a heavy elevated box; maintain airy open track layout.
+    - Never omit connecting arrows or transition indicators between sequential stages.
+  Measurement:
+    - Standalone, this layout shows a large middle gap: the middle band is the diagram slot, not empty space.
+    - Measure the gap only when composed with a diagram (for example pipeline-flow); do not fail the standalone shell on Check B.
+-->
+
+<section class="slide" data-layout="horizontal-track" tabindex="-1">
+  <div class="track-stage">
+    <div class="track-header">
+      <span class="track-kicker">INGESTION LIFECYCLE</span>
+      <h2 class="track-title">Deterministic Four-Stage Stream Processing Pipeline</h2>
+    </div>
+
+    <div class="track-grid">
+      <!-- Stage 1 -->
+      <div class="track-step">
+        <div class="step-top">
+          <span class="step-num">PHASE 01</span>
+          <span class="step-timing">&lt; 1.2ms</span>
+        </div>
+        <h3 class="step-name">Binary Ingress</h3>
+        <p class="step-body">
+          Validates wire protocol headers directly in network card ring buffers, rejecting malformed frames prior to kernel context switches.
+        </p>
+        <div class="step-status status-done">HARDWARE ACCELERATED</div>
+      </div>
+
+      <!-- Connector 1-2 -->
+      <div class="track-arrow">
+        <svg viewBox="0 0 40 24" class="arrow-svg">
+          <path d="M 0 12 L 32 12 M 24 4 L 32 12 L 24 20" fill="none" stroke="var(--surface-border)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="track-step">
+        <div class="step-top">
+          <span class="step-num">PHASE 02</span>
+          <span class="step-timing">&lt; 0.8ms</span>
+        </div>
+        <h3 class="step-name">Schema Parsing</h3>
+        <p class="step-body">
+          Zero-allocation deserialization maps raw payloads into immutable columnar blocks in off-heap memory slabs.
+        </p>
+        <div class="step-status status-done">ZERO GC CHURN</div>
+      </div>
+
+      <!-- Connector 2-3 -->
+      <div class="track-arrow">
+        <svg viewBox="0 0 40 24" class="arrow-svg">
+          <path d="M 0 12 L 32 12 M 24 4 L 32 12 L 24 20" fill="none" stroke="var(--surface-border)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <!-- Stage 3: Focal Step -->
+      <div class="track-step step-focal">
+        <div class="step-top">
+          <span class="step-num num-accent">PHASE 03</span>
+          <span class="step-timing timing-accent">&lt; 2.5ms</span>
+        </div>
+        <h3 class="step-name">Cut Partitioning</h3>
+        <p class="step-body">
+          Evaluates spanning tree invariants in parallel across 16 worker cores, selecting minimal cut edges deterministically.
+        </p>
+        <div class="step-status status-accent">ACTIVE BOTTLENECK FIX</div>
+      </div>
+
+      <!-- Connector 3-4 -->
+      <div class="track-arrow">
+        <svg viewBox="0 0 40 24" class="arrow-svg">
+          <path d="M 0 12 L 32 12 M 24 4 L 32 12 L 24 20" fill="none" stroke="var(--surface-border)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <!-- Stage 4 -->
+      <div class="track-step">
+        <div class="step-top">
+          <span class="step-num">PHASE 04</span>
+          <span class="step-timing">&lt; 1.0ms</span>
+        </div>
+        <h3 class="step-name">WAL Persistence</h3>
+        <p class="step-body">
+          Appends committed state mutations to NVMe storage via io_uring rings before acknowledging consumer clients.
+        </p>
+        <div class="step-status status-done">DURABLE FSOUND</div>
+      </div>
+    </div>
+
+    <div class="deck-footer">
+      <span>STREAMING PIPELINE RUNTIME</span>
+      <span>06 / 08</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-layout="horizontal-track"] {
+    padding: 72px 100px 56px 100px;
+    background: var(--bg);
+    background-image: var(--bg-gradient);
+  }
+
+  .track-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+  }
+
+  .track-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .track-kicker {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .track-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    max-width: 1400px;
+  }
+
+  .track-grid {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 36px 0 24px 0;
+    min-height: 480px;
+  }
+
+  .track-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 44px 28px;
+    border-top: 2px solid var(--surface-border);
+    background: transparent;
+  }
+
+  .step-focal {
+    border-top-color: var(--accent);
+  }
+
+  .step-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+  }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+
+  .num-accent {
+    color: var(--accent);
+  }
+
+  .step-timing {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .timing-accent {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .step-name {
+    font-family: var(--font-primary);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+
+  .step-body {
+    font-size: 18px;
+    line-height: 1.45;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    flex: 1;
+  }
+
+  .step-status {
+    align-self: flex-start;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm, 4px);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .status-done {
+    background: transparent;
+    border: 1px solid var(--surface-border);
+    color: var(--text-muted);
+  }
+
+  .status-accent {
+    background: var(--accent-soft, rgba(255, 87, 34, 0.14));
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+
+  .track-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    flex-shrink: 0;
+  }
+
+  .arrow-svg {
+    width: 32px;
+    height: 20px;
+  }
+
+  .deck-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding-top: 14px;
+    border-top: 1px solid var(--surface-border-subtle, var(--surface-border));
+  }
+</style>

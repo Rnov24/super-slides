@@ -26,7 +26,14 @@
       --text:           #f0f6fc;
       --text-muted:     #8b949e;
       --accent:         #FF5722;
+      --accent-ink:     #ff7043;
+      --accent-on:      #ffffff;
       --accent-alt:     #38bdf8;
+      --state-idle:     #303c50;
+      --state-candidate: #38bdf8;
+      --state-active:   #FF5722;
+      --state-committed: #34d399;
+      --state-rejected: #f43f5e;
       --font-display:   'Archivo Black', sans-serif;
       --font-primary:   'Space Grotesk', system-ui, sans-serif;
       --font-code:      "Cascadia Code", "Fira Code", Consolas, monospace;
@@ -169,7 +176,7 @@
       gap: 0; align-items: stretch; height: 100%;
     }
     .split-left {
-      display: flex; flex-direction: column; justify-content: space-between;
+      display: flex; flex-direction: column; justify-content: flex-start;
       padding-right: 80px; padding-top: 8px; padding-bottom: 8px;
     }
     .split-num {
@@ -177,12 +184,12 @@
       line-height: 0.85; letter-spacing: -0.04em; margin-bottom: 0;
     }
     .split-statement {
-      font-family: var(--font-display); font-size: 58px; color: var(--text);
-      line-height: 1.05; margin-top: 24px;
+      font-family: var(--font-display); font-size: 64px; color: var(--text);
+      line-height: 1.1; margin-top: 24px;
     }
     .split-divider { background: var(--surface-border); align-self: stretch; width: 1px; }
     .split-right {
-      padding-left: 80px; display: flex; flex-direction: column; justify-content: space-between;
+      padding-left: 80px; display: flex; flex-direction: column; justify-content: flex-start;
       padding-top: 16px; padding-bottom: 16px;
     }
     .split-desc { font-size: 32px; color: var(--text-muted); line-height: 1.55; }
@@ -244,8 +251,8 @@
     .code-terminal {
       flex: 1;
       background: #000; border-radius: 8px; padding: 40px 48px;
-      font-family: var(--font-code); font-size: 19px; line-height: 1.7;
-      color: #c9d1d9; overflow: hidden;
+      font-family: var(--font-code); font-size: 18px; line-height: 1.55;
+      color: #c9d1d9; overflow: hidden; white-space: pre-wrap;
     }
     .ck { color: var(--accent); font-weight: 700; }
     .cs { color: var(--accent-alt); }
@@ -331,13 +338,25 @@
           </div>
           <div style="flex:1;display:grid;grid-template-columns:1fr 1px 1fr;padding:0 100px 72px;">
             <div class="split-left">
-              <div class="split-num">2</div>
-              <div class="split-statement">Isolated Interaction Planes</div>
+              <div>
+                <div class="split-num">2</div>
+                <div class="split-statement">Isolated Interaction Planes</div>
+              </div>
+              <div style="margin-top: 64px; display: flex; flex-direction: column; gap: 44px;">
+                <div>
+                  <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">PLANE 01: MACRO ENGINE</div>
+                  <div style="font-size: 22px; color: var(--text-muted); line-height: 1.6;">Keyboard navigation, touch gestures, and single-flight coalescing lock.</div>
+                </div>
+                <div>
+                  <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--accent-alt); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">PLANE 02: MICRO CANVAS</div>
+                  <div style="font-size: 22px; color: var(--text-muted); line-height: 1.6;">Direct inline SVG manipulation, interactive state nodes, and data tables.</div>
+                </div>
+              </div>
             </div>
             <div class="split-divider"></div>
             <div class="split-right">
               <p class="split-desc">Macro navigation (keyboard, touch) and micro interactivity (pointer within slides) occupy separate event planes. Neither interrupts the other.</p>
-              <div style="margin-top:32px;padding-top:32px;border-top:1px solid var(--surface-border);font-size:20px;color:var(--text-muted);">Hit-test suppressed during all transitions via <code style="font-family:var(--font-code);color:var(--accent)">.is-transitioning</code></div>
+              <div style="margin-top:56px;padding-top:32px;border-top:1px solid var(--surface-border);font-size:22px;color:var(--text-muted);line-height:1.55;">Hit-test suppressed during all transitions via <code style="font-family:var(--font-code);color:var(--accent)">.is-transitioning</code></div>
             </div>
           </div>
         </div>
@@ -460,7 +479,7 @@
               <text x="672" y="556" fill="#f0f6fc" font-size="21" font-weight="600" font-family="'Space Grotesk',sans-serif">4. Anti-Slop Audit</text>
 
               <rect x="650" y="620" width="300" height="88" rx="10" fill="#0a0d12" stroke="#38bdf8" stroke-width="2"/>
-              <text x="672" y="658" fill="#38bdf8" font-size="20" font-weight="700" font-family="'Space Grotesk',sans-serif">npm test: 36 passed</text>
+              <text x="672" y="658" fill="#38bdf8" font-size="20" font-weight="700" font-family="'Space Grotesk',sans-serif">npm test: 61 passed</text>
               <text x="672" y="688" fill="#8b949e" font-size="17" font-family="'Space Grotesk',sans-serif">12 assertions per deck</text>
 
               <!-- Arrow: AI Agent to Output -->
@@ -545,8 +564,12 @@
           <span class="kicker">TERMINAL TEST RUN <span style="font-size:12px;color:var(--text-muted);font-family:var(--font-primary);">(this slide uses data-transition="cut", instant without crossfade)</span></span>
           <div class="terminal-block">
             <div><span class="tp">$</span> npm test</div>
-            <div>&nbsp;&nbsp;[<span class="th">PASS</span>] 12 test assertions verified across all decks</div>
-            <div>Results: <span class="th">36 passed, 0 failed</span> across 3 file(s).</div>
+            <div>&nbsp;&nbsp;[<span class="th">PASS</span>] SKILL.md line count &lt; 180 (currently 104)</div>
+            <div>&nbsp;&nbsp;[<span class="th">PASS</span>] library/components/ does not exist (migrated)</div>
+            <div>&nbsp;&nbsp;[<span class="th">PASS</span>] deck-skeleton.html contains zero dummy slides</div>
+            <div>&nbsp;&nbsp;[<span class="th">PASS</span>] Font slot comment present in skeleton</div>
+            <div>&nbsp;&nbsp;[<span class="th">PASS</span>] library/fonts/ contains 4 font families</div>
+            <div>Results: <span class="th">61 passed, 0 failed</span>.</div>
             <div><span class="th">PASS</span>: all checks passed.</div>
           </div>
           <p class="terminal-caption">data-transition="cut" triggers an instant cut with zero crossfade overhead.</p>
@@ -562,7 +585,7 @@
           </div>
           <div>
             <div class="orange-rule" style="margin-bottom:28px;"></div>
-            <p class="closing-sub">Narrative, tokens, layout, and audit : every deck passes 12 automated checks before delivery.</p>
+            <p class="closing-sub">Narrative, tokens, layout, and audit : every deck passes 61 automated checks before delivery.</p>
           </div>
         </div>
       </section>

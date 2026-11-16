@@ -1,10 +1,6 @@
 /*
  * Theme: Bold Signal (High-Velocity Dark Engineering)
- * Source: super-slides technical-architecture deck
- *
- * NOTE: Themes define tokens ONLY. They must NOT contain @font-face rules.
- * Web fonts (Archivo Black 400, Space Grotesk 400/700) must be embedded
- * as base64 woff2 data URIs in the presentation deck HTML per the zero-network rule.
+ * Required Fonts: archivo-black.css, space-grotesk.css
  *
  * Accent Budget:
  * - Neutral canvas and surfaces: 80% to 90%
@@ -22,7 +18,7 @@
 
 :root,
 .theme-bold-signal {
-  /* ── Tier 1: Primitives (Raw values, rarely edited) ── */
+  /* -- Tier 1: Primitives (Raw values, rarely edited) -- */
   --primitive-black:        #000000;
   --primitive-slate-950:    #0a0d12;
   --primitive-slate-900:    #121822;
@@ -31,11 +27,14 @@
   --primitive-slate-400:    #8b949e;
   --primitive-slate-100:    #f0f6fc;
   --primitive-orange-500:   #FF5722;
+  --primitive-orange-400:   #ff7043;
   --primitive-orange-900:   rgba(255, 87, 34, 0.14);
   --primitive-cyan-400:     #38bdf8;
   --primitive-cyan-900:     rgba(56, 189, 248, 0.12);
+  --primitive-emerald-400:  #34d399;
+  --primitive-rose-500:     #f43f5e;
 
-  /* ── Tier 2: Semantic Tokens (Consumed by components) ── */
+  /* -- Tier 2: Semantic Tokens (Consumed by components) -- */
   --bg:                     var(--primitive-slate-950);
   --bg-gradient:            radial-gradient(circle at 75% 25%, #2a2c35 0%, #13141a 50%, #0a0d12 100%);
   --surface:                var(--primitive-slate-900);
@@ -45,8 +44,17 @@
   --text-muted:             var(--primitive-slate-400);
   --accent:                 var(--primitive-orange-500);
   --accent-soft:            var(--primitive-orange-900);
+  --accent-ink:             var(--primitive-orange-400);
+  --accent-on:              #ffffff;
   --accent-alt:             var(--primitive-cyan-400);
   --accent-alt-soft:        var(--primitive-cyan-900);
+
+  /* Algorithmic & State tokens */
+  --state-idle:             var(--primitive-slate-700);
+  --state-candidate:        var(--primitive-cyan-400);
+  --state-active:           var(--primitive-orange-500);
+  --state-committed:        var(--primitive-emerald-400);
+  --state-rejected:         var(--primitive-rose-500);
 
   /* Typography tokens */
   --font-display:           'Archivo Black', sans-serif;
@@ -60,7 +68,7 @@
   --radius-lg:              16px;
 }
 
-/* ── Tier 3: Component Token Derivations ──
+/* -- Tier 3: Component Token Derivations --
  * Components derive values from semantic tokens:
  * - Badges: background: var(--accent-soft); color: var(--accent);
  * - Callout borders: border-left: 4px solid var(--accent);

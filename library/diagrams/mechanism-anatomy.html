@@ -1,0 +1,112 @@
+<!--
+  Diagram Archetype: Mechanism Anatomy (Core Engine Object with Orthogonal Elbow Callouts)
+  Budget Adherence: 1 core object, 4 peripheral subsystems, 4 elbow connectors (r=8), opaque halo pill labels.
+  Discipline: 4px grid snap, viewBox 1200x675, zero elevation shadows, anti-crossing labels painted on top of lines.
+-->
+
+<section class="diagram-spec" data-diagram="mechanism-anatomy">
+  <div class="diagram-frame">
+    <svg class="diagram-svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <pattern id="ma-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--surface-border)" stroke-width="1" stroke-opacity="0.25"/>
+        </pattern>
+      </defs>
+
+      <rect width="1200" height="675" fill="url(#ma-grid)" rx="8" />
+
+      <!-- LAYER 1: Orthogonal Elbow Connectors (r=8) with 1px hairlines -->
+      <!-- Callout 1 (Top Left) -->
+      <path d="M 280 160 L 460 160 Q 468 160 468 168 L 468 280" fill="none" stroke="var(--surface-border)" stroke-width="2" />
+
+      <!-- Callout 2 (Bottom Left) -->
+      <path d="M 280 500 L 460 500 Q 468 500 468 492 L 468 395" fill="none" stroke="var(--surface-border)" stroke-width="2" />
+
+      <!-- Callout 3 (Top Right - Accent) -->
+      <path d="M 920 160 L 732 160 Q 724 160 724 168 L 724 280" fill="none" stroke="var(--accent)" stroke-width="2.5" />
+
+      <!-- Callout 4 (Bottom Right) -->
+      <path d="M 920 500 L 732 500 Q 724 500 724 492 L 724 395" fill="none" stroke="var(--surface-border)" stroke-width="2" />
+
+      <!-- LAYER 2: Central Core Engine Object (Snap 4px) -->
+      <g transform="translate(468, 250)">
+        <rect width="256" height="175" rx="8" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="2" />
+        <rect x="8" y="8" width="240" height="40" rx="4" fill="var(--bg)" />
+        <text x="128" y="34" text-anchor="middle" font-family="var(--font-mono)" font-size="13" font-weight="700" letter-spacing="0.1em" fill="var(--accent)" text-transform="uppercase">
+          CORE SLAB ALLOCATOR
+        </text>
+
+        <line x1="8" y1="60" x2="248" y2="60" stroke="var(--surface-border)" stroke-width="1" />
+
+        <!-- Sub-blocks inside central engine -->
+        <rect x="20" y="75" width="100" height="36" rx="4" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1" />
+        <text x="70" y="98" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--text-muted)">RING 0 BUF</text>
+
+        <rect x="136" y="75" width="100" height="36" rx="4" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1" />
+        <text x="186" y="98" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--text-muted)">RING 1 BUF</text>
+
+        <rect x="20" y="122" width="216" height="36" rx="4" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5" />
+        <text x="128" y="145" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--accent)">IO_URING DISPATCH</text>
+      </g>
+
+      <!-- LAYER 3: Peripheral Callout Nodes with Opaque Halo Fills (Anti-crossing) -->
+      <!-- Callout 1 (Top Left) -->
+      <g transform="translate(80, 110)">
+        <rect width="200" height="96" rx="6" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1" />
+        <text x="20" y="32" font-family="var(--font-mono)" font-size="11" font-weight="700" letter-spacing="0.08em" fill="var(--text-muted)">SUBSYSTEM 01</text>
+        <text x="20" y="58" font-family="var(--font-primary)" font-size="16" font-weight="700" fill="var(--text)">Kernel Bypassing</text>
+        <text x="20" y="80" font-family="var(--font-primary)" font-size="13" fill="var(--text-muted)">Direct NIC DMA transfer</text>
+      </g>
+
+      <!-- Callout 2 (Bottom Left) -->
+      <g transform="translate(80, 450)">
+        <rect width="200" height="96" rx="6" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1" />
+        <text x="20" y="32" font-family="var(--font-mono)" font-size="11" font-weight="700" letter-spacing="0.08em" fill="var(--text-muted)">SUBSYSTEM 02</text>
+        <text x="20" y="58" font-family="var(--font-primary)" font-size="16" font-weight="700" fill="var(--text)">Memory Pinning</text>
+        <text x="20" y="80" font-family="var(--font-primary)" font-size="13" fill="var(--text-muted)">Locked physical pages</text>
+      </g>
+
+      <!-- Callout 3 (Top Right - Active Accent) -->
+      <g transform="translate(920, 110)">
+        <rect width="200" height="96" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2" />
+        <text x="20" y="32" font-family="var(--font-mono)" font-size="11" font-weight="700" letter-spacing="0.08em" fill="var(--accent)">KEY INNOVATION 03</text>
+        <text x="20" y="58" font-family="var(--font-primary)" font-size="16" font-weight="700" fill="var(--text)">Zero GC Arena</text>
+        <text x="20" y="80" font-family="var(--font-primary)" font-size="13" fill="var(--text-muted)">Deterministic recycle</text>
+      </g>
+
+      <!-- Callout 4 (Bottom Right) -->
+      <g transform="translate(920, 450)">
+        <rect width="200" height="96" rx="6" fill="var(--surface)" stroke="var(--surface-border)" stroke-width="1" />
+        <text x="20" y="32" font-family="var(--font-mono)" font-size="11" font-weight="700" letter-spacing="0.08em" fill="var(--text-muted)">SUBSYSTEM 04</text>
+        <text x="20" y="58" font-family="var(--font-primary)" font-size="16" font-weight="700" fill="var(--text)">Async Sync Log</text>
+        <text x="20" y="80" font-family="var(--font-primary)" font-size="13" fill="var(--text-muted)">NVMe flush pipeline</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .diagram-spec {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .diagram-frame {
+    width: 100%;
+    max-height: 720px;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+    background: var(--surface);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .diagram-svg {
+    display: block;
+    max-width: 100%;
+    max-height: 720px;
+    width: auto;
+    height: 100%;
+  }
+</style>
